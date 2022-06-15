@@ -1,0 +1,25 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    require_trailing_commas: true
+    always_use_package_imports: true
+    avoid_empty_else: true
+    cancel_subscriptions: true
+    close_sinks: true
+    no_logic_in_create_state: true
+    directives_ordering: true
+    lines_longer_than_80_chars: true
+    camel_case_types: true
+    file_names: true
+    public_member_api_docs: false
+    unawaited_futures: false
+    
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "lib/generated/**.dart"
+  errors:
+    invalid_annotation_target: ignore
+    body_might_complete_normally_nullable: ignore

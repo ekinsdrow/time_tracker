@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "211901219321",
+    "project_id": "time-tracker-e15e2",
+    "storage_bucket": "time-tracker-e15e2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211901219321:android:2eff0e6569a5e2176cfd28",
+        "android_client_info": {
+          "package_name": "com.ekinsdrow.timetracker.time_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211901219321-25cjvkt6orlt9ok3gsoi5ifesh3sfilu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9PTyxvCmPB51FgnOS7D763J8PfvDcsCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211901219321-25cjvkt6orlt9ok3gsoi5ifesh3sfilu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,17 @@
+generate_tests: false
+no_comments: true
+export: true
+use_part_of: true
+
+package: common/assets/images
+
+groups:
+  - path: assets/images/png
+    class_name: PngPath
+    types: [.png]
+  - path: assets/images/svg
+    class_name: SvgPath
+    types: [.svg]
+  - path: assets/images/jpg
+    class_name: JpgPath
+    types: [.jpg, .jpeg]
