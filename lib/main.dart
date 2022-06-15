@@ -4,6 +4,7 @@ import 'package:time_tracker/features/app/app.dart';
 import 'package:time_tracker/firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
