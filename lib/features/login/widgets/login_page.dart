@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/dialogs/error_dialog.dart';
-import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/login/bloc/login_bloc.dart';
 import 'package:time_tracker/features/login/di/login_scope.dart';
 
