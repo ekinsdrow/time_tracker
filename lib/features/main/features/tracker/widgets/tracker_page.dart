@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/features/app/router/router.dart';
 
 class TrackerPage extends StatelessWidget {
   const TrackerPage({Key? key}) : super(key: key);
@@ -34,7 +36,9 @@ class _Header extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            //TODO: open settings
+            context.router.push(
+              const SettingsRoute(),
+            );
           },
           splashRadius: 20,
           icon: const Icon(Icons.settings),

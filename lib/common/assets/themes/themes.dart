@@ -4,10 +4,16 @@ import 'package:time_tracker/common/assets/constants.dart';
 abstract class Themes {
   static get lightTheme => ThemeData(
         brightness: Brightness.light,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: AppColors._primary,
+        ),
         fontFamily: 'Montserrat',
         primaryColor: AppColors._primary,
         appBarTheme: const AppBarTheme(
-          color: AppColors._primary,
+          color: AppColors._bg,
+          iconTheme: IconThemeData(
+            color: AppColors._primary,
+          ),
           elevation: 0,
         ),
         inputDecorationTheme: InputDecorationTheme(

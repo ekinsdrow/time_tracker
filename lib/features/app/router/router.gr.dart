@@ -29,6 +29,10 @@ class _$AppRouter extends RootStackRouter {
       return AdaptivePage<dynamic>(
           routeData: routeData, child: const MainPage());
     },
+    SettingsRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+          routeData: routeData, child: const SettingsPage());
+    },
     TrackerRouter.name: (routeData) {
       return AdaptivePage<dynamic>(
           routeData: routeData, child: const TrackerPage());
@@ -54,7 +58,8 @@ class _$AppRouter extends RootStackRouter {
               path: 'history', parent: MainRoute.name),
           RouteConfig(StatisticRouter.name,
               path: 'statistic', parent: MainRoute.name)
-        ])
+        ]),
+        RouteConfig(SettingsRoute.name, path: '/settings-page')
       ];
 }
 
@@ -81,6 +86,14 @@ class MainRoute extends PageRouteInfo<void> {
       : super(MainRoute.name, path: '/main-page', initialChildren: children);
 
   static const String name = 'MainRoute';
+}
+
+/// generated route for
+/// [SettingsPage]
+class SettingsRoute extends PageRouteInfo<void> {
+  const SettingsRoute() : super(SettingsRoute.name, path: '/settings-page');
+
+  static const String name = 'SettingsRoute';
 }
 
 /// generated route for
