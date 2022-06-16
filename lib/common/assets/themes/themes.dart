@@ -24,20 +24,32 @@ abstract class Themes {
             ),
           ),
         ),
+        scaffoldBackgroundColor: AppColors._bg,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          elevation: 0,
+          backgroundColor: AppColors._bg,
+          selectedIconTheme: IconThemeData(
+            color: AppColors._primary,
+          ),
+          unselectedIconTheme: IconThemeData(
+            color: AppColors._black,
+          ),
+        ),
       );
 
   static get _inputBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(
           Constants.smallPadding,
         ),
-        borderSide: BorderSide(
-          color: AppColors._grey!,
+        borderSide: const BorderSide(
+          color: AppColors._black,
           width: 1,
         ),
       );
 }
 
 abstract class AppColors {
-  static final Color? _primary = Colors.blue[300];
-  static final Color? _grey = Colors.grey[300];
+  static const Color _primary = Color(0xFF5C6BC0);
+  static const Color _bg = Color(0xFFFFFFFF);
+  static const Color _black = Color(0xFF000000);
 }
