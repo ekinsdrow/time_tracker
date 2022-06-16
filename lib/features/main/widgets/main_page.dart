@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,12 @@ class MainPage extends StatelessWidget {
 
         return Scaffold(
           body: SafeArea(
-            child: child,
+            child: Padding(
+              padding: const EdgeInsets.all(
+                Constants.mediumPadding,
+              ),
+              child: child,
+            ),
           ),
           bottomNavigationBar: _BottomBar(
             activeIndex: tabsRouter.activeIndex,

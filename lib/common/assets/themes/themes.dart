@@ -40,9 +40,19 @@ abstract class Themes {
         textTheme: const TextTheme(
           headline1: TextStyle(
             fontSize: 20,
+            color: AppColors._black,
             fontWeight: FontWeight.bold,
           ),
+          headline2: TextStyle(
+            fontSize: 16,
+            color: AppColors._black,
+            fontWeight: FontWeight.bold,
+          ),
+          bodyText2: TextStyle(
+            color: AppColors._black,
+          ),
         ),
+        hintColor: AppColors._grey,
       );
 
   static get _inputBorder => OutlineInputBorder(
@@ -60,4 +70,5 @@ abstract class AppColors {
   static const Color _primary = Color(0xFF5C6BC0);
   static const Color _bg = Color(0xFFFFFFFF);
   static const Color _black = Color(0xFF000000);
+  static const Color _grey = Color(0xFFF5F4F7);
 }
