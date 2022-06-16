@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 
 abstract class Themes {
-  static get lightTheme => ThemeData.light().copyWith(
+  static get lightTheme => ThemeData(
+        brightness: Brightness.light,
+        fontFamily: 'Montserrat',
         primaryColor: AppColors._primary,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           color: AppColors._primary,
           elevation: 0,
         ),
@@ -33,6 +35,12 @@ abstract class Themes {
           ),
           unselectedIconTheme: IconThemeData(
             color: AppColors._black,
+          ),
+        ),
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       );
