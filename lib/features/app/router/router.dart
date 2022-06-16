@@ -6,6 +6,7 @@ import 'package:time_tracker/features/main/features/history/widgets/history_page
 import 'package:time_tracker/features/main/features/statistic/widgets/statistic_page.dart';
 import 'package:time_tracker/features/main/features/tracker/widgets/tracker_page.dart';
 import 'package:time_tracker/features/main/widgets/main_page.dart';
+import 'package:time_tracker/features/settings/widgets/settings_page.dart';
 
 part 'router.gr.dart';
 
@@ -41,6 +42,10 @@ part 'router.gr.dart';
           page: StatisticPage,
         ),
       ],
+    ),
+    AutoRoute(
+      name: 'SettingsRoute',
+      page: SettingsPage,
     ),
   ],
 )
