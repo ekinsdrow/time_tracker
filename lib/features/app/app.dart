@@ -17,7 +17,7 @@ class App extends StatelessWidget {
         routeInformationParser: _router.defaultRouteParser(),
         routerDelegate: _router.delegate(),
         title: 'Music App',
-        theme: Themes.lightTheme,
+        theme: Themes.lightTheme ,
       ),
     );
   }
