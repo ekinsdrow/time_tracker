@@ -33,7 +33,7 @@ class _HistoryPageState extends State<HistoryPage> {
           height: Constants.mediumPadding,
         ),
         const Expanded(
-          child: const _HistoryList(),
+          child: _HistoryList(),
         ),
       ],
     );
