@@ -20,8 +20,10 @@ class MainPage extends StatelessWidget {
         return Scaffold(
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(
-                Constants.mediumPadding,
+              padding: const EdgeInsets.only(
+                left: Constants.mediumPadding,
+                right: Constants.mediumPadding,
+                top: Constants.mediumPadding,
               ),
               child: child,
             ),
