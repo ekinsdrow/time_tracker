@@ -66,7 +66,7 @@ abstract class Themes {
           Constants.smallPadding,
         ),
         borderSide: const BorderSide(
-          color: AppColors._black,
+          color: AppColors._grey,
           width: 1,
         ),
       );
