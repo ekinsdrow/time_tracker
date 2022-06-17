@@ -153,23 +153,17 @@ class _HistoryList extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) => Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).hintColor,
           borderRadius: BorderRadius.circular(
             Constants.smallPadding,
           ),
         ),
         child: ListTile(
-          title: Text(
+          title: const Text(
             'Музыка / Гитара - 00:50:20',
-            style: TextStyle(
-              color: Theme.of(context).scaffoldBackgroundColor,
-            ),
           ),
           subtitle: Text(
             DateTime.now().formatDate,
-            style: TextStyle(
-              color: Theme.of(context).scaffoldBackgroundColor,
-            ),
           ),
         ),
       ),
