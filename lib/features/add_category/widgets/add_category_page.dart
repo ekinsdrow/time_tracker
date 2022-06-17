@@ -34,7 +34,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
               decoration: BoxDecoration(
                 border: Border.all(
                   width: 1,
-                  color: Theme.of(context).textTheme.bodyText2!.color!,
+                  color: Theme.of(context).hintColor,
                 ),
                 borderRadius: BorderRadius.circular(
                   Constants.smallPadding,
