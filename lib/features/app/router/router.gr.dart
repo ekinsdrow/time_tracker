@@ -33,6 +33,10 @@ class _$AppRouter extends RootStackRouter {
       return AdaptivePage<dynamic>(
           routeData: routeData, child: const SettingsPage());
     },
+    AddCategoryRoute.name: (routeData) {
+      return AdaptivePage<dynamic>(
+          routeData: routeData, child: const AddCategoryPage());
+    },
     TrackerRouter.name: (routeData) {
       return AdaptivePage<dynamic>(
           routeData: routeData, child: const TrackerPage());
@@ -59,7 +63,8 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(StatisticRouter.name,
               path: 'statistic', parent: MainRoute.name)
         ]),
-        RouteConfig(SettingsRoute.name, path: '/settings-page')
+        RouteConfig(SettingsRoute.name, path: '/settings-page'),
+        RouteConfig(AddCategoryRoute.name, path: '/add-category-page')
       ];
 }
 
@@ -94,6 +99,15 @@ class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute() : super(SettingsRoute.name, path: '/settings-page');
 
   static const String name = 'SettingsRoute';
+}
+
+/// generated route for
+/// [AddCategoryPage]
+class AddCategoryRoute extends PageRouteInfo<void> {
+  const AddCategoryRoute()
+      : super(AddCategoryRoute.name, path: '/add-category-page');
+
+  static const String name = 'AddCategoryRoute';
 }
 
 /// generated route for

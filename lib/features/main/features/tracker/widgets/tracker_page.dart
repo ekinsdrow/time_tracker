@@ -57,31 +57,47 @@ class _Categories extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         if (index == 3) {
-          return Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              horizontal: Constants.mediumPadding - 5,
-              vertical: Constants.mediumPadding,
+          return Material(
+            color: Theme.of(context).hintColor,
+            borderRadius: BorderRadius.circular(
+              Constants.smallPadding,
             ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).hintColor,
+            child: InkWell(
               borderRadius: BorderRadius.circular(
                 Constants.smallPadding,
               ),
-            ),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.add),
-                  const SizedBox(
-                    width: Constants.smallPadding,
+              onTap: () {
+                context.router.push(
+                  const AddCategoryRoute(),
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Constants.mediumPadding - 5,
+                  vertical: Constants.mediumPadding,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(
+                    Constants.smallPadding,
                   ),
-                  Text(
-                    'Add category',
-                    style: Theme.of(context).textTheme.bodyText2,
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.add),
+                      const SizedBox(
+                        width: Constants.smallPadding,
+                      ),
+                      Text(
+                        'Add category',
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           );
@@ -189,22 +205,34 @@ class _SubCategories extends StatelessWidget {
                 Constants.mediumPadding * 2,
             child: const _SubCategory(),
           ),
-        Container(
-          width: MediaQuery.of(context).size.width / 2 -
-              Constants.mediumPadding * 2,
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
+        Material(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(Constants.smallPadding),
+          child: InkWell(
             borderRadius: BorderRadius.circular(Constants.smallPadding),
-          ),
-          padding: const EdgeInsets.all(Constants.smallPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('Add category'),
-              Icon(
-                Icons.add,
+            onTap: () {
+              context.router.push(
+                const AddCategoryRoute(),
+              );
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width / 2 -
+                  Constants.mediumPadding * 2,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(Constants.smallPadding),
               ),
-            ],
+              padding: const EdgeInsets.all(Constants.smallPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text('Add category'),
+                  Icon(
+                    Icons.add,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ],
