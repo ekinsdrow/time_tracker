@@ -1,24 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/common/extensions/date_time.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
+
+  @override
+  State<HistoryPage> createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
+  DateTime? _chooseDate;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        _Header(),
-        SizedBox(
+      children: [
+        const _Header(),
+        const SizedBox(
           height: Constants.mediumPadding,
         ),
-        _Filters(),
-        SizedBox(
+        _Filters(
+          date: _chooseDate,
+          dateCallback: (d) {
+            setState(() {
+              _chooseDate = d;
+            });
+          },
+        ),
+        const SizedBox(
           height: Constants.mediumPadding,
         ),
-        Expanded(
-          child: _HistoryList(),
+        const Expanded(
+          child: const _HistoryList(),
         ),
       ],
     );
@@ -38,11 +53,41 @@ class _Header extends StatelessWidget {
 }
 
 class _Filters extends StatelessWidget {
-  const _Filters({Key? key}) : super(key: key);
+  const _Filters({
+    Key? key,
+    required this.date,
+    required this.dateCallback,
+  }) : super(key: key);
 
-  void _openDateFilter(BuildContext context) {
-    //TODO: open date filter
+  final DateTime? date;
+  final Function(DateTime?) dateCallback;
+
+  void _openDateFilter(BuildContext context) async {
+    final ctx = context;
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: date ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2050),
+      builder: (context, child) => Theme(
+        data: ThemeData(
+          colorScheme: ColorScheme.light(
+            primary: Theme.of(ctx).primaryColor,
+            onPrimary: Theme.of(ctx).scaffoldBackgroundColor,
+            onSurface: Theme.of(ctx).textTheme.bodyText2!.color!,
+          ),
+        ),
+        child: child!,
+      ),
+    );
+
+    dateCallback(pickedDate);
   }
+
+  void _clearDate() {
+    dateCallback(null);
+  }
+
   void _openCategory(BuildContext context) {
     //TODO: open category filter
   }
@@ -55,7 +100,31 @@ class _Filters extends StatelessWidget {
           onPressed: () {
             _openDateFilter(context);
           },
-          child: const Text('Date'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                date != null ? date!.formatDate : 'Date',
+              ),
+              if (date != null)
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: Constants.smallPadding / 2,
+                    ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(100),
+                      onTap: _clearDate,
+                      child: const Icon(
+                        Icons.clear,
+                        size: 18,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
         const SizedBox(
           width: Constants.smallPadding,
@@ -85,7 +154,7 @@ class _HistoryList extends StatelessWidget {
             Constants.smallPadding,
           ),
         ),
-        child:  ListTile(
+        child: ListTile(
           title: Text(
             'Музыка / Гитара - 00:50:20',
             style: TextStyle(
@@ -93,7 +162,7 @@ class _HistoryList extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            '20.05.2020',
+            DateTime.now().formatDate,
             style: TextStyle(
               color: Theme.of(context).scaffoldBackgroundColor,
             ),
