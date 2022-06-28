@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/common/dialogs/error_dialog.dart';
 import 'package:time_tracker/features/categories/bloc/categories_bloc.dart';
 import 'package:time_tracker/features/categories/data/repositories/categories_repository.dart';
 
@@ -24,7 +25,12 @@ class CategoriesScope extends StatelessWidget {
         )..add(const CategoriesEvent.fetch()),
         lazy: false,
         child: BlocListener<CategoriesBloc, CategoriesState>(
-          listener: (context, state) => state.whenOrNull(),
+          listener: (context, state) => state.whenOrNull(
+            error: (error) => showError(
+              context: context,
+              error: error,
+            ),
+          ),
           child: child,
         ),
       ),
