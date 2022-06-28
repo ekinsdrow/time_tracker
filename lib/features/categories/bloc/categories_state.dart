@@ -2,10 +2,10 @@ part of 'categories_bloc.dart';
 
 @freezed
 class CategoriesState with _$CategoriesState {
-  const factory CategoriesState.initial({
+  const factory CategoriesState.success({
     required List<Category> categories,
-  }) = _Initial;
-
+  }) = _Success;
+  const factory CategoriesState.loading() = _Loading;
   const factory CategoriesState.error({
     required String error,
   }) = _Error;

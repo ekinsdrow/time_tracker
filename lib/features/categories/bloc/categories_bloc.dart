@@ -14,9 +14,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   CategoriesBloc({
     required this.categoriesRepository,
   }) : super(
-          const _Initial(
-            categories: [],
-          ),
+          const _Loading(),
         ) {
     on<CategoriesEvent>(_fetch);
   }
@@ -29,7 +27,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       final categories = await categoriesRepository.categories();
 
       emit(
-        _Initial(categories: categories),
+        _Success(categories: categories),
       );
     } catch (e) {
       emit(
