@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/dialogs/error_dialog.dart';
 import 'package:time_tracker/features/categories/bloc/categories_bloc.dart';
-import 'package:time_tracker/features/categories/data/models/category.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/repositories/categories_repository.dart';
 
 class CategoriesScope extends StatelessWidget {
@@ -57,8 +55,9 @@ class CategoriesScope extends StatelessWidget {
                 )
               ],
             ),
-            success: (categories) => Provider<List<Category>>(
-              create: (context) => categories,
+
+            success: (categories) => Provider<Categories>(
+              create: (context) => Categories(categories: categories),
               child: child,
             ),
           ),
