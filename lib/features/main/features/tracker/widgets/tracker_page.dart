@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/features/app/router/router.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
+import 'package:time_tracker/features/categories/data/models/category.dart';
 
 class TrackerPage extends StatelessWidget {
   const TrackerPage({Key? key}) : super(key: key);
@@ -53,6 +56,8 @@ class _Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categories = context.read<Categories>().categories;
+
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
@@ -108,7 +113,7 @@ class _Categories extends StatelessWidget {
       separatorBuilder: (_, __) => const SizedBox(
         height: Constants.mediumPadding,
       ),
-      itemCount: 4,
+      itemCount: categories.length,
     );
   }
 }
