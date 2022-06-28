@@ -34,10 +34,12 @@ class CategoriesScope extends StatelessWidget {
             ),
           ),
           builder: (context, state) => state.when(
-            error: (error) => child,
+            error: (error) => Container(),
             loading: () => Stack(
               children: [
-                child,
+                Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
                 Container(
                   color: Colors.black38,
                   child: Center(
