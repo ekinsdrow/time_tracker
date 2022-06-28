@@ -9,7 +9,7 @@ part 'categories_state.dart';
 part 'categories_bloc.freezed.dart';
 
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
-  final CategoriesRepository categoriesRepository;
+  final ICategoriesRepository categoriesRepository;
 
   CategoriesBloc({
     required this.categoriesRepository,
