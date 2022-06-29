@@ -19,7 +19,11 @@ class UserScope extends StatelessWidget {
       create: (context) => UserCubit(),
       child: BlocListener<UserCubit, UserState>(
         listener: (context, state) => state.when(
-          login: (user) => router.replaceAll([const MainRoute()]),
+          login: (user) => router.replaceAll(
+            [
+              MainRoute(user: user),
+            ],
+          ),
           logout: () => router.replaceAll([const LoginRoute()]),
         ),
         child: child,

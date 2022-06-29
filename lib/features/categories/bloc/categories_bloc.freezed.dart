@@ -16,19 +16,20 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CategoriesEvent {
+  String get userId => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetch,
+    required TResult Function(String userId) fetch,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetch,
+    TResult Function(String userId)? fetch,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetch,
+    TResult Function(String userId)? fetch,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -48,6 +49,10 @@ mixin _$CategoriesEvent {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $CategoriesEventCopyWith<CategoriesEvent> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -55,6 +60,7 @@ abstract class $CategoriesEventCopyWith<$Res> {
   factory $CategoriesEventCopyWith(
           CategoriesEvent value, $Res Function(CategoriesEvent) then) =
       _$CategoriesEventCopyWithImpl<$Res>;
+  $Res call({String userId});
 }
 
 /// @nodoc
@@ -65,12 +71,27 @@ class _$CategoriesEventCopyWithImpl<$Res>
   final CategoriesEvent _value;
   // ignore: unused_field
   final $Res Function(CategoriesEvent) _then;
+
+  @override
+  $Res call({
+    Object? userId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
-abstract class _$$_FetchCopyWith<$Res> {
+abstract class _$$_FetchCopyWith<$Res>
+    implements $CategoriesEventCopyWith<$Res> {
   factory _$$_FetchCopyWith(_$_Fetch value, $Res Function(_$_Fetch) then) =
       __$$_FetchCopyWithImpl<$Res>;
+  @override
+  $Res call({String userId});
 }
 
 /// @nodoc
@@ -81,51 +102,74 @@ class __$$_FetchCopyWithImpl<$Res> extends _$CategoriesEventCopyWithImpl<$Res>
 
   @override
   _$_Fetch get _value => super._value as _$_Fetch;
+
+  @override
+  $Res call({
+    Object? userId = freezed,
+  }) {
+    return _then(_$_Fetch(
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_Fetch implements _Fetch {
-  const _$_Fetch();
+  const _$_Fetch({required this.userId});
+
+  @override
+  final String userId;
 
   @override
   String toString() {
-    return 'CategoriesEvent.fetch()';
+    return 'CategoriesEvent.fetch(userId: $userId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Fetch);
+        (other.runtimeType == runtimeType &&
+            other is _$_Fetch &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(userId));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_FetchCopyWith<_$_Fetch> get copyWith =>
+      __$$_FetchCopyWithImpl<_$_Fetch>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetch,
+    required TResult Function(String userId) fetch,
   }) {
-    return fetch();
+    return fetch(userId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetch,
+    TResult Function(String userId)? fetch,
   }) {
-    return fetch?.call();
+    return fetch?.call(userId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetch,
+    TResult Function(String userId)? fetch,
     required TResult orElse(),
   }) {
     if (fetch != null) {
-      return fetch();
+      return fetch(userId);
     }
     return orElse();
   }
@@ -160,7 +204,14 @@ class _$_Fetch implements _Fetch {
 }
 
 abstract class _Fetch implements CategoriesEvent {
-  const factory _Fetch() = _$_Fetch;
+  const factory _Fetch({required final String userId}) = _$_Fetch;
+
+  @override
+  String get userId => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_FetchCopyWith<_$_Fetch> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc

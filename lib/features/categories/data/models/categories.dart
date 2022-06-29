@@ -9,3 +9,7 @@ class Categories with _$Categories {
     required List<Category> categories,
   }) = _Categories;
 }
+
+extension CategoryFilters on Categories {
+  
+}
