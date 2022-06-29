@@ -26,20 +26,27 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData, child: const LoginPage());
     },
     MainRoute.name: (routeData) {
+      final args = routeData.argsAs<MainRouteArgs>();
       return AdaptivePage<dynamic>(
-          routeData: routeData, child: const MainPage());
+          routeData: routeData,
+          child: MainPage(user: args.user, key: args.key));
     },
     SettingsRoute.name: (routeData) {
       return AdaptivePage<dynamic>(
           routeData: routeData, child: const SettingsPage());
     },
     AddCategoryRoute.name: (routeData) {
+      final args = routeData.argsAs<AddCategoryRouteArgs>();
       return AdaptivePage<dynamic>(
-          routeData: routeData, child: const AddCategoryPage());
+          routeData: routeData,
+          child: AddCategoryPage(categories: args.categories, key: args.key));
     },
     CategoryFilterRoute.name: (routeData) {
+      final args = routeData.argsAs<CategoryFilterRouteArgs>();
       return AdaptivePage<dynamic>(
-          routeData: routeData, child: const CategoryFilterPage());
+          routeData: routeData,
+          child:
+              CategoryFilterPage(categories: args.categories, key: args.key));
     },
     TrackerRouter.name: (routeData) {
       return AdaptivePage<dynamic>(
@@ -91,11 +98,27 @@ class LoginRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [MainPage]
-class MainRoute extends PageRouteInfo<void> {
-  const MainRoute({List<PageRouteInfo>? children})
-      : super(MainRoute.name, path: '/main-page', initialChildren: children);
+class MainRoute extends PageRouteInfo<MainRouteArgs> {
+  MainRoute({required UserModel user, Key? key, List<PageRouteInfo>? children})
+      : super(MainRoute.name,
+            path: '/main-page',
+            args: MainRouteArgs(user: user, key: key),
+            initialChildren: children);
 
   static const String name = 'MainRoute';
+}
+
+class MainRouteArgs {
+  const MainRouteArgs({required this.user, this.key});
+
+  final UserModel user;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'MainRouteArgs{user: $user, key: $key}';
+  }
 }
 
 /// generated route for
@@ -108,20 +131,50 @@ class SettingsRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [AddCategoryPage]
-class AddCategoryRoute extends PageRouteInfo<void> {
-  const AddCategoryRoute()
-      : super(AddCategoryRoute.name, path: '/add-category-page');
+class AddCategoryRoute extends PageRouteInfo<AddCategoryRouteArgs> {
+  AddCategoryRoute({required Categories categories, Key? key})
+      : super(AddCategoryRoute.name,
+            path: '/add-category-page',
+            args: AddCategoryRouteArgs(categories: categories, key: key));
 
   static const String name = 'AddCategoryRoute';
 }
 
+class AddCategoryRouteArgs {
+  const AddCategoryRouteArgs({required this.categories, this.key});
+
+  final Categories categories;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'AddCategoryRouteArgs{categories: $categories, key: $key}';
+  }
+}
+
 /// generated route for
 /// [CategoryFilterPage]
-class CategoryFilterRoute extends PageRouteInfo<void> {
-  const CategoryFilterRoute()
-      : super(CategoryFilterRoute.name, path: '/category-filter-page');
+class CategoryFilterRoute extends PageRouteInfo<CategoryFilterRouteArgs> {
+  CategoryFilterRoute({required Categories categories, Key? key})
+      : super(CategoryFilterRoute.name,
+            path: '/category-filter-page',
+            args: CategoryFilterRouteArgs(categories: categories, key: key));
 
   static const String name = 'CategoryFilterRoute';
+}
+
+class CategoryFilterRouteArgs {
+  const CategoryFilterRouteArgs({required this.categories, this.key});
+
+  final Categories categories;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'CategoryFilterRouteArgs{categories: $categories, key: $key}';
+  }
 }
 
 /// generated route for

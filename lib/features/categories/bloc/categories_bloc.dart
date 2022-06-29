@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:time_tracker/common/errors/errors_strings.dart';
-import 'package:time_tracker/features/categories/data/models/category.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/repositories/categories_repository.dart';
 
 part 'categories_event.dart';
@@ -24,10 +24,16 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     Emitter<CategoriesState> emit,
   ) async {
     try {
-      final categories = await categoriesRepository.categories();
+      final categories = await categoriesRepository.categories(
+        userId: event.userId,
+      );
 
       emit(
-        _Success(categories: categories),
+        _Success(
+          categories: Categories.fromCategoryList(
+            categories: categories,
+          ),
+        ),
       );
     } catch (e) {
       emit(

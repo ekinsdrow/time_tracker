@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
+import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
 class CategoryFilterPage extends StatefulWidget {
-  const CategoryFilterPage({Key? key}) : super(key: key);
+  const CategoryFilterPage({
+    required this.categories,
+    Key? key,
+  }) : super(key: key);
+
+  final Categories categories;
 
   @override
   State<CategoryFilterPage> createState() => _CategoryFilterPageState();
 }
 
 class _CategoryFilterPageState extends State<CategoryFilterPage> {
-  int _categoryDropDownIndex = 0;
-  int _subCategoryDropDownIndex = 0;
+  //-1 = all categories
+  int _categoryDropDownIndex = -1;
+  int _subCategoryDropDownIndex = -1;
 
   void _save() {}
 
   @override
   Widget build(BuildContext context) {
+    final categories = widget.categories.categories;
+
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -47,9 +57,17 @@ class _CategoryFilterPageState extends State<CategoryFilterPage> {
                       value: _categoryDropDownIndex,
                       isExpanded: true,
                       items: [
-                        for (var i = 0; i < 10; i++)
+                        const DropdownMenuItem(
+                          child: Text(
+                            'All categories',
+                          ),
+                          value: -1,
+                        ),
+                        for (var i = 0; i < categories.length; i++)
                           DropdownMenuItem(
-                            child: Text('Music $i'),
+                            child: Text(
+                              categories[i].name,
+                            ),
                             value: i,
                           ),
                       ],
@@ -85,11 +103,27 @@ class _CategoryFilterPageState extends State<CategoryFilterPage> {
                       value: _subCategoryDropDownIndex,
                       isExpanded: true,
                       items: [
-                        for (var i = 0; i < 10; i++)
-                          DropdownMenuItem(
-                            child: Text('Music $i'),
-                            value: i,
+                        const DropdownMenuItem(
+                          child: Text(
+                            'All categories',
                           ),
+                          value: -1,
+                        ),
+                        if (_categoryDropDownIndex != -1)
+                          for (var i = 0;
+                              i <
+                                  categories[_categoryDropDownIndex]
+                                      .subCategories
+                                      .length;
+                              i++)
+                            DropdownMenuItem(
+                              child: Text(
+                                categories[_categoryDropDownIndex]
+                                    .subCategories[i]
+                                    .name,
+                              ),
+                              value: i,
+                            ),
                       ],
                       onChanged: (v) {
                         setState(() {

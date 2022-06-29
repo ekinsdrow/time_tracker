@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -92,7 +94,9 @@ class _Filters extends StatelessWidget {
 
   void _openCategory(BuildContext context) {
     context.router.push(
-      const CategoryFilterRoute(),
+      CategoryFilterRoute(
+        categories: context.read<Categories>(),
+      ),
     );
   }
 

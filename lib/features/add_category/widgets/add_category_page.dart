@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
+import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
 class AddCategoryPage extends StatefulWidget {
-  const AddCategoryPage({Key? key}) : super(key: key);
+  const AddCategoryPage({
+    required this.categories,
+    Key? key,
+  }) : super(key: key);
+
+  final Categories categories;
 
   @override
   State<AddCategoryPage> createState() => _AddCategoryPageState();
@@ -10,7 +17,9 @@ class AddCategoryPage extends StatefulWidget {
 
 class _AddCategoryPageState extends State<AddCategoryPage> {
   final _controller = TextEditingController();
-  int _dropDownIndex = 0;
+  
+  //-1 = root category
+  int _dropDownIndex = -1;
 
   @override
   void dispose() {
@@ -22,6 +31,8 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final categories = widget.categories.categories;
+
     return Scaffold(
       appBar: AppBar(),
       body: Container(
@@ -53,9 +64,17 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                       value: _dropDownIndex,
                       isExpanded: true,
                       items: [
-                        for (var i = 0; i < 10; i++)
+                        const DropdownMenuItem(
+                          child: Text(
+                            'Root Category',
+                          ),
+                          value: -1,
+                        ),
+                        for (var i = 0; i < categories.length; i++)
                           DropdownMenuItem(
-                            child: Text('Music $i'),
+                            child: Text(
+                              categories[i].name,
+                            ),
                             value: i,
                           ),
                       ],

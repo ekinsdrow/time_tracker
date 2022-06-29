@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Categories {
-  List<Category> get categories => throw _privateConstructorUsedError;
+  List<CategoryLeaf> get categories => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CategoriesCopyWith<Categories> get copyWith =>
@@ -28,7 +28,7 @@ abstract class $CategoriesCopyWith<$Res> {
   factory $CategoriesCopyWith(
           Categories value, $Res Function(Categories) then) =
       _$CategoriesCopyWithImpl<$Res>;
-  $Res call({List<Category> categories});
+  $Res call({List<CategoryLeaf> categories});
 }
 
 /// @nodoc
@@ -47,7 +47,7 @@ class _$CategoriesCopyWithImpl<$Res> implements $CategoriesCopyWith<$Res> {
       categories: categories == freezed
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<Category>,
+              as List<CategoryLeaf>,
     ));
   }
 }
@@ -59,7 +59,7 @@ abstract class _$$_CategoriesCopyWith<$Res>
           _$_Categories value, $Res Function(_$_Categories) then) =
       __$$_CategoriesCopyWithImpl<$Res>;
   @override
-  $Res call({List<Category> categories});
+  $Res call({List<CategoryLeaf> categories});
 }
 
 /// @nodoc
@@ -80,7 +80,7 @@ class __$$_CategoriesCopyWithImpl<$Res> extends _$CategoriesCopyWithImpl<$Res>
       categories: categories == freezed
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<Category>,
+              as List<CategoryLeaf>,
     ));
   }
 }
@@ -88,12 +88,12 @@ class __$$_CategoriesCopyWithImpl<$Res> extends _$CategoriesCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Categories implements _Categories {
-  _$_Categories({required final List<Category> categories})
+  _$_Categories({required final List<CategoryLeaf> categories})
       : _categories = categories;
 
-  final List<Category> _categories;
+  final List<CategoryLeaf> _categories;
   @override
-  List<Category> get categories {
+  List<CategoryLeaf> get categories {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_categories);
   }
@@ -123,11 +123,11 @@ class _$_Categories implements _Categories {
 }
 
 abstract class _Categories implements Categories {
-  factory _Categories({required final List<Category> categories}) =
+  factory _Categories({required final List<CategoryLeaf> categories}) =
       _$_Categories;
 
   @override
-  List<Category> get categories => throw _privateConstructorUsedError;
+  List<CategoryLeaf> get categories => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_CategoriesCopyWith<_$_Categories> get copyWith =>
