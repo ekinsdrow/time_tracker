@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +5,6 @@ import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/int.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
-import 'package:time_tracker/features/categories/data/models/category.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
 class TrackerPage extends StatelessWidget {
