@@ -2,9 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/common/extensions/int.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
-import 'package:time_tracker/features/categories/data/models/category.dart';
+import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
 class TrackerPage extends StatelessWidget {
   const TrackerPage({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class _Categories extends StatelessWidget {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        if (index == 3) {
+        if (categories.length == index) {
           return Material(
             color: Theme.of(context).hintColor,
             borderRadius: BorderRadius.circular(
@@ -73,7 +74,9 @@ class _Categories extends StatelessWidget {
               ),
               onTap: () {
                 context.router.push(
-                  const AddCategoryRoute(),
+                  AddCategoryRoute(
+                    categories: context.read<Categories>(),
+                  ),
                 );
               },
               child: Container(
@@ -108,18 +111,25 @@ class _Categories extends StatelessWidget {
           );
         }
 
-        return const _Category();
+        return _Category(
+          categoryLeaf: categories[index],
+        );
       },
       separatorBuilder: (_, __) => const SizedBox(
         height: Constants.mediumPadding,
       ),
-      itemCount: categories.length,
+      itemCount: categories.length + 1,
     );
   }
 }
 
 class _Category extends StatefulWidget {
-  const _Category({Key? key}) : super(key: key);
+  const _Category({
+    Key? key,
+    required this.categoryLeaf,
+  }) : super(key: key);
+
+  final CategoryLeaf categoryLeaf;
 
   @override
   State<_Category> createState() => _CategoryState();
@@ -158,7 +168,7 @@ class _CategoryState extends State<_Category> {
                   child: Row(
                     children: [
                       Text(
-                        'Music',
+                        widget.categoryLeaf.name,
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       const SizedBox(
@@ -174,17 +184,21 @@ class _CategoryState extends State<_Category> {
                   ),
                 ),
               ),
-              const Text('30:00:00'),
+              Text(
+                widget.categoryLeaf.allDuration.toTime,
+              ),
             ],
           ),
           if (_isOpen)
             Column(
-              children: const [
-                SizedBox(
+              children: [
+                const SizedBox(
                   height: Constants.mediumPadding,
                 ),
-                _SubCategories(),
-                SizedBox(
+                _SubCategories(
+                  categories: widget.categoryLeaf.subCategories,
+                ),
+                const SizedBox(
                   height: Constants.mediumPadding,
                 ),
               ],
@@ -196,7 +210,12 @@ class _CategoryState extends State<_Category> {
 }
 
 class _SubCategories extends StatelessWidget {
-  const _SubCategories({Key? key}) : super(key: key);
+  const _SubCategories({
+    required this.categories,
+    Key? key,
+  }) : super(key: key);
+
+  final List<CategoryLeaf> categories;
 
   @override
   Widget build(BuildContext context) {
@@ -204,11 +223,13 @@ class _SubCategories extends StatelessWidget {
       spacing: Constants.smallPadding,
       runSpacing: Constants.smallPadding,
       children: [
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < categories.length; i++)
           SizedBox(
             width: MediaQuery.of(context).size.width / 2 -
                 Constants.mediumPadding * 2,
-            child: const _SubCategory(),
+            child: _SubCategory(
+              categoryLeaf: categories[i],
+            ),
           ),
         Material(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -217,7 +238,9 @@ class _SubCategories extends StatelessWidget {
             borderRadius: BorderRadius.circular(Constants.smallPadding),
             onTap: () {
               context.router.push(
-                const AddCategoryRoute(),
+                AddCategoryRoute(
+                  categories: context.read<Categories>(),
+                ),
               );
             },
             child: Container(
@@ -246,7 +269,12 @@ class _SubCategories extends StatelessWidget {
 }
 
 class _SubCategory extends StatelessWidget {
-  const _SubCategory({Key? key}) : super(key: key);
+  const _SubCategory({
+    required this.categoryLeaf,
+    Key? key,
+  }) : super(key: key);
+
+  final CategoryLeaf categoryLeaf;
 
   @override
   Widget build(BuildContext context) {
@@ -259,16 +287,25 @@ class _SubCategory extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            'Guitar',
+          Text(
+            categoryLeaf.name,
+            style: const TextStyle(
+              fontSize: 12,
+            ),
           ),
           Row(
-            children: const [
-              Icon(Icons.play_arrow),
-              SizedBox(
+            children: [
+              const Icon(Icons.play_arrow),
+              const SizedBox(
                 width: Constants.smallPadding / 2,
               ),
-              Text('30:00:00'),
+              Text(
+                categoryLeaf.allDuration.toTime,
+                overflow: TextOverflow.fade,
+                style: const TextStyle(
+                  fontSize: 12,
+                ),
+              ),
             ],
           ),
         ],

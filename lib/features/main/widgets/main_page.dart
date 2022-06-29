@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/di/categories_scope.dart';
+import 'package:time_tracker/features/user/data/models/user.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
+
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
     return CategoriesScope(
+      userModel: user,
       child: AutoTabsRouter(
         routes: const [
           TrackerRouter(),
@@ -18,7 +25,7 @@ class MainPage extends StatelessWidget {
         ],
         builder: (context, child, _) {
           final tabsRouter = AutoTabsRouter.of(context);
-    
+
           return Scaffold(
             body: SafeArea(
               child: Padding(
