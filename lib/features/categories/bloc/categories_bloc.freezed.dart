@@ -218,21 +218,21 @@ abstract class _Fetch implements CategoriesEvent {
 mixin _$CategoriesState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Category> categories) success,
+    required TResult Function(Categories categories) success,
     required TResult Function() loading,
     required TResult Function(String error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
     required TResult orElse(),
@@ -284,7 +284,9 @@ abstract class _$$_SuccessCopyWith<$Res> {
   factory _$$_SuccessCopyWith(
           _$_Success value, $Res Function(_$_Success) then) =
       __$$_SuccessCopyWithImpl<$Res>;
-  $Res call({List<Category> categories});
+  $Res call({Categories categories});
+
+  $CategoriesCopyWith<$Res> get categories;
 }
 
 /// @nodoc
@@ -302,25 +304,27 @@ class __$$_SuccessCopyWithImpl<$Res> extends _$CategoriesStateCopyWithImpl<$Res>
   }) {
     return _then(_$_Success(
       categories: categories == freezed
-          ? _value._categories
+          ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<Category>,
+              as Categories,
     ));
+  }
+
+  @override
+  $CategoriesCopyWith<$Res> get categories {
+    return $CategoriesCopyWith<$Res>(_value.categories, (value) {
+      return _then(_value.copyWith(categories: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success({required final List<Category> categories})
-      : _categories = categories;
+  const _$_Success({required this.categories});
 
-  final List<Category> _categories;
   @override
-  List<Category> get categories {
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_categories);
-  }
+  final Categories categories;
 
   @override
   String toString() {
@@ -333,12 +337,12 @@ class _$_Success implements _Success {
         (other.runtimeType == runtimeType &&
             other is _$_Success &&
             const DeepCollectionEquality()
-                .equals(other._categories, _categories));
+                .equals(other.categories, categories));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_categories));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(categories));
 
   @JsonKey(ignore: true)
   @override
@@ -348,7 +352,7 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Category> categories) success,
+    required TResult Function(Categories categories) success,
     required TResult Function() loading,
     required TResult Function(String error) error,
   }) {
@@ -358,7 +362,7 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
   }) {
@@ -368,7 +372,7 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
     required TResult orElse(),
@@ -415,10 +419,9 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements CategoriesState {
-  const factory _Success({required final List<Category> categories}) =
-      _$_Success;
+  const factory _Success({required final Categories categories}) = _$_Success;
 
-  List<Category> get categories => throw _privateConstructorUsedError;
+  Categories get categories => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   _$$_SuccessCopyWith<_$_Success> get copyWith =>
       throw _privateConstructorUsedError;
@@ -463,7 +466,7 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Category> categories) success,
+    required TResult Function(Categories categories) success,
     required TResult Function() loading,
     required TResult Function(String error) error,
   }) {
@@ -473,7 +476,7 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
   }) {
@@ -483,7 +486,7 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
     required TResult orElse(),
@@ -595,7 +598,7 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Category> categories) success,
+    required TResult Function(Categories categories) success,
     required TResult Function() loading,
     required TResult Function(String error) error,
   }) {
@@ -605,7 +608,7 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
   }) {
@@ -615,7 +618,7 @@ class _$_Error implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Category> categories)? success,
+    TResult Function(Categories categories)? success,
     TResult Function()? loading,
     TResult Function(String error)? error,
     required TResult orElse(),

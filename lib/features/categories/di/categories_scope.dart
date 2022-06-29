@@ -63,7 +63,7 @@ class CategoriesScope extends StatelessWidget {
               ],
             ),
             success: (categories) => Provider<Categories>(
-              create: (context) => Categories(categories: categories),
+              create: (context) => categories,
               child: child,
             ),
           ),
