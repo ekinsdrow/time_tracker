@@ -24,7 +24,9 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     Emitter<CategoriesState> emit,
   ) async {
     try {
-      final categories = await categoriesRepository.categories();
+      final categories = await categoriesRepository.categories(
+        userId: event.userId,
+      );
 
       emit(
         _Success(categories: categories),

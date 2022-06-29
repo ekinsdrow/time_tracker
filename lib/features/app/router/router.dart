@@ -9,6 +9,7 @@ import 'package:time_tracker/features/main/features/statistic/widgets/statistic_
 import 'package:time_tracker/features/main/features/tracker/widgets/tracker_page.dart';
 import 'package:time_tracker/features/main/widgets/main_page.dart';
 import 'package:time_tracker/features/settings/widgets/settings_page.dart';
+import 'package:time_tracker/features/user/data/models/user.dart';
 
 part 'router.gr.dart';
 
