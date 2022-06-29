@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker/features/add_category/widgets/add_category_page.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/category_filter/widgets/category_filter_page.dart';
 import 'package:time_tracker/features/init/widgets/initial_page.dart';
 import 'package:time_tracker/features/login/widgets/login_page.dart';

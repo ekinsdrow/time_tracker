@@ -77,7 +77,9 @@ class _Categories extends StatelessWidget {
               ),
               onTap: () {
                 context.router.push(
-                  const AddCategoryRoute(),
+                  AddCategoryRoute(
+                    categories: context.read<Categories>(),
+                  ),
                 );
               },
               child: Container(
@@ -239,7 +241,9 @@ class _SubCategories extends StatelessWidget {
             borderRadius: BorderRadius.circular(Constants.smallPadding),
             onTap: () {
               context.router.push(
-                const AddCategoryRoute(),
+                AddCategoryRoute(
+                  categories: context.read<Categories>(),
+                ),
               );
             },
             child: Container(
