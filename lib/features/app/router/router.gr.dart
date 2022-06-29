@@ -42,8 +42,11 @@ class _$AppRouter extends RootStackRouter {
           child: AddCategoryPage(categories: args.categories, key: args.key));
     },
     CategoryFilterRoute.name: (routeData) {
+      final args = routeData.argsAs<CategoryFilterRouteArgs>();
       return AdaptivePage<dynamic>(
-          routeData: routeData, child: const CategoryFilterPage());
+          routeData: routeData,
+          child:
+              CategoryFilterPage(categories: args.categories, key: args.key));
     },
     TrackerRouter.name: (routeData) {
       return AdaptivePage<dynamic>(
@@ -152,11 +155,26 @@ class AddCategoryRouteArgs {
 
 /// generated route for
 /// [CategoryFilterPage]
-class CategoryFilterRoute extends PageRouteInfo<void> {
-  const CategoryFilterRoute()
-      : super(CategoryFilterRoute.name, path: '/category-filter-page');
+class CategoryFilterRoute extends PageRouteInfo<CategoryFilterRouteArgs> {
+  CategoryFilterRoute({required Categories categories, Key? key})
+      : super(CategoryFilterRoute.name,
+            path: '/category-filter-page',
+            args: CategoryFilterRouteArgs(categories: categories, key: key));
 
   static const String name = 'CategoryFilterRoute';
+}
+
+class CategoryFilterRouteArgs {
+  const CategoryFilterRouteArgs({required this.categories, this.key});
+
+  final Categories categories;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'CategoryFilterRouteArgs{categories: $categories, key: $key}';
+  }
 }
 
 /// generated route for
