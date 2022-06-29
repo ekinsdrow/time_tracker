@@ -17,12 +17,16 @@ class Categories with _$Categories {
 
     for (final category in categories) {
       if (category.rootId == '-1') {
+        final subs = categories.where(
+          (element) => element.rootId == category.id,
+        );
+
+    
         result.add(
           CategoryLeaf(
             category: category,
             subCategories: [
-              for (final subCategory in categories
-                  .where((element) => element.rootId == category.id))
+              for (final subCategory in subs)
                 CategoryLeaf(
                   category: subCategory,
                   subCategories: [],
