@@ -76,7 +76,6 @@ class _Categories extends StatelessWidget {
               onTap: () {
                 context.router.push(
                   AddCategoryRoute(
-                    categories: context.read<Categories>(),
                     user: context.read<UserModel>(),
                   ),
                 );
@@ -241,7 +240,6 @@ class _SubCategories extends StatelessWidget {
             onTap: () {
               context.router.push(
                 AddCategoryRoute(
-                  categories: context.read<Categories>(),
                   user: context.read<UserModel>(),
                 ),
               );

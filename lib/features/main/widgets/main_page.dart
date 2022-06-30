@@ -8,46 +8,41 @@ import 'package:time_tracker/features/user/data/models/user.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({
-    required this.user,
     Key? key,
   }) : super(key: key);
 
-  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
     return MainScope(
-      user: user,
-      child: CategoriesScope(
-        child: AutoTabsRouter(
-          routes: const [
-            TrackerRouter(),
-            HistoryRouter(),
-            StatisticRouter(),
-          ],
-          builder: (context, child, _) {
-            final tabsRouter = AutoTabsRouter.of(context);
+      child: AutoTabsRouter(
+        routes: const [
+          TrackerRouter(),
+          HistoryRouter(),
+          StatisticRouter(),
+        ],
+        builder: (context, child, _) {
+          final tabsRouter = AutoTabsRouter.of(context);
     
-            return Scaffold(
-              body: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: Constants.mediumPadding,
-                    right: Constants.mediumPadding,
-                    top: Constants.mediumPadding,
-                  ),
-                  child: child,
+          return Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: Constants.mediumPadding,
+                  right: Constants.mediumPadding,
+                  top: Constants.mediumPadding,
                 ),
+                child: child,
               ),
-              bottomNavigationBar: _BottomBar(
-                activeIndex: tabsRouter.activeIndex,
-                callback: (i) {
-                  tabsRouter.setActiveIndex(i);
-                },
-              ),
-            );
-          },
-        ),
+            ),
+            bottomNavigationBar: _BottomBar(
+              activeIndex: tabsRouter.activeIndex,
+              callback: (i) {
+                tabsRouter.setActiveIndex(i);
+              },
+            ),
+          );
+        },
       ),
     );
   }
