@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +30,6 @@ class UserScope extends StatelessWidget {
         ),
         builder: (context, state) => state.when(
           login: (user) {
-            log(user.toString());
             return CategoriesScope(
               userModel: user,
               child: Provider.value(
