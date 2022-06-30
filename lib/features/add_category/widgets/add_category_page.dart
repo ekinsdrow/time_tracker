@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/features/add_category/bloc/add_category_bloc.dart';
 import 'package:time_tracker/features/add_category/di/add_category_scope.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
@@ -31,7 +33,23 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     _controller.dispose();
   }
 
-  void _save() {}
+  void _save(
+    BuildContext context,
+  ) {
+    var rootCategoryId = '-1';
+
+    if (_dropDownIndex != -1) {
+      rootCategoryId = widget.categories.categories[_dropDownIndex].id;
+    }
+
+    context.read<AddCategoryBloc>().add(
+          AddCategoryEvent.add(
+            name: _controller.text,
+            rootCategoryId: rootCategoryId,
+            userId: widget.user.uid,
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,83 +57,96 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
     return AddCategoryScope(
       user: widget.user,
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Constants.mediumPadding,
-            vertical: Constants.mediumPadding,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: Constants.mediumPadding,
+                vertical: Constants.mediumPadding,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        Constants.smallPadding,
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.smallPadding,
-                    ),
-                    width: double.infinity,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<int>(
-                        value: _dropDownIndex,
-                        isExpanded: true,
-                        items: [
-                          const DropdownMenuItem(
-                            child: Text(
-                              'Root Category',
-                            ),
-                            value: -1,
+                  Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).hintColor,
                           ),
-                          for (var i = 0; i < categories.length; i++)
-                            DropdownMenuItem(
-                              child: Text(
-                                categories[i].name,
+                          borderRadius: BorderRadius.circular(
+                            Constants.smallPadding,
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Constants.smallPadding,
+                        ),
+                        width: double.infinity,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            value: _dropDownIndex,
+                            isExpanded: true,
+                            items: [
+                              const DropdownMenuItem(
+                                child: Text(
+                                  'Root Category',
+                                ),
+                                value: -1,
                               ),
-                              value: i,
-                            ),
-                        ],
-                        onChanged: (v) {
-                          setState(() {
-                            if (v != null) {
-                              _dropDownIndex = v;
-                            }
-                          });
-                        },
+                              for (var i = 0; i < categories.length; i++)
+                                DropdownMenuItem(
+                                  child: Text(
+                                    categories[i].name,
+                                  ),
+                                  value: i,
+                                ),
+                            ],
+                            onChanged: (v) {
+                              setState(() {
+                                if (v != null) {
+                                  _dropDownIndex = v;
+                                }
+                              });
+                            },
+                          ),
+                        ),
                       ),
+                      const SizedBox(
+                        height: Constants.mediumPadding,
+                      ),
+                      TextField(
+                        controller: _controller,
+                      ),
+                      const SizedBox(
+                        height: Constants.mediumPadding,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ValueListenableBuilder<TextEditingValue>(
+                      valueListenable: _controller,
+                      builder: (context, value, child) {
+                        return ElevatedButton(
+                          onPressed: value.text.isEmpty
+                              ? null
+                              : () {
+                                  _save(context);
+                                },
+                          child: const Text('Save'),
+                        );
+                      },
                     ),
-                  ),
-                  const SizedBox(
-                    height: Constants.mediumPadding,
-                  ),
-                  TextField(
-                    controller: _controller,
-                  ),
-                  const SizedBox(
-                    height: Constants.mediumPadding,
                   ),
                 ],
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _save,
-                  child: const Text('Save'),
-                ),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
