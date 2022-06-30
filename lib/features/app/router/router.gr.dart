@@ -37,7 +37,8 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<AddCategoryRouteArgs>();
       return AdaptivePage<dynamic>(
           routeData: routeData,
-          child: AddCategoryPage(user: args.user, key: args.key));
+          child: AddCategoryPage(
+              user: args.user, startRootId: args.startRootId, key: args.key));
     },
     CategoryFilterRoute.name: (routeData) {
       return AdaptivePage<dynamic>(
@@ -111,24 +112,29 @@ class SettingsRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [AddCategoryPage]
 class AddCategoryRoute extends PageRouteInfo<AddCategoryRouteArgs> {
-  AddCategoryRoute({required UserModel user, Key? key})
+  AddCategoryRoute(
+      {required UserModel user, required String startRootId, Key? key})
       : super(AddCategoryRoute.name,
             path: '/add-category-page',
-            args: AddCategoryRouteArgs(user: user, key: key));
+            args: AddCategoryRouteArgs(
+                user: user, startRootId: startRootId, key: key));
 
   static const String name = 'AddCategoryRoute';
 }
 
 class AddCategoryRouteArgs {
-  const AddCategoryRouteArgs({required this.user, this.key});
+  const AddCategoryRouteArgs(
+      {required this.user, required this.startRootId, this.key});
 
   final UserModel user;
+
+  final String startRootId;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'AddCategoryRouteArgs{user: $user, key: $key}';
+    return 'AddCategoryRouteArgs{user: $user, startRootId: $startRootId, key: $key}';
   }
 }
 

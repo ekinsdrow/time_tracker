@@ -77,6 +77,7 @@ class _Categories extends StatelessWidget {
                 context.router.push(
                   AddCategoryRoute(
                     user: context.read<UserModel>(),
+                    startRootId: "-1",
                   ),
                 );
               },
@@ -198,6 +199,7 @@ class _CategoryState extends State<_Category> {
                 ),
                 _SubCategories(
                   categories: widget.categoryLeaf.subCategories,
+                  rootCategoryId: widget.categoryLeaf.id,
                 ),
                 const SizedBox(
                   height: Constants.mediumPadding,
@@ -213,10 +215,12 @@ class _CategoryState extends State<_Category> {
 class _SubCategories extends StatelessWidget {
   const _SubCategories({
     required this.categories,
+    required this.rootCategoryId,
     Key? key,
   }) : super(key: key);
 
   final List<CategoryLeaf> categories;
+  final String rootCategoryId;
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +245,7 @@ class _SubCategories extends StatelessWidget {
               context.router.push(
                 AddCategoryRoute(
                   user: context.read<UserModel>(),
+                  startRootId: rootCategoryId,
                 ),
               );
             },
