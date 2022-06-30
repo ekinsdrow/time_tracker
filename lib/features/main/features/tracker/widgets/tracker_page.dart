@@ -6,6 +6,7 @@ import 'package:time_tracker/common/extensions/int.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
+import 'package:time_tracker/features/user/data/models/user.dart';
 
 class TrackerPage extends StatelessWidget {
   const TrackerPage({Key? key}) : super(key: key);
@@ -57,7 +58,7 @@ class _Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.read<Categories>().categories;
+    final categories = context.watch<Categories>().categories;
 
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
@@ -75,7 +76,8 @@ class _Categories extends StatelessWidget {
               onTap: () {
                 context.router.push(
                   AddCategoryRoute(
-                    categories: context.read<Categories>(),
+                    user: context.read<UserModel>(),
+                    startRootId: "-1",
                   ),
                 );
               },
@@ -197,6 +199,7 @@ class _CategoryState extends State<_Category> {
                 ),
                 _SubCategories(
                   categories: widget.categoryLeaf.subCategories,
+                  rootCategoryId: widget.categoryLeaf.id,
                 ),
                 const SizedBox(
                   height: Constants.mediumPadding,
@@ -212,10 +215,12 @@ class _CategoryState extends State<_Category> {
 class _SubCategories extends StatelessWidget {
   const _SubCategories({
     required this.categories,
+    required this.rootCategoryId,
     Key? key,
   }) : super(key: key);
 
   final List<CategoryLeaf> categories;
+  final String rootCategoryId;
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +244,8 @@ class _SubCategories extends StatelessWidget {
             onTap: () {
               context.router.push(
                 AddCategoryRoute(
-                  categories: context.read<Categories>(),
+                  user: context.read<UserModel>(),
+                  startRootId: rootCategoryId,
                 ),
               );
             },
