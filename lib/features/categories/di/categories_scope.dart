@@ -13,9 +13,11 @@ class CategoriesScope extends StatelessWidget {
   const CategoriesScope({
     Key? key,
     required this.child,
+    required this.userModel,
   }) : super(key: key);
 
   final Widget child;
+  final UserModel userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class CategoriesScope extends StatelessWidget {
           categoriesRepository: context.read<ICategoriesRepository>(),
         )..add(
             CategoriesEvent.fetch(
-              userId: context.read<UserModel>().uid,
+              userId: userModel.uid,
             ),
           ),
         lazy: false,
@@ -39,27 +41,23 @@ class CategoriesScope extends StatelessWidget {
           ),
           builder: (context, state) => state.when(
             error: (error) => Container(),
-            loading: () => Stack(
-              children: [
-                Container(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                Container(
-                  color: Colors.black38,
-                  child: Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(
-                        Constants.smallPadding,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const CircularProgressIndicator(),
+            loading: () => Container(
+              color: Colors.white,
+              child: Container(
+                color: Colors.black38,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(
+                      Constants.smallPadding,
                     ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const CircularProgressIndicator(),
                   ),
-                )
-              ],
+                ),
+              ),
             ),
             success: (categories) => Provider<Categories>(
               create: (context) => categories,
