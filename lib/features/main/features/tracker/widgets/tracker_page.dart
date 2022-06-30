@@ -58,7 +58,7 @@ class _Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.read<Categories>().categories;
+    final categories = context.watch<Categories>().categories;
 
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
