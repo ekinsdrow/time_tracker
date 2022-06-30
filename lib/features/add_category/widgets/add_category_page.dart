@@ -129,13 +129,27 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                     child: ValueListenableBuilder<TextEditingValue>(
                       valueListenable: _controller,
                       builder: (context, value, child) {
-                        return ElevatedButton(
+                        final button = ElevatedButton(
                           onPressed: value.text.isEmpty
                               ? null
                               : () {
                                   _save(context);
                                 },
                           child: const Text('Save'),
+                        );
+
+                        return BlocBuilder<AddCategoryBloc, AddCategoryState>(
+                          builder: (context, state) => state.when(
+                            initial: () => button,
+                            loading: () => Container(
+                              alignment: Alignment.center,
+                              width: 50,
+                              height: 50,
+                              child: const CircularProgressIndicator(),
+                            ),
+                            error: (_) => button,
+                            success: (_) => button,
+                          ),
                         );
                       },
                     ),
