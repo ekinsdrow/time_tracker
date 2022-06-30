@@ -2,9 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/features/app/router/router.dart';
-import 'package:time_tracker/features/categories/di/categories_scope.dart';
 import 'package:time_tracker/features/main/di/main_scope.dart';
-import 'package:time_tracker/features/user/data/models/user.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({

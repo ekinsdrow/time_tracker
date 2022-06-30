@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/features/app/router/router.dart';
-import 'package:time_tracker/features/categories/bloc/categories_bloc.dart';
 import 'package:time_tracker/features/categories/di/categories_scope.dart';
 import 'package:time_tracker/features/user/bloc/user_cubit.dart';
 

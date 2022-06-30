@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_tracker/features/add_category/data/models/add_category.dart';
-import 'package:time_tracker/features/categories/data/models/category.dart';
 
 abstract class IAddRepository {
   Future<String> addCategory({
