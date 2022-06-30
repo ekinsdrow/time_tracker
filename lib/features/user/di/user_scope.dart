@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker/features/app/router/router.dart';
+import 'package:time_tracker/features/categories/di/categories_scope.dart';
 import 'package:time_tracker/features/user/bloc/user_cubit.dart';
 
 class UserScope extends StatelessWidget {
@@ -17,16 +21,28 @@ class UserScope extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserCubit(),
-      child: BlocListener<UserCubit, UserState>(
+      child: BlocConsumer<UserCubit, UserState>(
         listener: (context, state) => state.when(
-          login: (user) => router.replaceAll(
+          login: (_) => router.replaceAll(
             [
-              MainRoute(user: user),
+              const MainRoute(),
             ],
           ),
           logout: () => router.replaceAll([const LoginRoute()]),
         ),
-        child: child,
+        builder: (context, state) => state.when(
+          login: (user) {
+            log(user.toString());
+            return CategoriesScope(
+              userModel: user,
+              child: Provider.value(
+                value: user,
+                child: child,
+              ),
+            );
+          },
+          logout: () => child,
+        ),
       ),
     );
   }

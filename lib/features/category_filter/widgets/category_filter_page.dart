@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
@@ -6,11 +7,8 @@ import 'package:time_tracker/features/categories/data/models/category_leaf.dart'
 //TODO: bug when change root category if chosen sub
 class CategoryFilterPage extends StatefulWidget {
   const CategoryFilterPage({
-    required this.categories,
     Key? key,
   }) : super(key: key);
-
-  final Categories categories;
 
   @override
   State<CategoryFilterPage> createState() => _CategoryFilterPageState();
@@ -25,7 +23,7 @@ class _CategoryFilterPageState extends State<CategoryFilterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = widget.categories.categories;
+    final categories = context.watch<Categories>().categories;
 
     return Scaffold(
       appBar: AppBar(),
