@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/themes/themes.dart';
 import 'package:time_tracker/features/app/router/router.dart';
-import 'package:time_tracker/features/categories/di/categories_scope.dart';
 import 'package:time_tracker/features/user/di/user_scope.dart';
 
 class App extends StatelessWidget {
