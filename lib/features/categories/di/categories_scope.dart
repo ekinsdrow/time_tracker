@@ -13,11 +13,9 @@ class CategoriesScope extends StatelessWidget {
   const CategoriesScope({
     Key? key,
     required this.child,
-    required this.userModel,
   }) : super(key: key);
 
   final Widget child;
-  final UserModel userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class CategoriesScope extends StatelessWidget {
           categoriesRepository: context.read<ICategoriesRepository>(),
         )..add(
             CategoriesEvent.fetch(
-              userId: userModel.uid,
+              userId: context.read<UserModel>().uid,
             ),
           ),
         lazy: false,

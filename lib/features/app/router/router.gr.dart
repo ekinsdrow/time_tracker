@@ -39,7 +39,8 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<AddCategoryRouteArgs>();
       return AdaptivePage<dynamic>(
           routeData: routeData,
-          child: AddCategoryPage(categories: args.categories, key: args.key));
+          child: AddCategoryPage(
+              categories: args.categories, user: args.user, key: args.key));
     },
     CategoryFilterRoute.name: (routeData) {
       final args = routeData.argsAs<CategoryFilterRouteArgs>();
@@ -132,24 +133,29 @@ class SettingsRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [AddCategoryPage]
 class AddCategoryRoute extends PageRouteInfo<AddCategoryRouteArgs> {
-  AddCategoryRoute({required Categories categories, Key? key})
+  AddCategoryRoute(
+      {required Categories categories, required UserModel user, Key? key})
       : super(AddCategoryRoute.name,
             path: '/add-category-page',
-            args: AddCategoryRouteArgs(categories: categories, key: key));
+            args: AddCategoryRouteArgs(
+                categories: categories, user: user, key: key));
 
   static const String name = 'AddCategoryRoute';
 }
 
 class AddCategoryRouteArgs {
-  const AddCategoryRouteArgs({required this.categories, this.key});
+  const AddCategoryRouteArgs(
+      {required this.categories, required this.user, this.key});
 
   final Categories categories;
+
+  final UserModel user;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'AddCategoryRouteArgs{categories: $categories, key: $key}';
+    return 'AddCategoryRouteArgs{categories: $categories, user: $user, key: $key}';
   }
 }
 

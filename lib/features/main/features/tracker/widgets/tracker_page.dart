@@ -6,6 +6,7 @@ import 'package:time_tracker/common/extensions/int.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
+import 'package:time_tracker/features/user/data/models/user.dart';
 
 class TrackerPage extends StatelessWidget {
   const TrackerPage({Key? key}) : super(key: key);
@@ -76,6 +77,7 @@ class _Categories extends StatelessWidget {
                 context.router.push(
                   AddCategoryRoute(
                     categories: context.read<Categories>(),
+                    user: context.read<UserModel>(),
                   ),
                 );
               },
@@ -240,6 +242,7 @@ class _SubCategories extends StatelessWidget {
               context.router.push(
                 AddCategoryRoute(
                   categories: context.read<Categories>(),
+                  user: context.read<UserModel>(),
                 ),
               );
             },

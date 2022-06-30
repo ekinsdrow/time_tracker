@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/di/categories_scope.dart';
+import 'package:time_tracker/features/main/di/main_scope.dart';
 import 'package:time_tracker/features/user/data/models/user.dart';
 
 class MainPage extends StatelessWidget {
@@ -15,36 +16,38 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CategoriesScope(
-      userModel: user,
-      child: AutoTabsRouter(
-        routes: const [
-          TrackerRouter(),
-          HistoryRouter(),
-          StatisticRouter(),
-        ],
-        builder: (context, child, _) {
-          final tabsRouter = AutoTabsRouter.of(context);
-
-          return Scaffold(
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: Constants.mediumPadding,
-                  right: Constants.mediumPadding,
-                  top: Constants.mediumPadding,
+    return MainScope(
+      user: user,
+      child: CategoriesScope(
+        child: AutoTabsRouter(
+          routes: const [
+            TrackerRouter(),
+            HistoryRouter(),
+            StatisticRouter(),
+          ],
+          builder: (context, child, _) {
+            final tabsRouter = AutoTabsRouter.of(context);
+    
+            return Scaffold(
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: Constants.mediumPadding,
+                    right: Constants.mediumPadding,
+                    top: Constants.mediumPadding,
+                  ),
+                  child: child,
                 ),
-                child: child,
               ),
-            ),
-            bottomNavigationBar: _BottomBar(
-              activeIndex: tabsRouter.activeIndex,
-              callback: (i) {
-                tabsRouter.setActiveIndex(i);
-              },
-            ),
-          );
-        },
+              bottomNavigationBar: _BottomBar(
+                activeIndex: tabsRouter.activeIndex,
+                callback: (i) {
+                  tabsRouter.setActiveIndex(i);
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
