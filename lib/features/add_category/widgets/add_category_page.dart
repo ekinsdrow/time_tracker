@@ -10,10 +10,12 @@ import 'package:time_tracker/features/user/data/models/user.dart';
 class AddCategoryPage extends StatefulWidget {
   const AddCategoryPage({
     required this.user,
+    required this.startRootId,
     Key? key,
   }) : super(key: key);
 
   final UserModel user;
+  final String startRootId;
 
   @override
   State<AddCategoryPage> createState() => _AddCategoryPageState();
@@ -23,7 +25,22 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   final _controller = TextEditingController();
 
   //-1 = root category
-  int _dropDownIndex = -1;
+  late int _dropDownIndex;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.startRootId == '-1') {
+      _dropDownIndex = -1;
+    } else {
+      final categories = context.read<Categories>().categories;
+
+      _dropDownIndex = categories.indexWhere(
+        (element) => element.id == widget.startRootId,
+      );
+    }
+  }
 
   @override
   void dispose() {
