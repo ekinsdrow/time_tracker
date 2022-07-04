@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:time_tracker/common/errors/errors_strings.dart';
@@ -11,22 +13,30 @@ class HistoryCubit extends Cubit<HistoryState> {
   final IHistoryRepository historyRepository;
   final String userId;
 
+  late StreamSubscription _sub;
+
   HistoryCubit({
     required this.historyRepository,
     required this.userId,
   }) : super(const HistoryState.loading()) {
-    historyRepository.getActivities(userId: userId).listen(
+    _sub = historyRepository.getActivities(userId: userId).listen(
       (event) {
         emit(
           _Success(activities: event),
         );
       },
-    ).onError(
-      (_) {
-        emit(
-          const _Error(error: ErrorsStrings.fetchError),
-        );
-      },
-    );
+    )..onError(
+        (_) {
+          emit(
+            const _Error(error: ErrorsStrings.fetchError),
+          );
+        },
+      );
+  }
+
+  @override
+  Future<void> close() async {
+    _sub.cancel();
+    super.close();
   }
 }
