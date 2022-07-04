@@ -53,7 +53,7 @@ extension CategoriesString on Categories {
         break;
       }
 
-      for (final subCategory in categories) {
+      for (final subCategory in category.subCategories) {
         if (subCategory.id == id) {
           firstCategory = category.name;
           secondCategory = subCategory.name;
