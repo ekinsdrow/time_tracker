@@ -149,28 +149,71 @@ class _HistoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, index) => Container(
-        decoration: BoxDecoration(
+    return Column(
+      children: [
+        Material(
           color: Theme.of(context).hintColor,
           borderRadius: BorderRadius.circular(
             Constants.smallPadding,
           ),
-        ),
-        child: ListTile(
-          title: const Text(
-            'Музыка / Гитара - 00:50:20',
+          child: InkWell(
+            borderRadius: BorderRadius.circular(
+              Constants.smallPadding,
+            ),
+            onTap: () {
+              context.router.push(
+                const AddActivityRoute(),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.add,
+                  ),
+                  SizedBox(
+                    width: Constants.smallPadding,
+                  ),
+                  Text(
+                    'Add Activity',
+                  )
+                ],
+              ),
+            ),
           ),
-          subtitle: Text(
-            DateTime.now().formatDate,
+        ),
+        const SizedBox(
+          height: Constants.smallPadding,
+        ),
+        Expanded(
+          child: ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) => Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).hintColor,
+                borderRadius: BorderRadius.circular(
+                  Constants.smallPadding,
+                ),
+              ),
+              child: ListTile(
+                title: const Text(
+                  'Музыка / Гитара - 00:50:20',
+                ),
+                subtitle: Text(
+                  DateTime.now().formatDate,
+                ),
+              ),
+            ),
+            separatorBuilder: (_, __) => const SizedBox(
+              height: Constants.smallPadding,
+            ),
+            itemCount: 100,
           ),
         ),
-      ),
-      separatorBuilder: (_, __) => const SizedBox(
-        height: Constants.smallPadding,
-      ),
-      itemCount: 100,
+      ],
     );
   }
 }
