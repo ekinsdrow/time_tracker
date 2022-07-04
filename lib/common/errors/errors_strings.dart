@@ -5,4 +5,5 @@ abstract class ErrorsStrings {
   static const String logoutError = 'Logout Error';
   static const String categotyError = 'Category Error';
   static const String addError = 'Category Error';
+  static const String saveError = 'Save Error';
 }

@@ -19,4 +19,6 @@ class Time with _$Time {
 
 extension TimeToStr on Time {
   String get format => '${hours.addZero}:${minutes.addZero}:${seconds.addZero}';
+
+  int get toDuration => hours * 3600 + minutes * 60 + seconds;
 }
