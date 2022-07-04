@@ -88,6 +88,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
 
     return AddActivityScope(
       child: Scaffold(
+        appBar: AppBar(),
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(
