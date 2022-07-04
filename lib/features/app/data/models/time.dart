@@ -15,6 +15,18 @@ class Time with _$Time {
   factory Time.zero() => Time(hours: 0, minutes: 0, seconds: 0);
 
   factory Time.fromJson(Map<String, dynamic> json) => _$TimeFromJson(json);
+
+  factory Time.fromDuration({required int duration}) {
+    int h = duration ~/ 3600;
+    int m = (duration - h * 3600) ~/ 60;
+    int s = duration - (h * 3600) - (m * 60);
+
+    return Time(
+      hours: h,
+      minutes: m,
+      seconds: s,
+    );
+  }
 }
 
 extension TimeToStr on Time {

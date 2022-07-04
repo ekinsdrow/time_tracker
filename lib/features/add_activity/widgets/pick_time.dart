@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/int.dart';
-import 'package:time_tracker/features/add_activity/data/models/time.dart';
+import 'package:time_tracker/features/app/data/models/time.dart';
 
 Future<Time?> openTimePciker({
   required Time time,
