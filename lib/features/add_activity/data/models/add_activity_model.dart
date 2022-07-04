@@ -8,7 +8,7 @@ class AddActivityModel with _$AddActivityModel {
   factory AddActivityModel({
     required int duration,
     required String categoryId,
-    required DateTime startTimestamp,
+    required DateTime endTimestamp,
     required String userId,
   }) = _AddActivityModel;
 

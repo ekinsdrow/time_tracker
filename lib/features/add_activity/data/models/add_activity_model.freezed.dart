@@ -22,7 +22,7 @@ AddActivityModel _$AddActivityModelFromJson(Map<String, dynamic> json) {
 mixin _$AddActivityModel {
   int get duration => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
-  DateTime get startTimestamp => throw _privateConstructorUsedError;
+  DateTime get endTimestamp => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,10 +37,7 @@ abstract class $AddActivityModelCopyWith<$Res> {
           AddActivityModel value, $Res Function(AddActivityModel) then) =
       _$AddActivityModelCopyWithImpl<$Res>;
   $Res call(
-      {int duration,
-      String categoryId,
-      DateTime startTimestamp,
-      String userId});
+      {int duration, String categoryId, DateTime endTimestamp, String userId});
 }
 
 /// @nodoc
@@ -56,7 +53,7 @@ class _$AddActivityModelCopyWithImpl<$Res>
   $Res call({
     Object? duration = freezed,
     Object? categoryId = freezed,
-    Object? startTimestamp = freezed,
+    Object? endTimestamp = freezed,
     Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -68,9 +65,9 @@ class _$AddActivityModelCopyWithImpl<$Res>
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
-      startTimestamp: startTimestamp == freezed
-          ? _value.startTimestamp
-          : startTimestamp // ignore: cast_nullable_to_non_nullable
+      endTimestamp: endTimestamp == freezed
+          ? _value.endTimestamp
+          : endTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
       userId: userId == freezed
           ? _value.userId
@@ -88,10 +85,7 @@ abstract class _$$_AddActivityModelCopyWith<$Res>
       __$$_AddActivityModelCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int duration,
-      String categoryId,
-      DateTime startTimestamp,
-      String userId});
+      {int duration, String categoryId, DateTime endTimestamp, String userId});
 }
 
 /// @nodoc
@@ -109,7 +103,7 @@ class __$$_AddActivityModelCopyWithImpl<$Res>
   $Res call({
     Object? duration = freezed,
     Object? categoryId = freezed,
-    Object? startTimestamp = freezed,
+    Object? endTimestamp = freezed,
     Object? userId = freezed,
   }) {
     return _then(_$_AddActivityModel(
@@ -121,9 +115,9 @@ class __$$_AddActivityModelCopyWithImpl<$Res>
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
-      startTimestamp: startTimestamp == freezed
-          ? _value.startTimestamp
-          : startTimestamp // ignore: cast_nullable_to_non_nullable
+      endTimestamp: endTimestamp == freezed
+          ? _value.endTimestamp
+          : endTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
       userId: userId == freezed
           ? _value.userId
@@ -139,7 +133,7 @@ class _$_AddActivityModel implements _AddActivityModel {
   _$_AddActivityModel(
       {required this.duration,
       required this.categoryId,
-      required this.startTimestamp,
+      required this.endTimestamp,
       required this.userId});
 
   factory _$_AddActivityModel.fromJson(Map<String, dynamic> json) =>
@@ -150,13 +144,13 @@ class _$_AddActivityModel implements _AddActivityModel {
   @override
   final String categoryId;
   @override
-  final DateTime startTimestamp;
+  final DateTime endTimestamp;
   @override
   final String userId;
 
   @override
   String toString() {
-    return 'AddActivityModel(duration: $duration, categoryId: $categoryId, startTimestamp: $startTimestamp, userId: $userId)';
+    return 'AddActivityModel(duration: $duration, categoryId: $categoryId, endTimestamp: $endTimestamp, userId: $userId)';
   }
 
   @override
@@ -168,7 +162,7 @@ class _$_AddActivityModel implements _AddActivityModel {
             const DeepCollectionEquality()
                 .equals(other.categoryId, categoryId) &&
             const DeepCollectionEquality()
-                .equals(other.startTimestamp, startTimestamp) &&
+                .equals(other.endTimestamp, endTimestamp) &&
             const DeepCollectionEquality().equals(other.userId, userId));
   }
 
@@ -178,7 +172,7 @@ class _$_AddActivityModel implements _AddActivityModel {
       runtimeType,
       const DeepCollectionEquality().hash(duration),
       const DeepCollectionEquality().hash(categoryId),
-      const DeepCollectionEquality().hash(startTimestamp),
+      const DeepCollectionEquality().hash(endTimestamp),
       const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
@@ -196,7 +190,7 @@ abstract class _AddActivityModel implements AddActivityModel {
   factory _AddActivityModel(
       {required final int duration,
       required final String categoryId,
-      required final DateTime startTimestamp,
+      required final DateTime endTimestamp,
       required final String userId}) = _$_AddActivityModel;
 
   factory _AddActivityModel.fromJson(Map<String, dynamic> json) =
@@ -207,7 +201,7 @@ abstract class _AddActivityModel implements AddActivityModel {
   @override
   String get categoryId => throw _privateConstructorUsedError;
   @override
-  DateTime get startTimestamp => throw _privateConstructorUsedError;
+  DateTime get endTimestamp => throw _privateConstructorUsedError;
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
