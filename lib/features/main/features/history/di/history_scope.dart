@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/dialogs/error_dialog.dart';
-import 'package:time_tracker/features/main/features/history/bloc/history_bloc.dart';
+import 'package:time_tracker/features/main/features/history/cubit/history_cubit.dart';
 import 'package:time_tracker/features/main/features/history/data/repository/history_repository.dart';
 import 'package:time_tracker/features/user/data/models/user.dart';
 
@@ -18,14 +18,11 @@ class HistoryScope extends StatelessWidget {
     return RepositoryProvider<IHistoryRepository>(
       create: (context) => HistoryRepository(),
       child: BlocProvider(
-        create: (context) => HistoryBloc(
+        create: (context) => HistoryCubit(
           historyRepository: context.read<IHistoryRepository>(),
-        )..add(
-            HistoryEvent.fetch(
-              userId: context.read<UserModel>().uid,
-            ),
-          ),
-        child: BlocListener<HistoryBloc, HistoryState>(
+          userId: context.read<UserModel>().uid,
+        ),
+        child: BlocListener<HistoryCubit, HistoryState>(
           listener: (context, state) => state.whenOrNull(
             error: (error) => showError(context: context, error: error),
           ),

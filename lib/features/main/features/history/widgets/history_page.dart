@@ -6,7 +6,7 @@ import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
-import 'package:time_tracker/features/main/features/history/bloc/history_bloc.dart';
+import 'package:time_tracker/features/main/features/history/cubit/history_cubit.dart';
 import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
 import 'package:time_tracker/features/main/features/history/di/history_scope.dart';
 
@@ -44,7 +44,7 @@ class _HistoryPageState extends State<HistoryPage> {
           Builder(
             builder: (context) {
               return Expanded(
-                child: BlocBuilder<HistoryBloc, HistoryState>(
+                child: BlocBuilder<HistoryCubit, HistoryState>(
                   builder: (context, state) => state.when(
                     loading: () => const Center(
                       child: CircularProgressIndicator(),

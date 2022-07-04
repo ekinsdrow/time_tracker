@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
 
@@ -27,7 +25,6 @@ class HistoryRepository implements IHistoryRepository {
           final activities = <Activity>[];
           for (final activity in data.docs) {
             final data = activity.data();
-            log(data.toString());
             data['id'] = activity.id;
 
             activities.add(
