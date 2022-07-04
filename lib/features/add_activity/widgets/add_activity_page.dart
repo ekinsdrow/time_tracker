@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/features/add_activity/data/models/time.dart';
+import 'package:time_tracker/features/add_activity/di/add_activity_scope.dart';
 import 'package:time_tracker/features/add_activity/widgets/pick_time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
@@ -66,120 +67,60 @@ class _AddActivityPageState extends State<AddActivityPage> {
   Widget build(BuildContext context) {
     final categories = context.watch<Categories>().categories;
 
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.all(
-            Constants.mediumPadding,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).hintColor,
+    return AddActivityScope(
+      child: Scaffold(
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(
+              Constants.mediumPadding,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).hintColor,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          Constants.smallPadding,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(
-                        Constants.smallPadding,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Constants.smallPadding,
                       ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.smallPadding,
-                    ),
-                    width: double.infinity,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<int>(
-                        value: _categoryDropDownIndex,
-                        isExpanded: true,
-                        items: [
-                          for (var i = 0; i < categories.length; i++)
-                            DropdownMenuItem(
-                              child: Text(
-                                categories[i].name,
-                              ),
-                              value: i,
-                            ),
-                        ],
-                        onChanged: (v) {
-                          setState(() {
-                            if (v != null) {
-                              _categoryDropDownIndex = v;
-                              _subCategoryDropDownIndex = -1;
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: Constants.mediumPadding,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        Constants.smallPadding,
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.smallPadding,
-                    ),
-                    width: double.infinity,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<int>(
-                        value: _subCategoryDropDownIndex,
-                        isExpanded: true,
-                        items: [
-                          const DropdownMenuItem(
-                            child: Text(
-                              'All categories',
-                            ),
-                            value: -1,
-                          ),
-                          if (_categoryDropDownIndex != -1)
-                            for (var i = 0;
-                                i <
-                                    categories[_categoryDropDownIndex]
-                                        .subCategories
-                                        .length;
-                                i++)
+                      width: double.infinity,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<int>(
+                          value: _categoryDropDownIndex,
+                          isExpanded: true,
+                          items: [
+                            for (var i = 0; i < categories.length; i++)
                               DropdownMenuItem(
                                 child: Text(
-                                  categories[_categoryDropDownIndex]
-                                      .subCategories[i]
-                                      .name,
+                                  categories[i].name,
                                 ),
                                 value: i,
                               ),
-                        ],
-                        onChanged: (v) {
-                          setState(() {
-                            if (v != null) {
-                              _subCategoryDropDownIndex = v;
-                            }
-                          });
-                        },
+                          ],
+                          onChanged: (v) {
+                            setState(() {
+                              if (v != null) {
+                                _categoryDropDownIndex = v;
+                                _subCategoryDropDownIndex = -1;
+                              }
+                            });
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: Constants.mediumPadding,
-                  ),
-                  InkWell(
-                    onTap: _chooseTime,
-                    borderRadius: BorderRadius.circular(
-                      Constants.smallPadding,
+                    const SizedBox(
+                      height: Constants.mediumPadding,
                     ),
-                    child: Container(
-                      height: 50,
-                      padding: const EdgeInsets.all(Constants.smallPadding),
+                    Container(
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 1,
@@ -189,51 +130,113 @@ class _AddActivityPageState extends State<AddActivityPage> {
                           Constants.smallPadding,
                         ),
                       ),
-                      width: double.infinity,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        _time.format,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: Constants.mediumPadding,
-                  ),
-                  InkWell(
-                    onTap: _chooseDate,
-                    borderRadius: BorderRadius.circular(
-                      Constants.smallPadding,
-                    ),
-                    child: Container(
-                      height: 50,
-                      padding: const EdgeInsets.all(Constants.smallPadding),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Theme.of(context).hintColor,
-                        ),
-                        borderRadius: BorderRadius.circular(
-                          Constants.smallPadding,
-                        ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Constants.smallPadding,
                       ),
                       width: double.infinity,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        _date.formatDate,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<int>(
+                          value: _subCategoryDropDownIndex,
+                          isExpanded: true,
+                          items: [
+                            const DropdownMenuItem(
+                              child: Text(
+                                'All categories',
+                              ),
+                              value: -1,
+                            ),
+                            if (_categoryDropDownIndex != -1)
+                              for (var i = 0;
+                                  i <
+                                      categories[_categoryDropDownIndex]
+                                          .subCategories
+                                          .length;
+                                  i++)
+                                DropdownMenuItem(
+                                  child: Text(
+                                    categories[_categoryDropDownIndex]
+                                        .subCategories[i]
+                                        .name,
+                                  ),
+                                  value: i,
+                                ),
+                          ],
+                          onChanged: (v) {
+                            setState(() {
+                              if (v != null) {
+                                _subCategoryDropDownIndex = v;
+                              }
+                            });
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _save,
-                  child: const Text('Save'),
+                    const SizedBox(
+                      height: Constants.mediumPadding,
+                    ),
+                    InkWell(
+                      onTap: _chooseTime,
+                      borderRadius: BorderRadius.circular(
+                        Constants.smallPadding,
+                      ),
+                      child: Container(
+                        height: 50,
+                        padding: const EdgeInsets.all(Constants.smallPadding),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            Constants.smallPadding,
+                          ),
+                        ),
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          _time.format,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: Constants.mediumPadding,
+                    ),
+                    InkWell(
+                      onTap: _chooseDate,
+                      borderRadius: BorderRadius.circular(
+                        Constants.smallPadding,
+                      ),
+                      child: Container(
+                        height: 50,
+                        padding: const EdgeInsets.all(Constants.smallPadding),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          borderRadius: BorderRadius.circular(
+                            Constants.smallPadding,
+                          ),
+                        ),
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          _date.formatDate,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            ],
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: _save,
+                    child: const Text('Save'),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
