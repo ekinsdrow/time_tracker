@@ -33,7 +33,8 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
           );
         },
       ).onError(
-        (_) {
+        (e) {
+          log(e);
           emit(
             const _Error(error: ErrorsStrings.fetchError),
           );

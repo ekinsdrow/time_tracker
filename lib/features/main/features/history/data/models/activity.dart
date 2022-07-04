@@ -8,7 +8,7 @@ class Activity with _$Activity {
   factory Activity({
     required String categoryId,
     required int duration,
-    required DateTime dateTime,
+    required DateTime endTimestamp,
   }) = _Activity;
 
   factory Activity.fromJson(Map<String, dynamic> json) =>

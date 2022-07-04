@@ -9,12 +9,12 @@ part of 'activity.dart';
 _$_Activity _$$_ActivityFromJson(Map<String, dynamic> json) => _$_Activity(
       categoryId: json['categoryId'] as String,
       duration: json['duration'] as int,
-      dateTime: DateTime.parse(json['dateTime'] as String),
+      endTimestamp: DateTime.parse(json['endTimestamp'] as String),
     );
 
 Map<String, dynamic> _$$_ActivityToJson(_$_Activity instance) =>
     <String, dynamic>{
       'categoryId': instance.categoryId,
       'duration': instance.duration,
-      'dateTime': instance.dateTime.toIso8601String(),
+      'endTimestamp': instance.endTimestamp.toIso8601String(),
     };
