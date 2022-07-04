@@ -13,6 +13,10 @@ class HistoryRepository implements IHistoryRepository {
   Stream<List<Activity>> getActivities({required String userId}) {
     final snapshot = FirebaseFirestore.instance
         .collection('activities')
+        .orderBy(
+          'endTimestamp',
+          descending: true,
+        )
         .where(
           'userId',
           isEqualTo: userId,
