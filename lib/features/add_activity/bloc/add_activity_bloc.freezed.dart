@@ -19,25 +19,26 @@ mixin _$AddActivityEvent {
   Time get time => throw _privateConstructorUsedError;
   DateTime get dateTime => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
-  CategoryLeaf get categoryLeaf => throw _privateConstructorUsedError;
+  CategoryLeaf get mainCategoryLeaf => throw _privateConstructorUsedError;
+  CategoryLeaf? get subCategoryLeaf => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Time time, DateTime dateTime, String userId,
-            CategoryLeaf categoryLeaf)
+            CategoryLeaf mainCategoryLeaf, CategoryLeaf? subCategoryLeaf)
         save,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Time time, DateTime dateTime, String userId,
-            CategoryLeaf categoryLeaf)?
+            CategoryLeaf mainCategoryLeaf, CategoryLeaf? subCategoryLeaf)?
         save,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Time time, DateTime dateTime, String userId,
-            CategoryLeaf categoryLeaf)?
+            CategoryLeaf mainCategoryLeaf, CategoryLeaf? subCategoryLeaf)?
         save,
     required TResult orElse(),
   }) =>
@@ -70,10 +71,15 @@ abstract class $AddActivityEventCopyWith<$Res> {
           AddActivityEvent value, $Res Function(AddActivityEvent) then) =
       _$AddActivityEventCopyWithImpl<$Res>;
   $Res call(
-      {Time time, DateTime dateTime, String userId, CategoryLeaf categoryLeaf});
+      {Time time,
+      DateTime dateTime,
+      String userId,
+      CategoryLeaf mainCategoryLeaf,
+      CategoryLeaf? subCategoryLeaf});
 
   $TimeCopyWith<$Res> get time;
-  $CategoryLeafCopyWith<$Res> get categoryLeaf;
+  $CategoryLeafCopyWith<$Res> get mainCategoryLeaf;
+  $CategoryLeafCopyWith<$Res>? get subCategoryLeaf;
 }
 
 /// @nodoc
@@ -90,7 +96,8 @@ class _$AddActivityEventCopyWithImpl<$Res>
     Object? time = freezed,
     Object? dateTime = freezed,
     Object? userId = freezed,
-    Object? categoryLeaf = freezed,
+    Object? mainCategoryLeaf = freezed,
+    Object? subCategoryLeaf = freezed,
   }) {
     return _then(_value.copyWith(
       time: time == freezed
@@ -105,10 +112,14 @@ class _$AddActivityEventCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      categoryLeaf: categoryLeaf == freezed
-          ? _value.categoryLeaf
-          : categoryLeaf // ignore: cast_nullable_to_non_nullable
+      mainCategoryLeaf: mainCategoryLeaf == freezed
+          ? _value.mainCategoryLeaf
+          : mainCategoryLeaf // ignore: cast_nullable_to_non_nullable
               as CategoryLeaf,
+      subCategoryLeaf: subCategoryLeaf == freezed
+          ? _value.subCategoryLeaf
+          : subCategoryLeaf // ignore: cast_nullable_to_non_nullable
+              as CategoryLeaf?,
     ));
   }
 
@@ -120,9 +131,20 @@ class _$AddActivityEventCopyWithImpl<$Res>
   }
 
   @override
-  $CategoryLeafCopyWith<$Res> get categoryLeaf {
-    return $CategoryLeafCopyWith<$Res>(_value.categoryLeaf, (value) {
-      return _then(_value.copyWith(categoryLeaf: value));
+  $CategoryLeafCopyWith<$Res> get mainCategoryLeaf {
+    return $CategoryLeafCopyWith<$Res>(_value.mainCategoryLeaf, (value) {
+      return _then(_value.copyWith(mainCategoryLeaf: value));
+    });
+  }
+
+  @override
+  $CategoryLeafCopyWith<$Res>? get subCategoryLeaf {
+    if (_value.subCategoryLeaf == null) {
+      return null;
+    }
+
+    return $CategoryLeafCopyWith<$Res>(_value.subCategoryLeaf!, (value) {
+      return _then(_value.copyWith(subCategoryLeaf: value));
     });
   }
 }
@@ -134,12 +156,18 @@ abstract class _$$_SaveCopyWith<$Res>
       __$$_SaveCopyWithImpl<$Res>;
   @override
   $Res call(
-      {Time time, DateTime dateTime, String userId, CategoryLeaf categoryLeaf});
+      {Time time,
+      DateTime dateTime,
+      String userId,
+      CategoryLeaf mainCategoryLeaf,
+      CategoryLeaf? subCategoryLeaf});
 
   @override
   $TimeCopyWith<$Res> get time;
   @override
-  $CategoryLeafCopyWith<$Res> get categoryLeaf;
+  $CategoryLeafCopyWith<$Res> get mainCategoryLeaf;
+  @override
+  $CategoryLeafCopyWith<$Res>? get subCategoryLeaf;
 }
 
 /// @nodoc
@@ -156,7 +184,8 @@ class __$$_SaveCopyWithImpl<$Res> extends _$AddActivityEventCopyWithImpl<$Res>
     Object? time = freezed,
     Object? dateTime = freezed,
     Object? userId = freezed,
-    Object? categoryLeaf = freezed,
+    Object? mainCategoryLeaf = freezed,
+    Object? subCategoryLeaf = freezed,
   }) {
     return _then(_$_Save(
       time: time == freezed
@@ -171,10 +200,14 @@ class __$$_SaveCopyWithImpl<$Res> extends _$AddActivityEventCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      categoryLeaf: categoryLeaf == freezed
-          ? _value.categoryLeaf
-          : categoryLeaf // ignore: cast_nullable_to_non_nullable
+      mainCategoryLeaf: mainCategoryLeaf == freezed
+          ? _value.mainCategoryLeaf
+          : mainCategoryLeaf // ignore: cast_nullable_to_non_nullable
               as CategoryLeaf,
+      subCategoryLeaf: subCategoryLeaf == freezed
+          ? _value.subCategoryLeaf
+          : subCategoryLeaf // ignore: cast_nullable_to_non_nullable
+              as CategoryLeaf?,
     ));
   }
 }
@@ -186,7 +219,8 @@ class _$_Save implements _Save {
       {required this.time,
       required this.dateTime,
       required this.userId,
-      required this.categoryLeaf});
+      required this.mainCategoryLeaf,
+      required this.subCategoryLeaf});
 
   @override
   final Time time;
@@ -195,11 +229,13 @@ class _$_Save implements _Save {
   @override
   final String userId;
   @override
-  final CategoryLeaf categoryLeaf;
+  final CategoryLeaf mainCategoryLeaf;
+  @override
+  final CategoryLeaf? subCategoryLeaf;
 
   @override
   String toString() {
-    return 'AddActivityEvent.save(time: $time, dateTime: $dateTime, userId: $userId, categoryLeaf: $categoryLeaf)';
+    return 'AddActivityEvent.save(time: $time, dateTime: $dateTime, userId: $userId, mainCategoryLeaf: $mainCategoryLeaf, subCategoryLeaf: $subCategoryLeaf)';
   }
 
   @override
@@ -211,7 +247,9 @@ class _$_Save implements _Save {
             const DeepCollectionEquality().equals(other.dateTime, dateTime) &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality()
-                .equals(other.categoryLeaf, categoryLeaf));
+                .equals(other.mainCategoryLeaf, mainCategoryLeaf) &&
+            const DeepCollectionEquality()
+                .equals(other.subCategoryLeaf, subCategoryLeaf));
   }
 
   @override
@@ -220,7 +258,8 @@ class _$_Save implements _Save {
       const DeepCollectionEquality().hash(time),
       const DeepCollectionEquality().hash(dateTime),
       const DeepCollectionEquality().hash(userId),
-      const DeepCollectionEquality().hash(categoryLeaf));
+      const DeepCollectionEquality().hash(mainCategoryLeaf),
+      const DeepCollectionEquality().hash(subCategoryLeaf));
 
   @JsonKey(ignore: true)
   @override
@@ -231,32 +270,33 @@ class _$_Save implements _Save {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Time time, DateTime dateTime, String userId,
-            CategoryLeaf categoryLeaf)
+            CategoryLeaf mainCategoryLeaf, CategoryLeaf? subCategoryLeaf)
         save,
   }) {
-    return save(time, dateTime, userId, categoryLeaf);
+    return save(time, dateTime, userId, mainCategoryLeaf, subCategoryLeaf);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(Time time, DateTime dateTime, String userId,
-            CategoryLeaf categoryLeaf)?
+            CategoryLeaf mainCategoryLeaf, CategoryLeaf? subCategoryLeaf)?
         save,
   }) {
-    return save?.call(time, dateTime, userId, categoryLeaf);
+    return save?.call(
+        time, dateTime, userId, mainCategoryLeaf, subCategoryLeaf);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Time time, DateTime dateTime, String userId,
-            CategoryLeaf categoryLeaf)?
+            CategoryLeaf mainCategoryLeaf, CategoryLeaf? subCategoryLeaf)?
         save,
     required TResult orElse(),
   }) {
     if (save != null) {
-      return save(time, dateTime, userId, categoryLeaf);
+      return save(time, dateTime, userId, mainCategoryLeaf, subCategoryLeaf);
     }
     return orElse();
   }
@@ -295,7 +335,8 @@ abstract class _Save implements AddActivityEvent {
       {required final Time time,
       required final DateTime dateTime,
       required final String userId,
-      required final CategoryLeaf categoryLeaf}) = _$_Save;
+      required final CategoryLeaf mainCategoryLeaf,
+      required final CategoryLeaf? subCategoryLeaf}) = _$_Save;
 
   @override
   Time get time => throw _privateConstructorUsedError;
@@ -304,7 +345,9 @@ abstract class _Save implements AddActivityEvent {
   @override
   String get userId => throw _privateConstructorUsedError;
   @override
-  CategoryLeaf get categoryLeaf => throw _privateConstructorUsedError;
+  CategoryLeaf get mainCategoryLeaf => throw _privateConstructorUsedError;
+  @override
+  CategoryLeaf? get subCategoryLeaf => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_SaveCopyWith<_$_Save> get copyWith => throw _privateConstructorUsedError;
