@@ -72,7 +72,21 @@ class _HistoryPageState extends State<HistoryPage> {
 
                       if (_categoryLeaf != null) {
                         act = act.where(
-                          (element) => element.categoryId == _categoryLeaf!.id,
+                          (element) {
+                            if (element.categoryId == _categoryLeaf!.id) {
+                              return true;
+                            }
+
+                            if (_categoryLeaf!.isRoot) {
+                              for (final sub in _categoryLeaf!.subCategories) {
+                                if (sub.id == element.categoryId) {
+                                  return true;
+                                }
+                              }
+                            }
+
+                            return false;
+                          },
                         );
                       }
 
