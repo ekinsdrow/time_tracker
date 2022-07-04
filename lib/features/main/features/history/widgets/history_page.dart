@@ -237,7 +237,7 @@ class _HistoryList extends StatelessWidget {
                 child: ListTile(
                   title: Text(
                     // ignore: lines_longer_than_80_chars
-                    '$categoryStr - ${Time.fromDuration(duration: activity.duration)}',
+                    '$categoryStr - ${Time.fromDuration(duration: activity.duration).format}',
                   ),
                   subtitle: Text(
                     activity.endTimestamp.formatDate,
