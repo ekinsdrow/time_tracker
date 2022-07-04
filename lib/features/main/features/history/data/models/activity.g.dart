@@ -1,23 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'add_activity_model.dart';
+part of 'activity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_AddActivityModel _$$_AddActivityModelFromJson(Map<String, dynamic> json) =>
-    _$_AddActivityModel(
-      duration: json['duration'] as int,
+_$_Activity _$$_ActivityFromJson(Map<String, dynamic> json) => _$_Activity(
       categoryId: json['categoryId'] as String,
+      duration: json['duration'] as int,
       endTimestamp: DateTime.parse(json['endTimestamp'] as String),
-      userId: json['userId'] as String,
     );
 
-Map<String, dynamic> _$$_AddActivityModelToJson(_$_AddActivityModel instance) =>
+Map<String, dynamic> _$$_ActivityToJson(_$_Activity instance) =>
     <String, dynamic>{
-      'duration': instance.duration,
       'categoryId': instance.categoryId,
+      'duration': instance.duration,
       'endTimestamp': instance.endTimestamp.toIso8601String(),
-      'userId': instance.userId,
     };

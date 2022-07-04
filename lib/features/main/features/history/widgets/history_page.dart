@@ -1,8 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
+import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
+import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
+import 'package:time_tracker/features/main/features/history/cubit/history_cubit.dart';
+import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
+import 'package:time_tracker/features/main/features/history/di/history_scope.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -13,31 +20,73 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   DateTime? _chooseDate;
+  CategoryLeaf? _categoryLeaf;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const _Header(),
-        const SizedBox(
-          height: Constants.mediumPadding,
-        ),
-        _Filters(
-          date: _chooseDate,
-          dateCallback: (d) {
-            setState(() {
-              _chooseDate = d;
-            });
-          },
-        ),
-        const SizedBox(
-          height: Constants.mediumPadding,
-        ),
-        const Expanded(
-          child: _HistoryList(),
-        ),
-      ],
+    return HistoryScope(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _Header(),
+          const SizedBox(
+            height: Constants.mediumPadding,
+          ),
+          _Filters(
+            date: _chooseDate,
+            categoryCallback: (c) {
+              setState(() {
+                _categoryLeaf = c;
+              });
+            },
+            categoryLeaf: _categoryLeaf,
+            dateCallback: (d) {
+              setState(() {
+                _chooseDate = d;
+              });
+            },
+          ),
+          const SizedBox(
+            height: Constants.mediumPadding,
+          ),
+          Builder(
+            builder: (context) {
+              return Expanded(
+                child: BlocBuilder<HistoryCubit, HistoryState>(
+                  builder: (context, state) => state.when(
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    error: (error) => Center(
+                      child: Text(error),
+                    ),
+                    success: (activities) {
+                      Iterable<Activity> act = activities;
+                      if (_chooseDate != null) {
+                        act = activities.where(
+                          (element) =>
+                              element.endTimestamp.formatDate ==
+                              _chooseDate!.formatDate,
+                        );
+                      }
+
+                      if (_categoryLeaf != null) {
+                        act = act.where(
+                          (element) => element.categoryId == _categoryLeaf!.id,
+                        );
+                      }
+
+                      return _HistoryList(
+                        activities: act,
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -59,10 +108,14 @@ class _Filters extends StatelessWidget {
     Key? key,
     required this.date,
     required this.dateCallback,
+    required this.categoryCallback,
+    required this.categoryLeaf,
   }) : super(key: key);
 
   final DateTime? date;
   final Function(DateTime?) dateCallback;
+  final CategoryLeaf? categoryLeaf;
+  final Function(CategoryLeaf?) categoryCallback;
 
   void _openDateFilter(BuildContext context) async {
     final ctx = context;
@@ -90,10 +143,20 @@ class _Filters extends StatelessWidget {
     dateCallback(null);
   }
 
-  void _openCategory(BuildContext context) {
-    context.router.push(
+  void _clearCategory() {
+    categoryCallback(null);
+  }
+
+  Future<void> _openCategory(BuildContext context) async {
+    final category = await context.router.push(
       const CategoryFilterRoute(),
     );
+
+    if (category != null) {
+      if (category is CategoryLeaf) {
+        categoryCallback(category);
+      }
+    }
   }
 
   @override
@@ -137,7 +200,31 @@ class _Filters extends StatelessWidget {
           onPressed: () {
             _openCategory(context);
           },
-          child: const Text('Category'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                categoryLeaf != null ? categoryLeaf!.name : 'Category',
+              ),
+              if (categoryLeaf != null)
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: Constants.smallPadding / 2,
+                    ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(100),
+                      onTap: _clearCategory,
+                      child: const Icon(
+                        Icons.clear,
+                        size: 18,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ],
     );
@@ -145,7 +232,12 @@ class _Filters extends StatelessWidget {
 }
 
 class _HistoryList extends StatelessWidget {
-  const _HistoryList({Key? key}) : super(key: key);
+  const _HistoryList({
+    required this.activities,
+    Key? key,
+  }) : super(key: key);
+
+  final Iterable<Activity> activities;
 
   @override
   Widget build(BuildContext context) {
@@ -191,26 +283,35 @@ class _HistoryList extends StatelessWidget {
         Expanded(
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).hintColor,
-                borderRadius: BorderRadius.circular(
-                  Constants.smallPadding,
+            itemBuilder: (context, index) {
+              final activity = activities.elementAt(index);
+              final categories = context.read<Categories>();
+              final categoryStr = categories.categoriesName(
+                activity.categoryId,
+              );
+
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).hintColor,
+                  borderRadius: BorderRadius.circular(
+                    Constants.smallPadding,
+                  ),
                 ),
-              ),
-              child: ListTile(
-                title: const Text(
-                  'Музыка / Гитара - 00:50:20',
+                child: ListTile(
+                  title: Text(
+                    // ignore: lines_longer_than_80_chars
+                    '$categoryStr - ${Time.fromDuration(duration: activity.duration).format}',
+                  ),
+                  subtitle: Text(
+                    activity.endTimestamp.formatDate,
+                  ),
                 ),
-                subtitle: Text(
-                  DateTime.now().formatDate,
-                ),
-              ),
-            ),
+              );
+            },
             separatorBuilder: (_, __) => const SizedBox(
               height: Constants.smallPadding,
             ),
-            itemCount: 100,
+            itemCount: activities.length,
           ),
         ),
       ],

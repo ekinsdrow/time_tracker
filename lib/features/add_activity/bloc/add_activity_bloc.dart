@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:time_tracker/common/errors/errors_strings.dart';
 import 'package:time_tracker/features/add_activity/data/models/add_activity_model.dart';
-import 'package:time_tracker/features/add_activity/data/models/time.dart';
 import 'package:time_tracker/features/add_activity/data/repository/add_activity_repository.dart';
+import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
 part 'add_activity_event.dart';
@@ -32,7 +32,7 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
           categoryId: event.subCategoryLeaf != null
               ? event.subCategoryLeaf!.id
               : event.mainCategoryLeaf.id,
-          startTimestamp: event.dateTime,
+          endTimestamp: event.dateTime,
           userId: event.userId,
         ),
         mainCategoryLeaf: event.mainCategoryLeaf,
