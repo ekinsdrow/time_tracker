@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
+import 'package:time_tracker/features/add_activity/bloc/add_activity_bloc.dart';
 import 'package:time_tracker/features/add_activity/data/models/time.dart';
 import 'package:time_tracker/features/add_activity/di/add_activity_scope.dart';
 import 'package:time_tracker/features/add_activity/widgets/pick_time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
+import 'package:time_tracker/features/user/data/models/user.dart';
 
 class AddActivityPage extends StatefulWidget {
   const AddActivityPage({Key? key}) : super(key: key);
@@ -22,7 +24,23 @@ class _AddActivityPageState extends State<AddActivityPage> {
   var _time = Time.zero();
   var _date = DateTime.now();
 
-  void _save() {}
+  void _save(
+    BuildContext context,
+  ) {
+    final categories = context.read<Categories>().categories;
+    context.read<AddActivityBloc>().add(
+          AddActivityEvent.save(
+            time: _time,
+            dateTime: _date,
+            userId: context.read<UserModel>().uid,
+            mainCategoryLeaf: categories[_categoryDropDownIndex],
+            subCategoryLeaf: _subCategoryDropDownIndex == -1
+                ? null
+                : categories[_categoryDropDownIndex]
+                    .subCategories[_subCategoryDropDownIndex],
+          ),
+        );
+  }
 
   Future<void> _chooseTime() async {
     final pick = await openTimePciker(
@@ -227,13 +245,19 @@ class _AddActivityPageState extends State<AddActivityPage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _save,
-                    child: const Text('Save'),
-                  ),
+                Builder(
+                  builder: (context) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _save(context);
+                        },
+                        child: const Text('Save'),
+                      ),
+                    );
+                  },
                 )
               ],
             ),
