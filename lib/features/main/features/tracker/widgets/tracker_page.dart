@@ -39,14 +39,29 @@ class _Header extends StatelessWidget {
           'Time Tracker',
           style: Theme.of(context).textTheme.headline1,
         ),
-        IconButton(
-          onPressed: () {
-            context.router.push(
-              const SettingsRoute(),
-            );
-          },
-          splashRadius: 20,
-          icon: const Icon(Icons.settings),
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                context.router.push(
+                  const AddActivityRoute(),
+                );
+              },
+              splashRadius: 20,
+              icon: const Icon(
+                Icons.add,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                context.router.push(
+                  const SettingsRoute(),
+                );
+              },
+              splashRadius: 20,
+              icon: const Icon(Icons.settings),
+            ),
+          ],
         ),
       ],
     );
