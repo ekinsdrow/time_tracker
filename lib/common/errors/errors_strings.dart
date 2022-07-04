@@ -6,4 +6,5 @@ abstract class ErrorsStrings {
   static const String categotyError = 'Category Error';
   static const String addError = 'Category Error';
   static const String saveError = 'Save Error';
+  static const String fetchError = 'Fetch Error';
 }

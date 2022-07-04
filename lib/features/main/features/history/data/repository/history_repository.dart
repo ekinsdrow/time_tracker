@@ -12,8 +12,13 @@ abstract class IHistoryRepository {
 class HistoryRepository implements IHistoryRepository {
   @override
   Stream<List<Activity>> getActivities({required String userId}) {
-    final snapshot =
-        FirebaseFirestore.instance.collection('activities').snapshots();
+    final snapshot = FirebaseFirestore.instance
+        .collection('activities')
+        .where(
+          'userId',
+          isEqualTo: userId,
+        )
+        .snapshots();
 
     return snapshot.transform(
       StreamTransformer.fromHandlers(
