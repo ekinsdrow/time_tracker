@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
@@ -250,11 +251,24 @@ class _AddActivityPageState extends State<AddActivityPage> {
                     return SizedBox(
                       width: double.infinity,
                       height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _save(context);
+                      child: BlocBuilder<AddActivityBloc, AddActivityState>(
+                        builder: (context, state) {
+                          if (state == const AddActivityState.loading()) {
+                            return Container(
+                              alignment: Alignment.center,
+                              width: 50,
+                              height: 50,
+                              child: const CircularProgressIndicator(),
+                            );
+                          }
+
+                          return ElevatedButton(
+                            onPressed: () {
+                              _save(context);
+                            },
+                            child: const Text('Save'),
+                          );
                         },
-                        child: const Text('Save'),
                       ),
                     );
                   },

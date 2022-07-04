@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:time_tracker/common/dialogs/error_dialog.dart';
 import 'package:time_tracker/features/add_activity/bloc/add_activity_bloc.dart';
 import 'package:time_tracker/features/add_activity/data/repository/add_activity_repository.dart';
 
@@ -19,7 +20,12 @@ class AddActivityScope extends StatelessWidget {
         create: (context) => AddActivityBloc(
           activityRepository: context.read<IAddActivityRepository>(),
         ),
-        child: child,
+        child: BlocListener<AddActivityBloc, AddActivityState>(
+          listener: (context, state) => state.whenOrNull(
+            error: (error) => showError(context: context, error: error),
+          ),
+          child: child,
+        ),
       ),
     );
   }
