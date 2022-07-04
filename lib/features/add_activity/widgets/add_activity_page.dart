@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/features/add_activity/data/models/time.dart';
 import 'package:time_tracker/features/add_activity/widgets/pick_time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
@@ -18,6 +19,7 @@ class _AddActivityPageState extends State<AddActivityPage> {
   var _subCategoryDropDownIndex = -1;
 
   var _time = Time.zero();
+  var _date = DateTime.now();
 
   void _save() {}
 
@@ -30,6 +32,32 @@ class _AddActivityPageState extends State<AddActivityPage> {
     if (pick != null) {
       setState(() {
         _time = pick;
+      });
+    }
+  }
+
+  Future<void> _chooseDate() async {
+    final ctx = context;
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2050),
+      builder: (context, child) => Theme(
+        data: ThemeData(
+          colorScheme: ColorScheme.light(
+            primary: Theme.of(ctx).primaryColor,
+            onPrimary: Theme.of(ctx).scaffoldBackgroundColor,
+            onSurface: Theme.of(ctx).textTheme.bodyText2!.color!,
+          ),
+        ),
+        child: child!,
+      ),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _date = pickedDate;
       });
     }
   }
@@ -165,6 +193,33 @@ class _AddActivityPageState extends State<AddActivityPage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         _time.format,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: Constants.mediumPadding,
+                  ),
+                  InkWell(
+                    onTap: _chooseDate,
+                    borderRadius: BorderRadius.circular(
+                      Constants.smallPadding,
+                    ),
+                    child: Container(
+                      height: 50,
+                      padding: const EdgeInsets.all(Constants.smallPadding),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).hintColor,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          Constants.smallPadding,
+                        ),
+                      ),
+                      width: double.infinity,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        _date.formatDate,
                       ),
                     ),
                   ),
