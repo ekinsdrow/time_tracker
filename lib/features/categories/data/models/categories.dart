@@ -21,7 +21,6 @@ class Categories with _$Categories {
           (element) => element.rootId == category.id,
         );
 
-    
         result.add(
           CategoryLeaf(
             category: category,
@@ -40,5 +39,29 @@ class Categories with _$Categories {
     return Categories(
       categories: result,
     );
+  }
+}
+
+extension CategoriesString on Categories {
+  String categoriesName(String id) {
+    var firstCategory = '';
+    String? secondCategory;
+
+    for (final category in categories) {
+      if (category.id == id) {
+        firstCategory = category.name;
+        break;
+      }
+
+      for (final subCategory in categories) {
+        if (subCategory.id == id) {
+          firstCategory = category.name;
+          secondCategory = subCategory.name;
+          break;
+        }
+      }
+    }
+
+    return firstCategory + (secondCategory != null ? ' / $secondCategory' : '');
   }
 }

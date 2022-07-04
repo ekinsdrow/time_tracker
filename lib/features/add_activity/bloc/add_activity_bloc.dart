@@ -32,7 +32,7 @@ class AddActivityBloc extends Bloc<AddActivityEvent, AddActivityState> {
           categoryId: event.subCategoryLeaf != null
               ? event.subCategoryLeaf!.id
               : event.mainCategoryLeaf.id,
-          startTimestamp: event.dateTime,
+          endTimestamp: event.dateTime,
           userId: event.userId,
         ),
         mainCategoryLeaf: event.mainCategoryLeaf,

@@ -1,8 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
+import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
+import 'package:time_tracker/features/main/features/history/bloc/history_bloc.dart';
+import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
+import 'package:time_tracker/features/main/features/history/di/history_scope.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -16,28 +22,46 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const _Header(),
-        const SizedBox(
-          height: Constants.mediumPadding,
-        ),
-        _Filters(
-          date: _chooseDate,
-          dateCallback: (d) {
-            setState(() {
-              _chooseDate = d;
-            });
-          },
-        ),
-        const SizedBox(
-          height: Constants.mediumPadding,
-        ),
-        const Expanded(
-          child: _HistoryList(),
-        ),
-      ],
+    return HistoryScope(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _Header(),
+          const SizedBox(
+            height: Constants.mediumPadding,
+          ),
+          _Filters(
+            date: _chooseDate,
+            dateCallback: (d) {
+              setState(() {
+                _chooseDate = d;
+              });
+            },
+          ),
+          const SizedBox(
+            height: Constants.mediumPadding,
+          ),
+          Builder(
+            builder: (context) {
+              return Expanded(
+                child: BlocBuilder<HistoryBloc, HistoryState>(
+                  builder: (context, state) => state.when(
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    error: (error) => Center(
+                      child: Text(error),
+                    ),
+                    success: (activities) => _HistoryList(
+                      activities: activities,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -145,7 +169,12 @@ class _Filters extends StatelessWidget {
 }
 
 class _HistoryList extends StatelessWidget {
-  const _HistoryList({Key? key}) : super(key: key);
+  const _HistoryList({
+    required this.activities,
+    Key? key,
+  }) : super(key: key);
+
+  final List<Activity> activities;
 
   @override
   Widget build(BuildContext context) {
@@ -191,26 +220,35 @@ class _HistoryList extends StatelessWidget {
         Expanded(
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) => Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).hintColor,
-                borderRadius: BorderRadius.circular(
-                  Constants.smallPadding,
+            itemBuilder: (context, index) {
+              final activity = activities[index];
+              final categories = context.read<Categories>();
+              final categoryStr = categories.categoriesName(
+                activity.categoryId,
+              );
+
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).hintColor,
+                  borderRadius: BorderRadius.circular(
+                    Constants.smallPadding,
+                  ),
                 ),
-              ),
-              child: ListTile(
-                title: const Text(
-                  'Музыка / Гитара - 00:50:20',
+                child: ListTile(
+                  title: Text(
+                    // ignore: lines_longer_than_80_chars
+                    '$categoryStr - ${Time.fromDuration(duration: activity.duration)}',
+                  ),
+                  subtitle: Text(
+                    activity.endTimestamp.formatDate,
+                  ),
                 ),
-                subtitle: Text(
-                  DateTime.now().formatDate,
-                ),
-              ),
-            ),
+              );
+            },
             separatorBuilder: (_, __) => const SizedBox(
               height: Constants.smallPadding,
             ),
-            itemCount: 100,
+            itemCount: activities.length,
           ),
         ),
       ],

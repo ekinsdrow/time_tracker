@@ -22,7 +22,7 @@ Activity _$ActivityFromJson(Map<String, dynamic> json) {
 mixin _$Activity {
   String get categoryId => throw _privateConstructorUsedError;
   int get duration => throw _privateConstructorUsedError;
-  DateTime get dateTime => throw _privateConstructorUsedError;
+  DateTime get endTimestamp => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ mixin _$Activity {
 abstract class $ActivityCopyWith<$Res> {
   factory $ActivityCopyWith(Activity value, $Res Function(Activity) then) =
       _$ActivityCopyWithImpl<$Res>;
-  $Res call({String categoryId, int duration, DateTime dateTime});
+  $Res call({String categoryId, int duration, DateTime endTimestamp});
 }
 
 /// @nodoc
@@ -49,7 +49,7 @@ class _$ActivityCopyWithImpl<$Res> implements $ActivityCopyWith<$Res> {
   $Res call({
     Object? categoryId = freezed,
     Object? duration = freezed,
-    Object? dateTime = freezed,
+    Object? endTimestamp = freezed,
   }) {
     return _then(_value.copyWith(
       categoryId: categoryId == freezed
@@ -60,9 +60,9 @@ class _$ActivityCopyWithImpl<$Res> implements $ActivityCopyWith<$Res> {
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int,
-      dateTime: dateTime == freezed
-          ? _value.dateTime
-          : dateTime // ignore: cast_nullable_to_non_nullable
+      endTimestamp: endTimestamp == freezed
+          ? _value.endTimestamp
+          : endTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
@@ -74,7 +74,7 @@ abstract class _$$_ActivityCopyWith<$Res> implements $ActivityCopyWith<$Res> {
           _$_Activity value, $Res Function(_$_Activity) then) =
       __$$_ActivityCopyWithImpl<$Res>;
   @override
-  $Res call({String categoryId, int duration, DateTime dateTime});
+  $Res call({String categoryId, int duration, DateTime endTimestamp});
 }
 
 /// @nodoc
@@ -91,7 +91,7 @@ class __$$_ActivityCopyWithImpl<$Res> extends _$ActivityCopyWithImpl<$Res>
   $Res call({
     Object? categoryId = freezed,
     Object? duration = freezed,
-    Object? dateTime = freezed,
+    Object? endTimestamp = freezed,
   }) {
     return _then(_$_Activity(
       categoryId: categoryId == freezed
@@ -102,9 +102,9 @@ class __$$_ActivityCopyWithImpl<$Res> extends _$ActivityCopyWithImpl<$Res>
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
               as int,
-      dateTime: dateTime == freezed
-          ? _value.dateTime
-          : dateTime // ignore: cast_nullable_to_non_nullable
+      endTimestamp: endTimestamp == freezed
+          ? _value.endTimestamp
+          : endTimestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
@@ -116,7 +116,7 @@ class _$_Activity implements _Activity {
   _$_Activity(
       {required this.categoryId,
       required this.duration,
-      required this.dateTime});
+      required this.endTimestamp});
 
   factory _$_Activity.fromJson(Map<String, dynamic> json) =>
       _$$_ActivityFromJson(json);
@@ -126,11 +126,11 @@ class _$_Activity implements _Activity {
   @override
   final int duration;
   @override
-  final DateTime dateTime;
+  final DateTime endTimestamp;
 
   @override
   String toString() {
-    return 'Activity(categoryId: $categoryId, duration: $duration, dateTime: $dateTime)';
+    return 'Activity(categoryId: $categoryId, duration: $duration, endTimestamp: $endTimestamp)';
   }
 
   @override
@@ -141,7 +141,8 @@ class _$_Activity implements _Activity {
             const DeepCollectionEquality()
                 .equals(other.categoryId, categoryId) &&
             const DeepCollectionEquality().equals(other.duration, duration) &&
-            const DeepCollectionEquality().equals(other.dateTime, dateTime));
+            const DeepCollectionEquality()
+                .equals(other.endTimestamp, endTimestamp));
   }
 
   @JsonKey(ignore: true)
@@ -150,7 +151,7 @@ class _$_Activity implements _Activity {
       runtimeType,
       const DeepCollectionEquality().hash(categoryId),
       const DeepCollectionEquality().hash(duration),
-      const DeepCollectionEquality().hash(dateTime));
+      const DeepCollectionEquality().hash(endTimestamp));
 
   @JsonKey(ignore: true)
   @override
@@ -167,7 +168,7 @@ abstract class _Activity implements Activity {
   factory _Activity(
       {required final String categoryId,
       required final int duration,
-      required final DateTime dateTime}) = _$_Activity;
+      required final DateTime endTimestamp}) = _$_Activity;
 
   factory _Activity.fromJson(Map<String, dynamic> json) = _$_Activity.fromJson;
 
@@ -176,7 +177,7 @@ abstract class _Activity implements Activity {
   @override
   int get duration => throw _privateConstructorUsedError;
   @override
-  DateTime get dateTime => throw _privateConstructorUsedError;
+  DateTime get endTimestamp => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ActivityCopyWith<_$_Activity> get copyWith =>
