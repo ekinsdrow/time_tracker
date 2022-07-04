@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/features/add_activity/data/models/time.dart';
+import 'package:time_tracker/features/add_activity/widgets/pick_time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
@@ -15,7 +17,22 @@ class _AddActivityPageState extends State<AddActivityPage> {
   var _categoryDropDownIndex = 0;
   var _subCategoryDropDownIndex = -1;
 
+  var _time = Time.zero();
+
   void _save() {}
+
+  Future<void> _chooseTime() async {
+    final pick = await openTimePciker(
+      context: context,
+      time: _time,
+    );
+
+    if (pick != null) {
+      setState(() {
+        _time = pick;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,22 +144,28 @@ class _AddActivityPageState extends State<AddActivityPage> {
                   const SizedBox(
                     height: Constants.mediumPadding,
                   ),
-                  Container(
-                    height: 50,
-                    padding: const EdgeInsets.all(Constants.smallPadding),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        Constants.smallPadding,
-                      ),
+                  InkWell(
+                    onTap: _chooseTime,
+                    borderRadius: BorderRadius.circular(
+                      Constants.smallPadding,
                     ),
-                    width: double.infinity,
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      '00:00:00',
+                    child: Container(
+                      height: 50,
+                      padding: const EdgeInsets.all(Constants.smallPadding),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).hintColor,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          Constants.smallPadding,
+                        ),
+                      ),
+                      width: double.infinity,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        _time.format,
+                      ),
                     ),
                   ),
                 ],
