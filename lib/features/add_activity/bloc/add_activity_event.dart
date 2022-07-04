@@ -6,6 +6,7 @@ class AddActivityEvent with _$AddActivityEvent {
     required Time time,
     required DateTime dateTime,
     required String userId,
-    required CategoryLeaf categoryLeaf,
+    required CategoryLeaf mainCategoryLeaf,
+    required CategoryLeaf? subCategoryLeaf,
   }) = _Save;
 }
