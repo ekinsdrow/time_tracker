@@ -4,7 +4,6 @@ import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
-//TODO: bug when change root category if chosen sub
 class CategoryFilterPage extends StatefulWidget {
   const CategoryFilterPage({
     Key? key,
@@ -74,6 +73,7 @@ class _CategoryFilterPageState extends State<CategoryFilterPage> {
                         setState(() {
                           if (v != null) {
                             _categoryDropDownIndex = v;
+                            _subCategoryDropDownIndex = -1;
                           }
                         });
                       },
