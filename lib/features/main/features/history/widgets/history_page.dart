@@ -6,6 +6,7 @@ import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
+import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 import 'package:time_tracker/features/main/features/history/cubit/history_cubit.dart';
 import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
 import 'package:time_tracker/features/main/features/history/di/history_scope.dart';
@@ -19,6 +20,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   DateTime? _chooseDate;
+  CategoryLeaf? _categoryLeaf;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,12 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
           _Filters(
             date: _chooseDate,
+            categoryCallback: (c) {
+              setState(() {
+                _categoryLeaf = c;
+              });
+            },
+            categoryLeaf: _categoryLeaf,
             dateCallback: (d) {
               setState(() {
                 _chooseDate = d;
@@ -53,18 +61,23 @@ class _HistoryPageState extends State<HistoryPage> {
                       child: Text(error),
                     ),
                     success: (activities) {
+                      Iterable<Activity> act = activities;
                       if (_chooseDate != null) {
-                        return _HistoryList(
-                          activities: activities.where(
-                            (element) =>
-                                element.endTimestamp.formatDate ==
-                                _chooseDate!.formatDate,
-                          ),
+                        act = activities.where(
+                          (element) =>
+                              element.endTimestamp.formatDate ==
+                              _chooseDate!.formatDate,
+                        );
+                      }
+
+                      if (_categoryLeaf != null) {
+                        act = act.where(
+                          (element) => element.categoryId == _categoryLeaf!.id,
                         );
                       }
 
                       return _HistoryList(
-                        activities: activities,
+                        activities: act,
                       );
                     },
                   ),
@@ -95,10 +108,14 @@ class _Filters extends StatelessWidget {
     Key? key,
     required this.date,
     required this.dateCallback,
+    required this.categoryCallback,
+    required this.categoryLeaf,
   }) : super(key: key);
 
   final DateTime? date;
   final Function(DateTime?) dateCallback;
+  final CategoryLeaf? categoryLeaf;
+  final Function(CategoryLeaf?) categoryCallback;
 
   void _openDateFilter(BuildContext context) async {
     final ctx = context;
@@ -126,10 +143,20 @@ class _Filters extends StatelessWidget {
     dateCallback(null);
   }
 
-  void _openCategory(BuildContext context) {
-    context.router.push(
+  void _clearCategory() {
+    categoryCallback(null);
+  }
+
+  Future<void> _openCategory(BuildContext context) async {
+    final category = await context.router.push(
       const CategoryFilterRoute(),
     );
+
+    if (category != null) {
+      if (category is CategoryLeaf) {
+        categoryCallback(category);
+      }
+    }
   }
 
   @override
@@ -173,7 +200,31 @@ class _Filters extends StatelessWidget {
           onPressed: () {
             _openCategory(context);
           },
-          child: const Text('Category'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                categoryLeaf != null ? categoryLeaf!.name : 'Category',
+              ),
+              if (categoryLeaf != null)
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: Constants.smallPadding / 2,
+                    ),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(100),
+                      onTap: _clearCategory,
+                      child: const Icon(
+                        Icons.clear,
+                        size: 18,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ],
     );

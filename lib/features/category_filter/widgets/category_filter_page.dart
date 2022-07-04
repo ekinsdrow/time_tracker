@@ -18,7 +18,23 @@ class _CategoryFilterPageState extends State<CategoryFilterPage> {
   int _categoryDropDownIndex = -1;
   int _subCategoryDropDownIndex = -1;
 
-  void _save() {}
+  void _save({
+    required List<CategoryLeaf> categories,
+  }) {
+    CategoryLeaf? result;
+
+    if (_subCategoryDropDownIndex != -1) {
+      result = categories[_categoryDropDownIndex]
+          .subCategories[_subCategoryDropDownIndex];
+    } else if (_categoryDropDownIndex != -1) {
+      result = categories[_categoryDropDownIndex];
+    }
+
+    Navigator.pop(
+      context,
+      result,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +159,9 @@ class _CategoryFilterPageState extends State<CategoryFilterPage> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: _save,
+                onPressed: () {
+                  _save(categories: categories);
+                },
                 child: const Text('Save'),
               ),
             ),
