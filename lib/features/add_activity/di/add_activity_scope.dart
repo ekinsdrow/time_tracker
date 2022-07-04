@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/dialogs/error_dialog.dart';
 import 'package:time_tracker/features/add_activity/bloc/add_activity_bloc.dart';
 import 'package:time_tracker/features/add_activity/data/repository/add_activity_repository.dart';
+import 'package:time_tracker/features/categories/bloc/categories_bloc.dart';
+import 'package:time_tracker/features/user/data/models/user.dart';
 
 class AddActivityScope extends StatelessWidget {
   const AddActivityScope({
@@ -23,6 +25,11 @@ class AddActivityScope extends StatelessWidget {
         child: BlocListener<AddActivityBloc, AddActivityState>(
           listener: (context, state) => state.whenOrNull(
             error: (error) => showError(context: context, error: error),
+            success: () => context.read<CategoriesBloc>().add(
+                  CategoriesEvent.fetch(
+                    userId: context.read<UserModel>().uid,
+                  ),
+                ),
           ),
           child: child,
         ),
