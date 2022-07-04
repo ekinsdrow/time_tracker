@@ -52,9 +52,21 @@ class _HistoryPageState extends State<HistoryPage> {
                     error: (error) => Center(
                       child: Text(error),
                     ),
-                    success: (activities) => _HistoryList(
-                      activities: activities,
-                    ),
+                    success: (activities) {
+                      if (_chooseDate != null) {
+                        return _HistoryList(
+                          activities: activities.where(
+                            (element) =>
+                                element.endTimestamp.formatDate ==
+                                _chooseDate!.formatDate,
+                          ),
+                        );
+                      }
+
+                      return _HistoryList(
+                        activities: activities,
+                      );
+                    },
                   ),
                 ),
               );
@@ -174,7 +186,7 @@ class _HistoryList extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<Activity> activities;
+  final Iterable<Activity> activities;
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +233,7 @@ class _HistoryList extends StatelessWidget {
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
-              final activity = activities[index];
+              final activity = activities.elementAt(index);
               final categories = context.read<Categories>();
               final categoryStr = categories.categoriesName(
                 activity.categoryId,
