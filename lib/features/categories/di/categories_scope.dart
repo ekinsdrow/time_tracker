@@ -8,7 +8,6 @@ import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/repositories/categories_repository.dart';
 import 'package:time_tracker/features/user/data/models/user.dart';
 
-//TODO: categories error if not auth
 class CategoriesScope extends StatelessWidget {
   const CategoriesScope({
     Key? key,
