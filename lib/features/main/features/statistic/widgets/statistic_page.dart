@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/common/extensions/string.dart';
+import 'package:time_tracker/features/activity/data/models/activity.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
@@ -13,6 +14,7 @@ enum StatisticTypes {
   week,
   month,
   year,
+  all,
   custom,
 }
 
@@ -84,6 +86,12 @@ class _StatisticPageState extends State<StatisticPage> {
             start: today.subtract(
               const Duration(days: 1),
             ),
+            end: today,
+          );
+          break;
+        case StatisticTypes.all:
+          _dateTimeRange = DateTimeRange(
+            start: context.read<List<Activity>>().last.endTimestamp,
             end: today,
           );
           break;
@@ -316,6 +324,7 @@ class DatePicker extends StatelessWidget {
           ),
         );
         break;
+      case StatisticTypes.all:
       case StatisticTypes.custom:
         break;
     }
@@ -365,6 +374,7 @@ class DatePicker extends StatelessWidget {
         );
         break;
       case StatisticTypes.custom:
+      case StatisticTypes.all:
         break;
     }
   }
@@ -377,7 +387,8 @@ class DatePicker extends StatelessWidget {
       height: 40,
       child: Row(
         children: [
-          if (statisticTypes != StatisticTypes.custom)
+          if (statisticTypes != StatisticTypes.custom &&
+              statisticTypes != StatisticTypes.all)
             Material(
               borderRadius: const BorderRadius.only(
                 topLeft: radius,
@@ -415,7 +426,8 @@ class DatePicker extends StatelessWidget {
                   border: Border.all(
                     color: Theme.of(context).primaryColor,
                   ),
-                  borderRadius: statisticTypes == StatisticTypes.custom
+                  borderRadius: (statisticTypes == StatisticTypes.custom ||
+                          statisticTypes == StatisticTypes.all)
                       ? BorderRadius.circular(Constants.smallPadding)
                       : BorderRadius.zero,
                 ),
@@ -430,7 +442,8 @@ class DatePicker extends StatelessWidget {
               ),
             ),
           ),
-          if (statisticTypes != StatisticTypes.custom)
+          if (statisticTypes != StatisticTypes.custom &&
+              statisticTypes != StatisticTypes.all)
             Material(
               borderRadius: const BorderRadius.only(
                 topRight: radius,
