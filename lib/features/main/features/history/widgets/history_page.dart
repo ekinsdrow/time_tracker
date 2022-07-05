@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
+import 'package:time_tracker/features/activity/cubit/actvity_cubit.dart';
+import 'package:time_tracker/features/activity/data/models/activity.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
-import 'package:time_tracker/features/main/features/history/cubit/history_cubit.dart';
-import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
-import 'package:time_tracker/features/main/features/history/di/history_scope.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -24,83 +23,69 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return HistoryScope(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const _Header(),
-          const SizedBox(
-            height: Constants.mediumPadding,
-          ),
-          _Filters(
-            date: _chooseDate,
-            categoryCallback: (c) {
-              setState(() {
-                _categoryLeaf = c;
-              });
-            },
-            categoryLeaf: _categoryLeaf,
-            dateCallback: (d) {
-              setState(() {
-                _chooseDate = d;
-              });
-            },
-          ),
-          const SizedBox(
-            height: Constants.mediumPadding,
-          ),
-          Builder(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _Header(),
+        const SizedBox(
+          height: Constants.mediumPadding,
+        ),
+        _Filters(
+          date: _chooseDate,
+          categoryCallback: (c) {
+            setState(() {
+              _categoryLeaf = c;
+            });
+          },
+          categoryLeaf: _categoryLeaf,
+          dateCallback: (d) {
+            setState(() {
+              _chooseDate = d;
+            });
+          },
+        ),
+        const SizedBox(
+          height: Constants.mediumPadding,
+        ),
+        Expanded(
+          child: Builder(
             builder: (context) {
-              return Expanded(
-                child: BlocBuilder<HistoryCubit, HistoryState>(
-                  builder: (context, state) => state.when(
-                    loading: () => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    error: (error) => Center(
-                      child: Text(error),
-                    ),
-                    success: (activities) {
-                      Iterable<Activity> act = activities;
-                      if (_chooseDate != null) {
-                        act = activities.where(
-                          (element) =>
-                              element.endTimestamp.formatDate ==
-                              _chooseDate!.formatDate,
-                        );
+              Iterable<Activity> act = context.read<List<Activity>>();
+              if (_chooseDate != null) {
+                act = act.where(
+                  (element) =>
+                      element.endTimestamp.formatDate ==
+                      _chooseDate!.formatDate,
+                );
+              }
+
+              if (_categoryLeaf != null) {
+                act = act.where(
+                  (element) {
+                    if (element.categoryId == _categoryLeaf!.id) {
+                      return true;
+                    }
+
+                    if (_categoryLeaf!.isRoot) {
+                      for (final sub in _categoryLeaf!.subCategories) {
+                        if (sub.id == element.categoryId) {
+                          return true;
+                        }
                       }
+                    }
 
-                      if (_categoryLeaf != null) {
-                        act = act.where(
-                          (element) {
-                            if (element.categoryId == _categoryLeaf!.id) {
-                              return true;
-                            }
+                    return false;
+                  },
+                );
+              }
 
-                            if (_categoryLeaf!.isRoot) {
-                              for (final sub in _categoryLeaf!.subCategories) {
-                                if (sub.id == element.categoryId) {
-                                  return true;
-                                }
-                              }
-                            }
-
-                            return false;
-                          },
-                        );
-                      }
-
-                      return _HistoryList(
-                        activities: act,
-                      );
-                    },
-                  ),
-                ),
+              return _HistoryList(
+                activities: act,
               );
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
