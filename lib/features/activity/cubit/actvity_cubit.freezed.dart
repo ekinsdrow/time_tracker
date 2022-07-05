@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'history_cubit.dart';
+part of 'actvity_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$HistoryState {
+mixin _$ActivityState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
@@ -63,19 +63,20 @@ mixin _$HistoryState {
 }
 
 /// @nodoc
-abstract class $HistoryStateCopyWith<$Res> {
-  factory $HistoryStateCopyWith(
-          HistoryState value, $Res Function(HistoryState) then) =
-      _$HistoryStateCopyWithImpl<$Res>;
+abstract class $ActivityStateCopyWith<$Res> {
+  factory $ActivityStateCopyWith(
+          ActivityState value, $Res Function(ActivityState) then) =
+      _$ActivityStateCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$HistoryStateCopyWithImpl<$Res> implements $HistoryStateCopyWith<$Res> {
-  _$HistoryStateCopyWithImpl(this._value, this._then);
+class _$ActivityStateCopyWithImpl<$Res>
+    implements $ActivityStateCopyWith<$Res> {
+  _$ActivityStateCopyWithImpl(this._value, this._then);
 
-  final HistoryState _value;
+  final ActivityState _value;
   // ignore: unused_field
-  final $Res Function(HistoryState) _then;
+  final $Res Function(ActivityState) _then;
 }
 
 /// @nodoc
@@ -86,7 +87,7 @@ abstract class _$$_LoadingCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
+class __$$_LoadingCopyWithImpl<$Res> extends _$ActivityStateCopyWithImpl<$Res>
     implements _$$_LoadingCopyWith<$Res> {
   __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
       : super(_value, (v) => _then(v as _$_Loading));
@@ -102,7 +103,7 @@ class _$_Loading implements _Loading {
 
   @override
   String toString() {
-    return 'HistoryState.loading()';
+    return 'ActivityState.loading()';
   }
 
   @override
@@ -183,7 +184,7 @@ class _$_Loading implements _Loading {
   }
 }
 
-abstract class _Loading implements HistoryState {
+abstract class _Loading implements ActivityState {
   const factory _Loading() = _$_Loading;
 }
 
@@ -195,7 +196,7 @@ abstract class _$$_ErrorCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
+class __$$_ErrorCopyWithImpl<$Res> extends _$ActivityStateCopyWithImpl<$Res>
     implements _$$_ErrorCopyWith<$Res> {
   __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
       : super(_value, (v) => _then(v as _$_Error));
@@ -226,7 +227,7 @@ class _$_Error implements _Error {
 
   @override
   String toString() {
-    return 'HistoryState.error(error: $error)';
+    return 'ActivityState.error(error: $error)';
   }
 
   @override
@@ -315,7 +316,7 @@ class _$_Error implements _Error {
   }
 }
 
-abstract class _Error implements HistoryState {
+abstract class _Error implements ActivityState {
   const factory _Error({required final String error}) = _$_Error;
 
   String get error => throw _privateConstructorUsedError;
@@ -333,7 +334,7 @@ abstract class _$$_SuccessCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_SuccessCopyWithImpl<$Res> extends _$HistoryStateCopyWithImpl<$Res>
+class __$$_SuccessCopyWithImpl<$Res> extends _$ActivityStateCopyWithImpl<$Res>
     implements _$$_SuccessCopyWith<$Res> {
   __$$_SuccessCopyWithImpl(_$_Success _value, $Res Function(_$_Success) _then)
       : super(_value, (v) => _then(v as _$_Success));
@@ -369,7 +370,7 @@ class _$_Success implements _Success {
 
   @override
   String toString() {
-    return 'HistoryState.success(activities: $activities)';
+    return 'ActivityState.success(activities: $activities)';
   }
 
   @override
@@ -459,7 +460,7 @@ class _$_Success implements _Success {
   }
 }
 
-abstract class _Success implements HistoryState {
+abstract class _Success implements ActivityState {
   const factory _Success({required final List<Activity> activities}) =
       _$_Success;
 
