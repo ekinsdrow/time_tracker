@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/common/extensions/string.dart';
 
 enum StatisticTypes {
@@ -19,6 +20,71 @@ class StatisticPage extends StatefulWidget {
 
 class _StatisticPageState extends State<StatisticPage> {
   var _type = StatisticTypes.day;
+  var _dateTimeRange = DateTimeRange(
+    start: DateTime.now(),
+    end: DateTime.now(),
+  );
+
+  void _typeCallback(StatisticTypes type) {
+    setState(() {
+      _type = type;
+
+      final today = DateTime.now();
+
+      switch (type) {
+        case StatisticTypes.day:
+          _dateTimeRange = DateTimeRange(
+            start: today,
+            end: today,
+          );
+          break;
+        case StatisticTypes.week:
+          _dateTimeRange = DateTimeRange(
+            start: today.subtract(Duration(days: today.weekday - 1)),
+            end: today.subtract(Duration(days: today.weekday - 1)).add(
+                  const Duration(days: 6),
+                ),
+          );
+          break;
+        case StatisticTypes.month:
+          _dateTimeRange = DateTimeRange(
+            start: DateTime(
+              today.year,
+              today.month,
+              1,
+            ),
+            end: DateTime(
+              today.year,
+              today.month,
+              DateTime(today.year, today.month + 1, 0).day,
+            ),
+          );
+          break;
+        case StatisticTypes.year:
+          _dateTimeRange = DateTimeRange(
+            start: DateTime(
+              today.year,
+              1,
+              1,
+            ),
+            end: DateTime(
+              today.year,
+              12,
+              31,
+            ),
+          );
+          break;
+        case StatisticTypes.custom:
+          _dateTimeRange = DateTimeRange(
+            start: today.subtract(
+              const Duration(days: 1),
+            ),
+            end: today,
+          );
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +92,24 @@ class _StatisticPageState extends State<StatisticPage> {
       children: [
         _Type(
           type: _type,
-          callback: (type) {
+          callback: _typeCallback,
+        ),
+        const SizedBox(
+          height: Constants.mediumPadding,
+        ),
+        DatePicker(
+          dateTimeRange: _dateTimeRange,
+          callbackType: (type) {
             setState(() {
-              _type = type;
+              _typeCallback(type);
             });
           },
+          callback: (range) {
+            setState(() {
+              _dateTimeRange = range;
+            });
+          },
+          statisticTypes: _type,
         ),
       ],
     );
@@ -104,6 +183,260 @@ class _Type extends StatelessWidget {
         },
         itemCount: StatisticTypes.values.length,
         scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+}
+
+class DatePicker extends StatelessWidget {
+  const DatePicker({
+    required this.callback,
+    required this.dateTimeRange,
+    required this.statisticTypes,
+    required this.callbackType,
+    Key? key,
+  }) : super(key: key);
+
+  final StatisticTypes statisticTypes;
+  final DateTimeRange dateTimeRange;
+  final Function(DateTimeRange range) callback;
+  final Function(StatisticTypes type) callbackType;
+
+  Future<void> _choose(BuildContext context) async {
+    final ctx = context;
+
+    if (statisticTypes == StatisticTypes.day) {
+      final picked = await showDatePicker(
+        context: context,
+        initialDate: dateTimeRange.start,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2050),
+        builder: (context, child) => Theme(
+          data: ThemeData(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(ctx).primaryColor,
+              onPrimary: Theme.of(ctx).scaffoldBackgroundColor,
+              onSurface: Theme.of(ctx).textTheme.bodyText2!.color!,
+            ),
+          ),
+          child: child!,
+        ),
+      );
+
+      if (picked != null) {
+        callback(DateTimeRange(start: picked, end: picked));
+      }
+    } else {
+      final picked = await showDateRangePicker(
+        context: context,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2050),
+        initialDateRange: dateTimeRange,
+        builder: (context, child) => Theme(
+          data: ThemeData(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(ctx).primaryColor,
+              onPrimary: Theme.of(ctx).scaffoldBackgroundColor,
+              onSurface: Theme.of(ctx).textTheme.bodyText2!.color!,
+            ),
+          ),
+          child: child!,
+        ),
+      );
+
+      if (picked != null) {
+        callbackType(
+          StatisticTypes.custom,
+        );
+        callback(picked);
+      }
+    }
+  }
+
+  void _subtract() {
+    switch (statisticTypes) {
+      case StatisticTypes.day:
+        callback(
+          DateTimeRange(
+            start: dateTimeRange.start.subtract(const Duration(days: 1)),
+            end: dateTimeRange.end.subtract(const Duration(days: 1)),
+          ),
+        );
+        break;
+      case StatisticTypes.week:
+        callback(
+          DateTimeRange(
+            start: dateTimeRange.start.subtract(const Duration(days: 7)),
+            end: dateTimeRange.end.subtract(const Duration(days: 7)),
+          ),
+        );
+        break;
+      case StatisticTypes.month:
+        callback(
+          DateTimeRange(
+            start: DateTime(
+              dateTimeRange.start.year,
+              dateTimeRange.start.month - 1,
+              1,
+            ),
+            end: DateTime(
+              dateTimeRange.end.year,
+              dateTimeRange.end.month - 1,
+              DateTime(dateTimeRange.end.year, dateTimeRange.end.month, 0).day,
+            ),
+          ),
+        );
+        break;
+      case StatisticTypes.year:
+        callback(
+          DateTimeRange(
+            start: DateTime(dateTimeRange.start.year - 1, 1, 1),
+            end: DateTime(dateTimeRange.end.year - 1, 12, 31),
+          ),
+        );
+        break;
+      case StatisticTypes.custom:
+        break;
+    }
+  }
+
+  void _add() {
+    switch (statisticTypes) {
+      case StatisticTypes.day:
+        callback(
+          DateTimeRange(
+            start: dateTimeRange.start.add(const Duration(days: 1)),
+            end: dateTimeRange.end.add(const Duration(days: 1)),
+          ),
+        );
+        break;
+      case StatisticTypes.week:
+        callback(
+          DateTimeRange(
+            start: dateTimeRange.start.add(const Duration(days: 7)),
+            end: dateTimeRange.end.add(const Duration(days: 7)),
+          ),
+        );
+        break;
+      case StatisticTypes.month:
+        callback(
+          DateTimeRange(
+            start: DateTime(
+              dateTimeRange.start.year,
+              dateTimeRange.start.month + 1,
+              1,
+            ),
+            end: DateTime(
+              dateTimeRange.end.year,
+              dateTimeRange.end.month + 1,
+              DateTime(dateTimeRange.end.year, dateTimeRange.end.month + 2, 0)
+                  .day,
+            ),
+          ),
+        );
+        break;
+      case StatisticTypes.year:
+        callback(
+          DateTimeRange(
+            start: DateTime(dateTimeRange.start.year + 1, 1, 1),
+            end: DateTime(dateTimeRange.end.year + 1, 12, 31),
+          ),
+        );
+        break;
+      case StatisticTypes.custom:
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const radius = Radius.circular(Constants.smallPadding);
+
+    return SizedBox(
+      height: 40,
+      child: Row(
+        children: [
+          if (statisticTypes != StatisticTypes.custom)
+            Material(
+              borderRadius: const BorderRadius.only(
+                topLeft: radius,
+                bottomLeft: radius,
+              ),
+              color: Theme.of(context).primaryColor,
+              child: InkWell(
+                borderRadius: const BorderRadius.only(
+                  topLeft: radius,
+                  bottomLeft: radius,
+                ),
+                onTap: _subtract,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                _choose(context);
+              },
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  borderRadius: statisticTypes == StatisticTypes.custom
+                      ? BorderRadius.circular(Constants.smallPadding)
+                      : BorderRadius.zero,
+                ),
+                child: Center(
+                  child: Text(
+                    statisticTypes == StatisticTypes.day
+                        ? dateTimeRange.start.formatDate
+                        // ignore: lines_longer_than_80_chars
+                        : '${dateTimeRange.start.formatDate} - ${dateTimeRange.end.formatDate}',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if (statisticTypes != StatisticTypes.custom)
+            Material(
+              borderRadius: const BorderRadius.only(
+                topRight: radius,
+                bottomRight: radius,
+              ),
+              color: Theme.of(context).primaryColor,
+              child: InkWell(
+                onTap: _add,
+                borderRadius: const BorderRadius.only(
+                  topRight: radius,
+                  bottomRight: radius,
+                ),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  color: Colors.transparent,
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
