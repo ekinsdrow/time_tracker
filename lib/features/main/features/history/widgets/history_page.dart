@@ -47,55 +47,43 @@ class _HistoryPageState extends State<HistoryPage> {
         const SizedBox(
           height: Constants.mediumPadding,
         ),
-        Builder(
-          builder: (context) {
-            return Expanded(
-              child: BlocBuilder<ActivityCubit, ActivityState>(
-                builder: (context, state) => state.when(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  error: (error) => Center(
-                    child: Text(error),
-                  ),
-                  success: (activities) {
-                    Iterable<Activity> act = activities;
-                    if (_chooseDate != null) {
-                      act = activities.where(
-                        (element) =>
-                            element.endTimestamp.formatDate ==
-                            _chooseDate!.formatDate,
-                      );
+        Expanded(
+          child: Builder(
+            builder: (context) {
+              Iterable<Activity> act = context.read<List<Activity>>();
+              if (_chooseDate != null) {
+                act = act.where(
+                  (element) =>
+                      element.endTimestamp.formatDate ==
+                      _chooseDate!.formatDate,
+                );
+              }
+
+              if (_categoryLeaf != null) {
+                act = act.where(
+                  (element) {
+                    if (element.categoryId == _categoryLeaf!.id) {
+                      return true;
                     }
 
-                    if (_categoryLeaf != null) {
-                      act = act.where(
-                        (element) {
-                          if (element.categoryId == _categoryLeaf!.id) {
-                            return true;
-                          }
-
-                          if (_categoryLeaf!.isRoot) {
-                            for (final sub in _categoryLeaf!.subCategories) {
-                              if (sub.id == element.categoryId) {
-                                return true;
-                              }
-                            }
-                          }
-
-                          return false;
-                        },
-                      );
+                    if (_categoryLeaf!.isRoot) {
+                      for (final sub in _categoryLeaf!.subCategories) {
+                        if (sub.id == element.categoryId) {
+                          return true;
+                        }
+                      }
                     }
 
-                    return _HistoryList(
-                      activities: act,
-                    );
+                    return false;
                   },
-                ),
-              ),
-            );
-          },
+                );
+              }
+
+              return _HistoryList(
+                activities: act,
+              );
+            },
+          ),
         ),
       ],
     );
