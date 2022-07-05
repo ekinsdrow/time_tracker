@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/common/extensions/string.dart';
+import 'package:time_tracker/features/app/data/models/time.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
+import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
 enum StatisticTypes {
   day,
@@ -110,6 +114,14 @@ class _StatisticPageState extends State<StatisticPage> {
             });
           },
           statisticTypes: _type,
+        ),
+        const SizedBox(
+          height: Constants.mediumPadding,
+        ),
+        Expanded(
+          child: _Categories(
+            categories: context.watch<Categories>().categories,
+          ),
         ),
       ],
     );
@@ -438,6 +450,77 @@ class DatePicker extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+class _Categories extends StatelessWidget {
+  const _Categories({
+    required this.categories,
+    Key? key,
+  }) : super(key: key);
+
+  final List<CategoryLeaf> categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      separatorBuilder: (context, index) => const SizedBox(
+        height: Constants.smallPadding,
+      ),
+      itemBuilder: (context, index) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                categories[index].name,
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              Text(
+                Time.fromDuration(duration: categories[index].allDuration)
+                    .format,
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          for (final sub in categories[index].subCategories)
+            Column(
+              children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: Constants.smallPadding,
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            sub.name,
+                          ),
+                          Text(
+                            Time.fromDuration(duration: sub.allDuration).format,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+        ],
+      ),
+      itemCount: categories.length,
     );
   }
 }
