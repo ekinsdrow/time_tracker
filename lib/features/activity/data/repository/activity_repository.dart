@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
+import 'package:time_tracker/features/activity/data/models/activity.dart';
 
-abstract class IHistoryRepository {
+abstract class IActivityRepository {
   Stream<List<Activity>> getActivities({
     required String userId,
   });
 }
 
-class HistoryRepository implements IHistoryRepository {
+class ActivityRepository implements IActivityRepository {
   @override
   Stream<List<Activity>> getActivities({required String userId}) {
     final snapshot = FirebaseFirestore.instance
