@@ -9,7 +9,6 @@ import 'package:time_tracker/common/extensions/string.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
-import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
 
 enum StatisticTypes {
   day,
@@ -127,15 +126,6 @@ class _StatisticPageState extends State<StatisticPage> {
           ),
           _Chart(
             categories: context.watch<Categories>().categories,
-            activities: [
-              for (int i = 0; i < 10; i++)
-                Activity(
-                  categoryId:
-                      categories[Random().nextInt(categories.length)].id,
-                  duration: Random().nextInt(100000),
-                  endTimestamp: DateTime.now(),
-                ),
-            ],
           ),
           const SizedBox(
             height: Constants.mediumPadding,
@@ -477,12 +467,10 @@ class DatePicker extends StatelessWidget {
 
 class _Chart extends StatelessWidget {
   const _Chart({
-    required this.activities,
     required this.categories,
     Key? key,
   }) : super(key: key);
 
-  final List<Activity> activities;
   final List<CategoryLeaf> categories;
 
   @override
