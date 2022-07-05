@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/dialogs/error_dialog.dart';
 import 'package:time_tracker/features/activity/cubit/actvity_cubit.dart';
 import 'package:time_tracker/features/activity/data/repository/activity_repository.dart';
@@ -24,11 +26,32 @@ class ActvityScope extends StatelessWidget {
           activityRepository: context.read<IActivityRepository>(),
           userId: user.uid,
         ),
-        child: BlocListener<ActivityCubit, ActivityState>(
+        child: BlocConsumer<ActivityCubit, ActivityState>(
           listener: (context, state) => state.whenOrNull(
             error: (error) => showError(context: context, error: error),
           ),
-          child: child,
+          builder: (context, state) => state.when(
+            loading: () => Container(
+              color: Colors.black38,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(
+                    Constants.smallPadding,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const CircularProgressIndicator(),
+                ),
+              ),
+            ),
+            error: (error) => Container(),
+            success: (activities) => Provider.value(
+              value: activities,
+              child: child,
+            ),
+          ),
         ),
       ),
     );
