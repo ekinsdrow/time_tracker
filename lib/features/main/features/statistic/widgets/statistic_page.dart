@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
@@ -6,6 +9,7 @@ import 'package:time_tracker/common/extensions/string.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
+import 'package:time_tracker/features/main/features/history/data/models/activity.dart';
 
 enum StatisticTypes {
   day,
@@ -92,38 +96,55 @@ class _StatisticPageState extends State<StatisticPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _Type(
-          type: _type,
-          callback: _typeCallback,
-        ),
-        const SizedBox(
-          height: Constants.mediumPadding,
-        ),
-        DatePicker(
-          dateTimeRange: _dateTimeRange,
-          callbackType: (type) {
-            setState(() {
-              _typeCallback(type);
-            });
-          },
-          callback: (range) {
-            setState(() {
-              _dateTimeRange = range;
-            });
-          },
-          statisticTypes: _type,
-        ),
-        const SizedBox(
-          height: Constants.mediumPadding,
-        ),
-        Expanded(
-          child: _Categories(
-            categories: context.watch<Categories>().categories,
+    final categories = context.watch<Categories>().categories;
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          _Type(
+            type: _type,
+            callback: _typeCallback,
           ),
-        ),
-      ],
+          const SizedBox(
+            height: Constants.mediumPadding,
+          ),
+          DatePicker(
+            dateTimeRange: _dateTimeRange,
+            callbackType: (type) {
+              setState(() {
+                _typeCallback(type);
+              });
+            },
+            callback: (range) {
+              setState(() {
+                _dateTimeRange = range;
+              });
+            },
+            statisticTypes: _type,
+          ),
+          const SizedBox(
+            height: Constants.mediumPadding * 1.5,
+          ),
+          _Chart(
+            categories: context.watch<Categories>().categories,
+            activities: [
+              for (int i = 0; i < 10; i++)
+                Activity(
+                  categoryId:
+                      categories[Random().nextInt(categories.length)].id,
+                  duration: Random().nextInt(100000),
+                  endTimestamp: DateTime.now(),
+                ),
+            ],
+          ),
+          const SizedBox(
+            height: Constants.mediumPadding,
+          ),
+          _Categories(
+            categories: categories,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -454,6 +475,60 @@ class DatePicker extends StatelessWidget {
   }
 }
 
+class _Chart extends StatelessWidget {
+  const _Chart({
+    required this.activities,
+    required this.categories,
+    Key? key,
+  }) : super(key: key);
+
+  final List<Activity> activities;
+  final List<CategoryLeaf> categories;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width - 200;
+    int all = 0;
+
+    for (final cat in categories) {
+      all += cat.allDuration;
+    }
+
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        children: [
+          PieChart(
+            PieChartData(
+              sections: [
+                for (final category in categories)
+                  PieChartSectionData(
+                    value: category.allDuration.toDouble(),
+                    title: category.name,
+                    color: Theme.of(context).primaryColor,
+                    titleStyle: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                Time.fromDuration(duration: all).format,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//TODO: all time
 class _Categories extends StatelessWidget {
   const _Categories({
     required this.categories,
@@ -464,63 +539,64 @@ class _Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      physics: const BouncingScrollPhysics(),
-      separatorBuilder: (context, index) => const SizedBox(
-        height: Constants.smallPadding,
-      ),
-      itemBuilder: (context, index) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      children: [
+        for (final category in categories)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                categories[index].name,
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
+              const SizedBox(
+                height: Constants.smallPadding,
               ),
-              Text(
-                Time.fromDuration(duration: categories[index].allDuration)
-                    .format,
-                style: const TextStyle(
-                  fontSize: 18,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    category.name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    Time.fromDuration(duration: category.allDuration).format,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          for (final sub in categories[index].subCategories)
-            Column(
-              children: [
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
+              for (final sub in category.subCategories)
+                Column(
                   children: [
                     const SizedBox(
-                      width: Constants.smallPadding,
+                      height: 5,
                     ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            sub.name,
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: Constants.smallPadding,
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                sub.name,
+                              ),
+                              Text(
+                                Time.fromDuration(duration: sub.allDuration)
+                                    .format,
+                              ),
+                            ],
                           ),
-                          Text(
-                            Time.fromDuration(duration: sub.allDuration).format,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-        ],
-      ),
-      itemCount: categories.length,
+            ],
+          ),
+      ],
     );
   }
 }
