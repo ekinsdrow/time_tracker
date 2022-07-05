@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker/features/activity/di/activity_scope.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/di/categories_scope.dart';
 import 'package:time_tracker/features/user/bloc/user_cubit.dart';
@@ -30,11 +31,14 @@ class UserScope extends StatelessWidget {
         ),
         builder: (context, state) => state.when(
           login: (user) {
-            return CategoriesScope(
-              userModel: user,
-              child: Provider.value(
-                value: user,
-                child: child,
+            return ActvityScope(
+              user: user,
+              child: CategoriesScope(
+                userModel: user,
+                child: Provider.value(
+                  value: user,
+                  child: child,
+                ),
               ),
             );
           },
