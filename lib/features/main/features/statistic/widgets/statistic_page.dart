@@ -528,7 +528,6 @@ class _Chart extends StatelessWidget {
   }
 }
 
-//TODO: all time
 class _Categories extends StatelessWidget {
   const _Categories({
     required this.categories,
