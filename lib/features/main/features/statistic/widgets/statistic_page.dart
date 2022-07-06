@@ -33,7 +33,7 @@ class _StatisticPageState extends State<StatisticPage> {
     end: DateTime.now(),
   );
 
-  void _typeCallback(StatisticTypes type) {
+  void _typeCallback(StatisticTypes type, BuildContext context) {
     setState(() {
       _type = type;
 
@@ -121,7 +121,9 @@ class _StatisticPageState extends State<StatisticPage> {
               children: [
                 _Type(
                   type: _type,
-                  callback: _typeCallback,
+                  callback: (type) {
+                    _typeCallback(type, context);
+                  },
                 ),
                 const SizedBox(
                   height: Constants.mediumPadding,
@@ -130,16 +132,16 @@ class _StatisticPageState extends State<StatisticPage> {
                   dateTimeRange: _dateTimeRange,
                   callbackType: (type) {
                     setState(() {
-                      _typeCallback(type);
+                      _typeCallback(type, context);
                     });
-                    
+
                     _addToBloc(context);
                   },
                   callback: (range) {
                     setState(() {
                       _dateTimeRange = range;
                     });
-                    
+
                     _addToBloc(context);
                   },
                   statisticTypes: _type,
