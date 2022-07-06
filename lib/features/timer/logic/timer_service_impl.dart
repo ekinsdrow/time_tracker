@@ -4,6 +4,10 @@ import 'package:time_tracker/features/timer/models/timer_state.dart';
 
 // TODO: implement timer
 class TimerServiceImpl implements TimerService {
+  TimerServiceImpl._();
+
+  static TimerServiceImpl get instance => TimerServiceImpl._();
+
   @override
   void start() {}
 
