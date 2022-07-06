@@ -8,6 +8,7 @@ part 'statistic_category.g.dart';
 class StatisticCategory with _$StatisticCategory {
   factory StatisticCategory({
     required String title,
+    required String id,
     required Time time,
     required List<StatisticCategory> subCategories,
   }) = _StatisticCategory;

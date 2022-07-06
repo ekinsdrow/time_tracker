@@ -21,6 +21,7 @@ StatisticCategory _$StatisticCategoryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$StatisticCategory {
   String get title => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   Time get time => throw _privateConstructorUsedError;
   List<StatisticCategory> get subCategories =>
       throw _privateConstructorUsedError;
@@ -36,7 +37,11 @@ abstract class $StatisticCategoryCopyWith<$Res> {
   factory $StatisticCategoryCopyWith(
           StatisticCategory value, $Res Function(StatisticCategory) then) =
       _$StatisticCategoryCopyWithImpl<$Res>;
-  $Res call({String title, Time time, List<StatisticCategory> subCategories});
+  $Res call(
+      {String title,
+      String id,
+      Time time,
+      List<StatisticCategory> subCategories});
 
   $TimeCopyWith<$Res> get time;
 }
@@ -53,6 +58,7 @@ class _$StatisticCategoryCopyWithImpl<$Res>
   @override
   $Res call({
     Object? title = freezed,
+    Object? id = freezed,
     Object? time = freezed,
     Object? subCategories = freezed,
   }) {
@@ -60,6 +66,10 @@ class _$StatisticCategoryCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       time: time == freezed
           ? _value.time
@@ -87,7 +97,11 @@ abstract class _$$_StatisticCategoryCopyWith<$Res>
           $Res Function(_$_StatisticCategory) then) =
       __$$_StatisticCategoryCopyWithImpl<$Res>;
   @override
-  $Res call({String title, Time time, List<StatisticCategory> subCategories});
+  $Res call(
+      {String title,
+      String id,
+      Time time,
+      List<StatisticCategory> subCategories});
 
   @override
   $TimeCopyWith<$Res> get time;
@@ -107,6 +121,7 @@ class __$$_StatisticCategoryCopyWithImpl<$Res>
   @override
   $Res call({
     Object? title = freezed,
+    Object? id = freezed,
     Object? time = freezed,
     Object? subCategories = freezed,
   }) {
@@ -114,6 +129,10 @@ class __$$_StatisticCategoryCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       time: time == freezed
           ? _value.time
@@ -132,6 +151,7 @@ class __$$_StatisticCategoryCopyWithImpl<$Res>
 class _$_StatisticCategory implements _StatisticCategory {
   _$_StatisticCategory(
       {required this.title,
+      required this.id,
       required this.time,
       required final List<StatisticCategory> subCategories})
       : _subCategories = subCategories;
@@ -141,6 +161,8 @@ class _$_StatisticCategory implements _StatisticCategory {
 
   @override
   final String title;
+  @override
+  final String id;
   @override
   final Time time;
   final List<StatisticCategory> _subCategories;
@@ -152,7 +174,7 @@ class _$_StatisticCategory implements _StatisticCategory {
 
   @override
   String toString() {
-    return 'StatisticCategory(title: $title, time: $time, subCategories: $subCategories)';
+    return 'StatisticCategory(title: $title, id: $id, time: $time, subCategories: $subCategories)';
   }
 
   @override
@@ -161,6 +183,7 @@ class _$_StatisticCategory implements _StatisticCategory {
         (other.runtimeType == runtimeType &&
             other is _$_StatisticCategory &&
             const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.time, time) &&
             const DeepCollectionEquality()
                 .equals(other._subCategories, _subCategories));
@@ -171,6 +194,7 @@ class _$_StatisticCategory implements _StatisticCategory {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(time),
       const DeepCollectionEquality().hash(_subCategories));
 
@@ -189,6 +213,7 @@ class _$_StatisticCategory implements _StatisticCategory {
 abstract class _StatisticCategory implements StatisticCategory {
   factory _StatisticCategory(
           {required final String title,
+          required final String id,
           required final Time time,
           required final List<StatisticCategory> subCategories}) =
       _$_StatisticCategory;
@@ -198,6 +223,8 @@ abstract class _StatisticCategory implements StatisticCategory {
 
   @override
   String get title => throw _privateConstructorUsedError;
+  @override
+  String get id => throw _privateConstructorUsedError;
   @override
   Time get time => throw _privateConstructorUsedError;
   @override
