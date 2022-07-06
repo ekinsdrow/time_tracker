@@ -7,7 +7,9 @@ import 'package:time_tracker/common/extensions/string.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
-import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
+import 'package:time_tracker/features/categories/data/models/category.dart';
+import 'package:time_tracker/features/main/features/statistic/di/statistic_scope.dart';
+import 'package:time_tracker/features/main/features/statistic/models/statistic_category.dart';
 
 enum StatisticTypes {
   day,
@@ -101,45 +103,71 @@ class _StatisticPageState extends State<StatisticPage> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.watch<Categories>().categories;
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          _Type(
-            type: _type,
-            callback: _typeCallback,
-          ),
-          const SizedBox(
-            height: Constants.mediumPadding,
-          ),
-          DatePicker(
-            dateTimeRange: _dateTimeRange,
-            callbackType: (type) {
-              setState(() {
-                _typeCallback(type);
-              });
-            },
-            callback: (range) {
-              setState(() {
-                _dateTimeRange = range;
-              });
-            },
-            statisticTypes: _type,
-          ),
-          const SizedBox(
-            height: Constants.mediumPadding * 1.5,
-          ),
-          _Chart(
-            categories: context.watch<Categories>().categories,
-          ),
-          const SizedBox(
-            height: Constants.mediumPadding,
-          ),
-          _Categories(
-            categories: categories,
-          ),
-        ],
+    return StatisticScope(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Builder(
+          builder: (context) {
+            final categories = context.watch<List<StatisticCategory>>();
+
+            return Column(
+              children: [
+                _Type(
+                  type: _type,
+                  callback: _typeCallback,
+                ),
+                const SizedBox(
+                  height: Constants.mediumPadding,
+                ),
+                DatePicker(
+                  dateTimeRange: _dateTimeRange,
+                  callbackType: (type) {
+                    setState(() {
+                      _typeCallback(type);
+                    });
+                  },
+                  callback: (range) {
+                    setState(() {
+                      _dateTimeRange = range;
+                    });
+                  },
+                  statisticTypes: _type,
+                ),
+                if (categories.isNotEmpty)
+                  SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height - 204,
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: Constants.mediumPadding * 1.5,
+                        ),
+                        _Chart(
+                          categories: categories,
+                        ),
+                        const SizedBox(
+                          height: Constants.mediumPadding,
+                        ),
+                        _Categories(
+                          categories: categories,
+                        ),
+                      ],
+                    ),
+                  )
+                else
+                  SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height - 204,
+                    child: const Center(
+                      child: Text(
+                        'Empty',
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -478,19 +506,19 @@ class DatePicker extends StatelessWidget {
 
 class _Chart extends StatelessWidget {
   const _Chart({
-    required this.categories,
     Key? key,
+    required this.categories,
   }) : super(key: key);
 
-  final List<CategoryLeaf> categories;
+  final List<StatisticCategory> categories;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width - 200;
-    int all = 0;
 
+    var allTime = 0;
     for (final cat in categories) {
-      all += cat.allDuration;
+      allTime += cat.time.toDuration;
     }
 
     return SizedBox(
@@ -503,8 +531,8 @@ class _Chart extends StatelessWidget {
               sections: [
                 for (final category in categories)
                   PieChartSectionData(
-                    value: category.allDuration.toDouble(),
-                    title: category.name,
+                    value: category.time.toDuration.toDouble(),
+                    title: category.title,
                     color: Theme.of(context).primaryColor,
                     titleStyle: TextStyle(
                       color: Theme.of(context).scaffoldBackgroundColor,
@@ -517,7 +545,7 @@ class _Chart extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                Time.fromDuration(duration: all).format,
+                Time.fromDuration(duration: allTime).format,
               ),
             ),
           ),
@@ -533,7 +561,7 @@ class _Categories extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final List<CategoryLeaf> categories;
+  final List<StatisticCategory> categories;
 
   @override
   Widget build(BuildContext context) {
@@ -550,13 +578,13 @@ class _Categories extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    category.name,
+                    category.title,
                     style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
                   Text(
-                    Time.fromDuration(duration: category.allDuration).format,
+                    category.time.format,
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -579,11 +607,10 @@ class _Categories extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                sub.name,
+                                sub.title,
                               ),
                               Text(
-                                Time.fromDuration(duration: sub.allDuration)
-                                    .format,
+                                sub.time.format,
                               ),
                             ],
                           ),
