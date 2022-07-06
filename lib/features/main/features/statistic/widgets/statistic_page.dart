@@ -111,77 +111,81 @@ class _StatisticPageState extends State<StatisticPage> {
   @override
   Widget build(BuildContext context) {
     return StatisticScope(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Builder(
-          builder: (context) {
-            final categories = context.watch<List<StatisticCategory>>();
+      child: Builder(builder: (context) {
+        _addToBloc(context);
 
-            return Column(
-              children: [
-                _Type(
-                  type: _type,
-                  callback: (type) {
-                    _typeCallback(type, context);
-                  },
-                ),
-                const SizedBox(
-                  height: Constants.mediumPadding,
-                ),
-                DatePicker(
-                  dateTimeRange: _dateTimeRange,
-                  callbackType: (type) {
-                    setState(() {
+        return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Builder(
+            builder: (context) {
+              final categories = context.watch<List<StatisticCategory>>();
+
+              return Column(
+                children: [
+                  _Type(
+                    type: _type,
+                    callback: (type) {
                       _typeCallback(type, context);
-                    });
+                    },
+                  ),
+                  const SizedBox(
+                    height: Constants.mediumPadding,
+                  ),
+                  DatePicker(
+                    dateTimeRange: _dateTimeRange,
+                    callbackType: (type) {
+                      setState(() {
+                        _typeCallback(type, context);
+                      });
 
-                    _addToBloc(context);
-                  },
-                  callback: (range) {
-                    setState(() {
-                      _dateTimeRange = range;
-                    });
+                      _addToBloc(context);
+                    },
+                    callback: (range) {
+                      setState(() {
+                        _dateTimeRange = range;
+                      });
 
-                    _addToBloc(context);
-                  },
-                  statisticTypes: _type,
-                ),
-                if (categories.isNotEmpty)
-                  SizedBox(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height - 204,
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: Constants.mediumPadding * 1.5,
+                      _addToBloc(context);
+                    },
+                    statisticTypes: _type,
+                  ),
+                  if (categories.isNotEmpty)
+                    SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height - 204,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: Constants.mediumPadding * 1.5,
+                          ),
+                          _Chart(
+                            categories: categories,
+                          ),
+                          const SizedBox(
+                            height: Constants.mediumPadding,
+                          ),
+                          _Categories(
+                            categories: categories,
+                          ),
+                        ],
+                      ),
+                    )
+                  else
+                    SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height - 204,
+                      child: const Center(
+                        child: Text(
+                          'Empty',
                         ),
-                        _Chart(
-                          categories: categories,
-                        ),
-                        const SizedBox(
-                          height: Constants.mediumPadding,
-                        ),
-                        _Categories(
-                          categories: categories,
-                        ),
-                      ],
-                    ),
-                  )
-                else
-                  SizedBox(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height - 204,
-                    child: const Center(
-                      child: Text(
-                        'Empty',
                       ),
                     ),
-                  ),
-              ],
-            );
-          },
-        ),
-      ),
+                ],
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }
