@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
+import 'package:time_tracker/common/extensions/duration_ext.dart';
 import 'package:time_tracker/common/extensions/int.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
@@ -16,6 +17,10 @@ class TrackerPage extends StatelessWidget {
     return Column(
       children: const [
         _Header(),
+        SizedBox(
+          height: Constants.mediumPadding,
+        ),
+        _TimerView(),
         SizedBox(
           height: Constants.mediumPadding,
         ),
@@ -64,6 +69,111 @@ class _Header extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _TimerView extends StatelessWidget {
+  const _TimerView({Key? key}) : super(key: key);
+
+  void _stop() {}
+
+  void _play() {}
+
+  void _pause() {}
+
+  void _save() {}
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 100,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Theme.of(context).primaryColor,
+            Colors.red[300]!,
+          ],
+        ),
+        borderRadius: BorderRadius.circular(
+          Constants.smallPadding,
+        ),
+      ),
+      padding: const EdgeInsets.all(Constants.smallPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Music',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+              Text(
+                const Duration(hours: 1).format,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              _IconButton(
+                callback: _stop,
+                icon: Icons.stop,
+              ),
+              _IconButton(
+                callback: _play,
+                icon: Icons.play_arrow,
+              ),
+              _IconButton(
+                callback: _save,
+                icon: Icons.save,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IconButton extends StatelessWidget {
+  const _IconButton({
+    required this.callback,
+    required this.icon,
+    Key? key,
+  }) : super(key: key);
+
+  final VoidCallback callback;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(100),
+        onTap: callback,
+        child: Container(
+          color: Colors.transparent,
+          width: 30,
+          height: 30,
+          child: Icon(
+            icon,
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+        ),
+      ),
     );
   }
 }
