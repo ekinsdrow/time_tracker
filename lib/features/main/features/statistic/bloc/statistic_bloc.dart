@@ -31,10 +31,17 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
   ) async {
     final statisticCategories = <StatisticCategory>[];
 
-    final suitableActivities = <Activity>[];
+    //id:Duration
+    final durationMap = <String, int>{};
 
     for (final activity in activities) {
-      final date = activity.endTimestamp;
+      final date = DateTime(
+        activity.endTimestamp.year,
+        activity.endTimestamp.month,
+        activity.endTimestamp.day,
+        12,
+        0,
+      );
 
       final start = DateTime(
         event.range.start.year,
@@ -52,16 +59,9 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
       );
 
       if (date.isAfter(start) && date.isBefore(end)) {
-        suitableActivities.add(activity);
+        final start = durationMap[activity.categoryId] ?? 0;
+        durationMap[activity.categoryId] = start + activity.duration;
       }
-    }
-
-    //id:Duration
-    final durationMap = <String, int>{};
-
-    for (final activity in suitableActivities) {
-      final start = durationMap[activity.categoryId] ?? 0;
-      durationMap[activity.categoryId] = start + activity.duration;
     }
 
     for (final cat in categories) {

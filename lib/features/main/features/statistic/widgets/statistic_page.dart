@@ -93,7 +93,7 @@ class _StatisticPageState extends State<StatisticPage> {
         case StatisticTypes.all:
           _dateTimeRange = DateTimeRange(
             start: context.read<List<Activity>>().last.endTimestamp,
-            end: today,
+            end: context.read<List<Activity>>().first.endTimestamp,
           );
           break;
       }
