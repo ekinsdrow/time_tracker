@@ -6,8 +6,7 @@ import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/common/extensions/string.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
-import 'package:time_tracker/features/categories/data/models/categories.dart';
-import 'package:time_tracker/features/categories/data/models/category.dart';
+import 'package:time_tracker/features/main/features/statistic/bloc/statistic_bloc.dart';
 import 'package:time_tracker/features/main/features/statistic/di/statistic_scope.dart';
 import 'package:time_tracker/features/main/features/statistic/models/statistic_category.dart';
 
@@ -99,6 +98,14 @@ class _StatisticPageState extends State<StatisticPage> {
           break;
       }
     });
+
+    _addToBloc(context);
+  }
+
+  void _addToBloc(BuildContext context) {
+    context.read<StatisticBloc>().add(
+          StatisticEvent.calculateStatistic(range: _dateTimeRange),
+        );
   }
 
   @override
@@ -125,11 +132,15 @@ class _StatisticPageState extends State<StatisticPage> {
                     setState(() {
                       _typeCallback(type);
                     });
+                    
+                    _addToBloc(context);
                   },
                   callback: (range) {
                     setState(() {
                       _dateTimeRange = range;
                     });
+                    
+                    _addToBloc(context);
                   },
                   statisticTypes: _type,
                 ),
