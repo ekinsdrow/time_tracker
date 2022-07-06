@@ -19,7 +19,15 @@ class StatisticScope extends StatelessWidget {
       create: (context) => StatisticBloc(
         activities: context.read<List<Activity>>(),
         categories: context.read<Categories>().categories,
-      ),
+      )..add(
+          StatisticEvent.calculateStatistic(
+            range: DateTimeRange(
+              end: DateTime.now(),
+              start: DateTime.now(),
+            ),
+          ),
+        ),
+      lazy: false,
       child: BlocBuilder<StatisticBloc, StatisticState>(
         builder: (context, state) => state.when(
           statistic: (categories) => Provider.value(
