@@ -3,9 +3,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/widgets/activity_item.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
+import 'package:time_tracker/features/import/bloc/import_bloc.dart';
+import 'package:time_tracker/features/main/di/import_scope.dart';
 
 class ImportPage extends StatefulWidget {
   const ImportPage({Key? key}) : super(key: key);
@@ -35,46 +38,60 @@ class _ImportPageState extends State<ImportPage> {
     setState(() {});
   }
 
-  void _save() {}
+  void _save(
+    BuildContext context,
+  ) {
+    context.read<ImportBloc>().add(
+          ImportEvent.save(activities: _activities),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Container(
-        padding: const EdgeInsets.all(
-          Constants.mediumPadding,
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: _open,
-                  child: const Text('Open'),
-                ),
-                const SizedBox(
-                  width: Constants.smallPadding,
-                ),
-                ElevatedButton(
-                  onPressed: _activities.isNotEmpty ? _save : null,
-                  child: const Text('Save'),
-                ),
-              ],
-            ),
-            Expanded(
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                separatorBuilder: (_, __) => const SizedBox(
-                  height: Constants.smallPadding,
-                ),
-                itemBuilder: (context, index) => ActivityItem(
-                  activity: _activities[index],
-                ),
-                itemCount: _activities.length,
+    return ImportScope(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Container(
+          padding: const EdgeInsets.all(
+            Constants.mediumPadding,
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: _open,
+                    child: const Text('Open'),
+                  ),
+                  const SizedBox(
+                    width: Constants.smallPadding,
+                  ),
+                  Builder(builder: (context) {
+                    return ElevatedButton(
+                      onPressed: _activities.isNotEmpty
+                          ? () {
+                              _save(context);
+                            }
+                          : null,
+                      child: const Text('Save'),
+                    );
+                  }),
+                ],
               ),
-            ),
-          ],
+              Expanded(
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  separatorBuilder: (_, __) => const SizedBox(
+                    height: Constants.smallPadding,
+                  ),
+                  itemBuilder: (context, index) => ActivityItem(
+                    activity: _activities[index],
+                  ),
+                  itemCount: _activities.length,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
