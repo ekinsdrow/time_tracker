@@ -17,19 +17,27 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ImportEvent {
   List<Activity> get activities => throw _privateConstructorUsedError;
+  List<CategoryLeaf> get categories => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Activity> activities) save,
+    required TResult Function(List<Activity> activities,
+            List<CategoryLeaf> categories, String userId)
+        save,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<Activity> activities)? save,
+    TResult Function(List<Activity> activities, List<CategoryLeaf> categories,
+            String userId)?
+        save,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Activity> activities)? save,
+    TResult Function(List<Activity> activities, List<CategoryLeaf> categories,
+            String userId)?
+        save,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -60,7 +68,10 @@ abstract class $ImportEventCopyWith<$Res> {
   factory $ImportEventCopyWith(
           ImportEvent value, $Res Function(ImportEvent) then) =
       _$ImportEventCopyWithImpl<$Res>;
-  $Res call({List<Activity> activities});
+  $Res call(
+      {List<Activity> activities,
+      List<CategoryLeaf> categories,
+      String userId});
 }
 
 /// @nodoc
@@ -74,12 +85,22 @@ class _$ImportEventCopyWithImpl<$Res> implements $ImportEventCopyWith<$Res> {
   @override
   $Res call({
     Object? activities = freezed,
+    Object? categories = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_value.copyWith(
       activities: activities == freezed
           ? _value.activities
           : activities // ignore: cast_nullable_to_non_nullable
               as List<Activity>,
+      categories: categories == freezed
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<CategoryLeaf>,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -89,7 +110,10 @@ abstract class _$$_SaveCopyWith<$Res> implements $ImportEventCopyWith<$Res> {
   factory _$$_SaveCopyWith(_$_Save value, $Res Function(_$_Save) then) =
       __$$_SaveCopyWithImpl<$Res>;
   @override
-  $Res call({List<Activity> activities});
+  $Res call(
+      {List<Activity> activities,
+      List<CategoryLeaf> categories,
+      String userId});
 }
 
 /// @nodoc
@@ -104,12 +128,22 @@ class __$$_SaveCopyWithImpl<$Res> extends _$ImportEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? activities = freezed,
+    Object? categories = freezed,
+    Object? userId = freezed,
   }) {
     return _then(_$_Save(
       activities: activities == freezed
           ? _value._activities
           : activities // ignore: cast_nullable_to_non_nullable
               as List<Activity>,
+      categories: categories == freezed
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<CategoryLeaf>,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -117,8 +151,12 @@ class __$$_SaveCopyWithImpl<$Res> extends _$ImportEventCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Save implements _Save {
-  const _$_Save({required final List<Activity> activities})
-      : _activities = activities;
+  const _$_Save(
+      {required final List<Activity> activities,
+      required final List<CategoryLeaf> categories,
+      required this.userId})
+      : _activities = activities,
+        _categories = categories;
 
   final List<Activity> _activities;
   @override
@@ -127,9 +165,19 @@ class _$_Save implements _Save {
     return EqualUnmodifiableListView(_activities);
   }
 
+  final List<CategoryLeaf> _categories;
+  @override
+  List<CategoryLeaf> get categories {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
+
+  @override
+  final String userId;
+
   @override
   String toString() {
-    return 'ImportEvent.save(activities: $activities)';
+    return 'ImportEvent.save(activities: $activities, categories: $categories, userId: $userId)';
   }
 
   @override
@@ -138,12 +186,18 @@ class _$_Save implements _Save {
         (other.runtimeType == runtimeType &&
             other is _$_Save &&
             const DeepCollectionEquality()
-                .equals(other._activities, _activities));
+                .equals(other._activities, _activities) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories) &&
+            const DeepCollectionEquality().equals(other.userId, userId));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_activities));
+      runtimeType,
+      const DeepCollectionEquality().hash(_activities),
+      const DeepCollectionEquality().hash(_categories),
+      const DeepCollectionEquality().hash(userId));
 
   @JsonKey(ignore: true)
   @override
@@ -153,27 +207,33 @@ class _$_Save implements _Save {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(List<Activity> activities) save,
+    required TResult Function(List<Activity> activities,
+            List<CategoryLeaf> categories, String userId)
+        save,
   }) {
-    return save(activities);
+    return save(activities, categories, userId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(List<Activity> activities)? save,
+    TResult Function(List<Activity> activities, List<CategoryLeaf> categories,
+            String userId)?
+        save,
   }) {
-    return save?.call(activities);
+    return save?.call(activities, categories, userId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(List<Activity> activities)? save,
+    TResult Function(List<Activity> activities, List<CategoryLeaf> categories,
+            String userId)?
+        save,
     required TResult orElse(),
   }) {
     if (save != null) {
-      return save(activities);
+      return save(activities, categories, userId);
     }
     return orElse();
   }
@@ -208,10 +268,17 @@ class _$_Save implements _Save {
 }
 
 abstract class _Save implements ImportEvent {
-  const factory _Save({required final List<Activity> activities}) = _$_Save;
+  const factory _Save(
+      {required final List<Activity> activities,
+      required final List<CategoryLeaf> categories,
+      required final String userId}) = _$_Save;
 
   @override
   List<Activity> get activities => throw _privateConstructorUsedError;
+  @override
+  List<CategoryLeaf> get categories => throw _privateConstructorUsedError;
+  @override
+  String get userId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_SaveCopyWith<_$_Save> get copyWith => throw _privateConstructorUsedError;
