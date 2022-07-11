@@ -7,8 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/widgets/activity_item.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/import/bloc/import_bloc.dart';
 import 'package:time_tracker/features/main/di/import_scope.dart';
+import 'package:time_tracker/features/user/data/models/user.dart';
 
 class ImportPage extends StatefulWidget {
   const ImportPage({Key? key}) : super(key: key);
@@ -47,7 +49,11 @@ class _ImportPageState extends State<ImportPage> {
     BuildContext context,
   ) {
     context.read<ImportBloc>().add(
-          ImportEvent.save(activities: _activities),
+          ImportEvent.save(
+            activities: _activities,
+            categories: context.read<Categories>().categories,
+            userId: context.read<UserModel>().uid,
+          ),
         );
   }
 
