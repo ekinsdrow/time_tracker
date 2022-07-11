@@ -1,12 +1,9 @@
-import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 import 'package:time_tracker/features/timer/models/timer_state.dart';
 
 abstract class TimerService {
-  Stream<Duration> get timer;
-  Stream<CategoryLeaf?> get nowCategory;
-  Stream<TimerState> get timerState;
+  Stream<TimerState> get state;
 
-  void start();
-  void pause();
-  void stop();
+  Future<void> start();
+  Future<void> pause();
+  Future<void> stop();
 }

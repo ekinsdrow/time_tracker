@@ -4,11 +4,15 @@ import 'package:time_tracker/features/categories/data/models/category.dart';
 part 'category_leaf.freezed.dart';
 
 @freezed
+@JsonSerializable()
 class CategoryLeaf with _$CategoryLeaf {
   factory CategoryLeaf({
     required Category category,
     required List<CategoryLeaf> subCategories,
   }) = _CategoryLeaf;
+
+  factory CategoryLeaf.fromJson(Map<String, dynamic> json) =>
+      _$CategoryLeafFromJson(json);
 }
 
 extension CategoryLeafGetters on CategoryLeaf {
