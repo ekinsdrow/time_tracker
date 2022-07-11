@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/date_time.dart';
+import 'package:time_tracker/common/widgets/activity_item.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
-import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
-import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -283,27 +282,10 @@ class _HistoryList extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               final activity = activities.elementAt(index);
-              final categories = context.read<Categories>();
-              final categoryStr = categories.categoriesName(
-                activity.categoryId,
-              );
+             
 
-              return Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).hintColor,
-                  borderRadius: BorderRadius.circular(
-                    Constants.smallPadding,
-                  ),
-                ),
-                child: ListTile(
-                  title: Text(
-                    // ignore: lines_longer_than_80_chars
-                    '$categoryStr - ${Time.fromDuration(duration: activity.duration).format}',
-                  ),
-                  subtitle: Text(
-                    activity.endTimestamp.formatDate,
-                  ),
-                ),
+              return ActivityItem(
+                activity: activity,
               );
             },
             separatorBuilder: (_, __) => const SizedBox(
