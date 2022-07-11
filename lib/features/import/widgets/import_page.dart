@@ -26,11 +26,16 @@ class _ImportPageState extends State<ImportPage> {
     final json = jsonDecode(jsonFileString);
 
     for (final activity in json) {
+      final date = activity['date'].toString();
       _activities.add(
         Activity(
           categoryId: activity['categoryId'],
           duration: int.parse(activity['duration']),
-          endTimestamp: DateTime.now(),
+          endTimestamp: DateTime(
+            int.parse(date.substring(0, 4)),
+            int.parse(date.substring(5, 7)),
+            int.parse(date.substring(8)),
+          ),
         ),
       );
     }
@@ -66,16 +71,18 @@ class _ImportPageState extends State<ImportPage> {
                   const SizedBox(
                     width: Constants.smallPadding,
                   ),
-                  Builder(builder: (context) {
-                    return ElevatedButton(
-                      onPressed: _activities.isNotEmpty
-                          ? () {
-                              _save(context);
-                            }
-                          : null,
-                      child: const Text('Save'),
-                    );
-                  }),
+                  Builder(
+                    builder: (context) {
+                      return ElevatedButton(
+                        onPressed: _activities.isNotEmpty
+                            ? () {
+                                _save(context);
+                              }
+                            : null,
+                        child: const Text('Save'),
+                      );
+                    },
+                  ),
                 ],
               ),
               Expanded(
@@ -89,6 +96,18 @@ class _ImportPageState extends State<ImportPage> {
                   ),
                   itemCount: _activities.length,
                 ),
+              ),
+              BlocBuilder<ImportBloc, ImportState>(
+                builder: (context, state) {
+                  return Text(
+                    state.when(
+                      initial: () => 'Initial',
+                      loading: () => 'Loading',
+                      success: () => 'Success',
+                      error: (e) => 'Error: $e',
+                    ),
+                  );
+                },
               ),
             ],
           ),
