@@ -14,11 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+CategoryLeaf _$CategoryLeafFromJson(Map<String, dynamic> json) {
+  return _CategoryLeaf.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CategoryLeaf {
   Category get category => throw _privateConstructorUsedError;
   List<CategoryLeaf> get subCategories => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CategoryLeafCopyWith<CategoryLeaf> get copyWith =>
       throw _privateConstructorUsedError;
@@ -110,11 +115,14 @@ class __$$_CategoryLeafCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_CategoryLeaf implements _CategoryLeaf {
   _$_CategoryLeaf(
       {required this.category, required final List<CategoryLeaf> subCategories})
       : _subCategories = subCategories;
+
+  factory _$_CategoryLeaf.fromJson(Map<String, dynamic> json) =>
+      _$$_CategoryLeafFromJson(json);
 
   @override
   final Category category;
@@ -140,6 +148,7 @@ class _$_CategoryLeaf implements _CategoryLeaf {
                 .equals(other._subCategories, _subCategories));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -150,12 +159,20 @@ class _$_CategoryLeaf implements _CategoryLeaf {
   @override
   _$$_CategoryLeafCopyWith<_$_CategoryLeaf> get copyWith =>
       __$$_CategoryLeafCopyWithImpl<_$_CategoryLeaf>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_CategoryLeafToJson(this);
+  }
 }
 
 abstract class _CategoryLeaf implements CategoryLeaf {
   factory _CategoryLeaf(
       {required final Category category,
       required final List<CategoryLeaf> subCategories}) = _$_CategoryLeaf;
+
+  factory _CategoryLeaf.fromJson(Map<String, dynamic> json) =
+      _$_CategoryLeaf.fromJson;
 
   @override
   Category get category => throw _privateConstructorUsedError;

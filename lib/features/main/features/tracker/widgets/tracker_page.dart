@@ -7,6 +7,7 @@ import 'package:time_tracker/common/extensions/int.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
+import 'package:time_tracker/features/timer/logic/timer_service_shared_impl.dart';
 import 'package:time_tracker/features/user/data/models/user.dart';
 
 class TrackerPage extends StatelessWidget {
@@ -76,9 +77,13 @@ class _Header extends StatelessWidget {
 class _TimerView extends StatelessWidget {
   const _TimerView({Key? key}) : super(key: key);
 
-  void _stop() {}
+  void _stop() {
+    TimerSharedImpl.instance.stop();
+  }
 
-  void _play() {}
+  void _play() {
+    TimerSharedImpl.instance.start();
+  }
 
   void _pause() {}
 
@@ -116,12 +121,18 @@ class _TimerView extends StatelessWidget {
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
               ),
-              Text(
-                const Duration(hours: 1).format,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
+              StreamBuilder<Duration>(
+                stream: TimerSharedImpl.instance.timer,
+                initialData: Duration.zero,
+                builder: (context, snapshot) {
+                  return Text(
+                    snapshot.data!.format,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  );
+                },
               ),
             ],
           ),
