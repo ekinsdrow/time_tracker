@@ -11,7 +11,9 @@ import 'package:time_tracker/features/categories/data/models/category_leaf.dart'
 import 'package:time_tracker/features/user/data/models/user.dart';
 
 class TrackerPage extends StatelessWidget {
-  const TrackerPage({Key? key}) : super(key: key);
+  TrackerPage({Key? key}) : super(key: key);
+
+  final foregroundStopwatch = ForegroundStopwatch();
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +23,32 @@ class TrackerPage extends StatelessWidget {
         const SizedBox(
           height: Constants.mediumPadding,
         ),
-        _TimerView(),
-        const SizedBox(
-          height: Constants.mediumPadding,
+        StreamBuilder<StopwatchState>(
+          stream: foregroundStopwatch.stopwatchStateStream,
+          initialData: StopwatchState.zero(),
+          builder: (context, snapshot) {
+            final state = snapshot.data!;
+
+            if (state.stopwatchStateEnum != StopwatchStateEnum.stop) {
+              return Column(
+                children: [
+                  _TimerView(
+                    foregroundStopwatch: foregroundStopwatch,
+                  ),
+                  const SizedBox(
+                    height: Constants.mediumPadding,
+                  ),
+                ],
+              );
+            }
+
+            return Container();
+          },
         ),
-        const Expanded(
-          child: _Categories(),
+        Expanded(
+          child: _Categories(
+            foregroundStopwatch: foregroundStopwatch,
+          ),
         ),
       ],
     );
@@ -75,9 +97,12 @@ class _Header extends StatelessWidget {
 }
 
 class _TimerView extends StatelessWidget {
-  _TimerView({Key? key}) : super(key: key);
+  const _TimerView({
+    Key? key,
+    required this.foregroundStopwatch,
+  }) : super(key: key);
 
-  final foregroundStopwatch = ForegroundStopwatch();
+  final ForegroundStopwatch foregroundStopwatch;
 
   void _stop() {
     foregroundStopwatch.stop();
@@ -116,24 +141,24 @@ class _TimerView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Music',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-              ),
-              StreamBuilder<StopwatchState>(
-                stream: foregroundStopwatch.stopwatchStateStream,
-                initialData: StopwatchState.zero(),
-                builder: (context, snapshot) {
-                  final state = snapshot.data!;
+          StreamBuilder<StopwatchState>(
+            stream: foregroundStopwatch.stopwatchStateStream,
+            initialData: StopwatchState.zero(),
+            builder: (context, snapshot) {
+              final state = snapshot.data!;
 
-                  return Text(
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    context.read<Categories>().categoriesName(state.data),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  ),
+                  Text(
                     Time.fromDuration(
                       duration: state.duration.inSeconds,
                     ).format,
@@ -141,10 +166,10 @@ class _TimerView extends StatelessWidget {
                       fontSize: 14,
                       color: Theme.of(context).scaffoldBackgroundColor,
                     ),
-                  );
-                },
-              )
-            ],
+                  ),
+                ],
+              );
+            },
           ),
           Row(
             children: [
@@ -213,7 +238,12 @@ class _IconButton extends StatelessWidget {
 }
 
 class _Categories extends StatelessWidget {
-  const _Categories({Key? key}) : super(key: key);
+  const _Categories({
+    Key? key,
+    required this.foregroundStopwatch,
+  }) : super(key: key);
+
+  final ForegroundStopwatch foregroundStopwatch;
 
   @override
   Widget build(BuildContext context) {
@@ -274,6 +304,7 @@ class _Categories extends StatelessWidget {
 
         return _Category(
           categoryLeaf: categories[index],
+          foregroundStopwatch: foregroundStopwatch,
         );
       },
       separatorBuilder: (_, __) => const SizedBox(
@@ -288,9 +319,11 @@ class _Category extends StatefulWidget {
   const _Category({
     Key? key,
     required this.categoryLeaf,
+    required this.foregroundStopwatch,
   }) : super(key: key);
 
   final CategoryLeaf categoryLeaf;
+  final ForegroundStopwatch foregroundStopwatch;
 
   @override
   State<_Category> createState() => _CategoryState();
@@ -301,72 +334,102 @@ class _CategoryState extends State<_Category> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: Constants.mediumPadding - 5,
-        vertical: Constants.mediumPadding,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).hintColor,
-        borderRadius: BorderRadius.circular(
-          Constants.smallPadding,
-        ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return StreamBuilder<StopwatchState>(
+      stream: widget.foregroundStopwatch.stopwatchStateStream,
+      initialData: StopwatchState.zero(),
+      builder: (context, snapshot) {
+        final state = snapshot.data!;
+
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: Constants.mediumPadding - 5,
+            vertical: Constants.mediumPadding,
+          ),
+          decoration: BoxDecoration(
+            color: state.data == widget.categoryLeaf.id
+                ? Theme.of(context).primaryColor.withAlpha(100)
+                : Theme.of(context).hintColor,
+            borderRadius: BorderRadius.circular(
+              Constants.smallPadding,
+            ),
+          ),
+          child: Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isOpen = !_isOpen;
-                  });
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  child: Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isOpen = !_isOpen;
+                      });
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Row(
+                        children: [
+                          Text(
+                            widget.categoryLeaf.name,
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                          const SizedBox(
+                            width: Constants.smallPadding,
+                          ),
+                          RotatedBox(
+                            quarterTurns: _isOpen ? 2 : 0,
+                            child: const Icon(
+                              Icons.keyboard_arrow_down,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
                     children: [
-                      Text(
-                        widget.categoryLeaf.name,
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
-                      const SizedBox(
-                        width: Constants.smallPadding,
-                      ),
-                      RotatedBox(
-                        quarterTurns: _isOpen ? 2 : 0,
-                        child: const Icon(
-                          Icons.keyboard_arrow_down,
+                      IconButton(
+                        onPressed: () {
+                          widget.foregroundStopwatch.play(
+                            data: widget.categoryLeaf.id,
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.timer,
                         ),
+                        splashRadius: 20,
+                      ),
+                      Text(
+                        state.data == widget.categoryLeaf.id
+                            ? (widget.categoryLeaf.allDuration +
+                                    state.duration.inSeconds)
+                                .toTime
+                            : widget.categoryLeaf.allDuration.toTime,
                       ),
                     ],
                   ),
+                ],
+              ),
+              if (_isOpen)
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: Constants.mediumPadding,
+                    ),
+                    _SubCategories(
+                      categories: widget.categoryLeaf.subCategories,
+                      rootCategoryId: widget.categoryLeaf.id,
+                      foregroundStopwatch: widget.foregroundStopwatch,
+                    ),
+                    const SizedBox(
+                      height: Constants.mediumPadding,
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                widget.categoryLeaf.allDuration.toTime,
-              ),
             ],
           ),
-          if (_isOpen)
-            Column(
-              children: [
-                const SizedBox(
-                  height: Constants.mediumPadding,
-                ),
-                _SubCategories(
-                  categories: widget.categoryLeaf.subCategories,
-                  rootCategoryId: widget.categoryLeaf.id,
-                ),
-                const SizedBox(
-                  height: Constants.mediumPadding,
-                ),
-              ],
-            ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -375,11 +438,13 @@ class _SubCategories extends StatelessWidget {
   const _SubCategories({
     required this.categories,
     required this.rootCategoryId,
+    required this.foregroundStopwatch,
     Key? key,
   }) : super(key: key);
 
   final List<CategoryLeaf> categories;
   final String rootCategoryId;
+  final ForegroundStopwatch foregroundStopwatch;
 
   @override
   Widget build(BuildContext context) {
@@ -392,6 +457,7 @@ class _SubCategories extends StatelessWidget {
             width: MediaQuery.of(context).size.width / 2 -
                 Constants.mediumPadding * 2,
             child: _SubCategory(
+              foregroundStopwatch: foregroundStopwatch,
               categoryLeaf: categories[i],
             ),
           ),
@@ -436,45 +502,69 @@ class _SubCategories extends StatelessWidget {
 class _SubCategory extends StatelessWidget {
   const _SubCategory({
     required this.categoryLeaf,
+    required this.foregroundStopwatch,
     Key? key,
   }) : super(key: key);
 
   final CategoryLeaf categoryLeaf;
+  final ForegroundStopwatch foregroundStopwatch;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(Constants.smallPadding),
-      ),
-      padding: const EdgeInsets.all(Constants.smallPadding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            categoryLeaf.name,
-            style: const TextStyle(
-              fontSize: 12,
+    return StreamBuilder<StopwatchState>(
+      stream: foregroundStopwatch.stopwatchStateStream,
+      initialData: StopwatchState.zero(),
+      builder: (context, snapshot) {
+        final state = snapshot.data!;
+
+        return Material(
+          color: state.data == categoryLeaf.id
+              ? Theme.of(context).primaryColor.withAlpha(100)
+              : Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(Constants.smallPadding),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(Constants.smallPadding),
+            onTap: () {
+              foregroundStopwatch.play(
+                data: categoryLeaf.id,
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(Constants.smallPadding),
+              decoration: const BoxDecoration(
+                color: Colors.transparent,
+              ),
+              height: 43,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    categoryLeaf.name,
+                    style: const TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        state.data == categoryLeaf.id
+                            ? (categoryLeaf.allDuration +
+                                    state.duration.inSeconds)
+                                .toTime
+                            : categoryLeaf.allDuration.toTime,
+                        overflow: TextOverflow.fade,
+                        style: const TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          Row(
-            children: [
-              const Icon(Icons.play_arrow),
-              const SizedBox(
-                width: Constants.smallPadding / 2,
-              ),
-              Text(
-                categoryLeaf.allDuration.toTime,
-                overflow: TextOverflow.fade,
-                style: const TextStyle(
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
