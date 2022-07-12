@@ -53,8 +53,7 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData, child: const ImportPage());
     },
     TrackerRouter.name: (routeData) {
-      return AdaptivePage<dynamic>(
-          routeData: routeData, child: const TrackerPage());
+      return AdaptivePage<dynamic>(routeData: routeData, child: TrackerPage());
     },
     HistoryRouter.name: (routeData) {
       return AdaptivePage<dynamic>(

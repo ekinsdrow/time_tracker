@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';

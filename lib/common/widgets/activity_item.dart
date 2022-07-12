@@ -20,7 +20,7 @@ class ActivityItem extends StatelessWidget {
     final categoryStr = categories.categoriesName(
       activity.categoryId,
     );
-    
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).hintColor,
