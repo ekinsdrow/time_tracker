@@ -64,4 +64,25 @@ extension CategoriesString on Categories {
 
     return firstCategory + (secondCategory != null ? ' / $secondCategory' : '');
   }
+
+  List<CategoryLeaf> getPairById(String id) {
+    final result = <CategoryLeaf>[];
+
+    for (final category in categories) {
+      if (category.id == id) {
+        result.add(category);
+        break;
+      }
+
+      for (final subCategory in category.subCategories) {
+        if (subCategory.id == id) {
+          result.add(category);
+          result.add(subCategory);
+          break;
+        }
+      }
+    }
+
+    return result;
+  }
 }
