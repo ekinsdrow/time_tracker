@@ -4,6 +4,8 @@ import 'package:foreground_stopwatch/foreground_stopwatch.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/int.dart';
+import 'package:time_tracker/features/add_activity/bloc/add_activity_bloc.dart';
+import 'package:time_tracker/features/add_activity/di/add_activity_scope.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
 import 'package:time_tracker/features/categories/data/models/categories.dart';
@@ -17,40 +19,42 @@ class TrackerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const _Header(),
-        const SizedBox(
-          height: Constants.mediumPadding,
-        ),
-        StreamBuilder<StopwatchState>(
-          stream: foregroundStopwatch.stopwatchStateStream,
-          initialData: StopwatchState.zero(),
-          builder: (context, snapshot) {
-            final state = snapshot.data!;
-
-            if (state.stopwatchStateEnum != StopwatchStateEnum.stop) {
-              return Column(
-                children: [
-                  _TimerView(
-                    foregroundStopwatch: foregroundStopwatch,
-                  ),
-                  const SizedBox(
-                    height: Constants.mediumPadding,
-                  ),
-                ],
-              );
-            }
-
-            return Container();
-          },
-        ),
-        Expanded(
-          child: _Categories(
-            foregroundStopwatch: foregroundStopwatch,
+    return AddActivityScope(
+      child: Column(
+        children: [
+          const _Header(),
+          const SizedBox(
+            height: Constants.mediumPadding,
           ),
-        ),
-      ],
+          StreamBuilder<StopwatchState>(
+            stream: foregroundStopwatch.stopwatchStateStream,
+            initialData: StopwatchState.zero(),
+            builder: (context, snapshot) {
+              final state = snapshot.data!;
+
+              if (state.stopwatchStateEnum != StopwatchStateEnum.stop) {
+                return Column(
+                  children: [
+                    _TimerView(
+                      foregroundStopwatch: foregroundStopwatch,
+                    ),
+                    const SizedBox(
+                      height: Constants.mediumPadding,
+                    ),
+                  ],
+                );
+              }
+
+              return Container();
+            },
+          ),
+          Expanded(
+            child: _Categories(
+              foregroundStopwatch: foregroundStopwatch,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -116,8 +120,26 @@ class _TimerView extends StatelessWidget {
     foregroundStopwatch.pause();
   }
 
-  void _save() {
-    //TODO: save activity
+  void _save({
+    required BuildContext context,
+    required Duration duration,
+    required String categoryId,
+  }) {
+    final categories = context.read<Categories>().getPairById(categoryId);
+
+    context.read<AddActivityBloc>().add(
+          AddActivityEvent.save(
+            time: Time.fromDuration(
+              duration: duration.inSeconds,
+            ),
+            dateTime: DateTime.now(),
+            userId: context.read<UserModel>().uid,
+            mainCategoryLeaf: categories[0],
+            subCategoryLeaf: categories[1],
+          ),
+        );
+
+    foregroundStopwatch.stop();
   }
 
   @override
@@ -194,9 +216,23 @@ class _TimerView extends StatelessWidget {
                   );
                 },
               ),
-              _IconButton(
-                callback: _save,
-                icon: Icons.save,
+              StreamBuilder<StopwatchState>(
+                initialData: StopwatchState.zero(),
+                stream: foregroundStopwatch.stopwatchStateStream,
+                builder: (context, snapshot) {
+                  final state = snapshot.data!;
+
+                  return _IconButton(
+                    callback: () {
+                      _save(
+                        context: context,
+                        duration: state.duration,
+                        categoryId: state.data,
+                      );
+                    },
+                    icon: Icons.save,
+                  );
+                },
               ),
             ],
           ),
