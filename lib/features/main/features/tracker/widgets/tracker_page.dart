@@ -4,6 +4,7 @@ import 'package:foreground_stopwatch/foreground_stopwatch.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/int.dart';
+import 'package:time_tracker/common/extensions/string.dart';
 import 'package:time_tracker/features/add_activity/bloc/add_activity_bloc.dart';
 import 'package:time_tracker/features/add_activity/di/add_activity_scope.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
@@ -575,7 +576,8 @@ class _SubCategory extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    categoryLeaf.name,
+                    categoryLeaf.name.slice,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 12,
                     ),
