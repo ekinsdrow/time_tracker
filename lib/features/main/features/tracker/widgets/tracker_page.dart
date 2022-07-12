@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:foreground_stopwatch/foreground_stopwatch.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/int.dart';
@@ -15,16 +16,16 @@ class TrackerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        _Header(),
-        SizedBox(
+      children: [
+        const _Header(),
+        const SizedBox(
           height: Constants.mediumPadding,
         ),
         _TimerView(),
-        SizedBox(
+        const SizedBox(
           height: Constants.mediumPadding,
         ),
-        Expanded(
+        const Expanded(
           child: _Categories(),
         ),
       ],
@@ -74,15 +75,25 @@ class _Header extends StatelessWidget {
 }
 
 class _TimerView extends StatelessWidget {
-  const _TimerView({Key? key}) : super(key: key);
+  _TimerView({Key? key}) : super(key: key);
 
-  void _stop() {}
+  final foregroundStopwatch = ForegroundStopwatch();
 
-  void _play() {}
+  void _stop() {
+    foregroundStopwatch.stop();
+  }
 
-  void _pause() {}
+  void _play() {
+    foregroundStopwatch.play(data: 'id');
+  }
 
-  void _save() {}
+  void _pause() {
+    foregroundStopwatch.pause();
+  }
+
+  void _save() {
+    //TODO: save activity
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,12 +127,22 @@ class _TimerView extends StatelessWidget {
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
               ),
-              Text(
-                Time(hours: 0, minutes: 2, seconds: 2).format,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
+              StreamBuilder<StopwatchState>(
+                stream: foregroundStopwatch.stopwatchStateStream,
+                initialData: StopwatchState.zero(),
+                builder: (context, snapshot) {
+                  final state = snapshot.data!;
+
+                  return Text(
+                    Time.fromDuration(
+                      duration: state.duration.inSeconds,
+                    ).format,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  );
+                },
               )
             ],
           ),
@@ -131,9 +152,22 @@ class _TimerView extends StatelessWidget {
                 callback: _stop,
                 icon: Icons.stop,
               ),
-              _IconButton(
-                callback: _play,
-                icon: Icons.play_arrow,
+              StreamBuilder<StopwatchState>(
+                initialData: StopwatchState.zero(),
+                stream: foregroundStopwatch.stopwatchStateStream,
+                builder: (context, snapshot) {
+                  final state = snapshot.data!;
+
+                  return _IconButton(
+                    callback:
+                        state.stopwatchStateEnum == StopwatchStateEnum.play
+                            ? _pause
+                            : _play,
+                    icon: state.stopwatchStateEnum == StopwatchStateEnum.play
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                  );
+                },
               ),
               _IconButton(
                 callback: _save,

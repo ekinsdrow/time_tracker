@@ -36,6 +36,10 @@ dependencies:
   rxdart: ^0.27.3
   dio: ^4.0.6
   flutter_foreground_task: ^3.7.3
+  foreground_stopwatch:
+    git:
+      url: git@github.com:ekinsdrow/foreground_stopwatch.git
+
 
   #Firebase
   firebase_core: ^1.17.1
