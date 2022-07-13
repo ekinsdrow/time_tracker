@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,8 @@ import 'package:time_tracker/common/extensions/date_time.dart';
 import 'package:time_tracker/common/extensions/string.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
+import 'package:time_tracker/features/app/router/router.dart';
+import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 import 'package:time_tracker/features/main/features/statistic/bloc/statistic_bloc.dart';
 import 'package:time_tracker/features/main/features/statistic/di/statistic_scope.dart';
 import 'package:time_tracker/features/main/features/statistic/models/statistic_category.dart';
@@ -32,6 +35,8 @@ class _StatisticPageState extends State<StatisticPage> {
     start: DateTime.now(),
     end: DateTime.now(),
   );
+
+  CategoryLeaf? categoryLeaf;
 
   void _typeCallback(StatisticTypes type, BuildContext context) {
     setState(() {
@@ -102,6 +107,18 @@ class _StatisticPageState extends State<StatisticPage> {
     _addToBloc(context);
   }
 
+  Future<void> categoryCallback() async {
+    final category = await context.router.push(
+      const CategoryFilterRoute(),
+    );
+
+    setState(() {
+      if (category is CategoryLeaf?) {
+        categoryLeaf = category;
+      }
+    });
+  }
+
   void _addToBloc(BuildContext context) {
     context.read<StatisticBloc>().add(
           StatisticEvent.calculateStatistic(range: _dateTimeRange),
@@ -149,6 +166,13 @@ class _StatisticPageState extends State<StatisticPage> {
                         _addToBloc(context);
                       },
                       statisticTypes: _type,
+                    ),
+                    const SizedBox(
+                      height: Constants.mediumPadding,
+                    ),
+                    _CategoryFilter(
+                      categoryLeaf: categoryLeaf,
+                      tapCallback: categoryCallback,
                     ),
                     if (categories.isNotEmpty)
                       SizedBox(
@@ -518,6 +542,53 @@ class DatePicker extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _CategoryFilter extends StatelessWidget {
+  const _CategoryFilter({
+    Key? key,
+    required this.categoryLeaf,
+    required this.tapCallback,
+  }) : super(key: key);
+
+  final CategoryLeaf? categoryLeaf;
+  final VoidCallback tapCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    const radius = Radius.circular(Constants.smallPadding);
+
+    return Material(
+      borderRadius: const BorderRadius.all(
+        radius,
+      ),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: InkWell(
+        onTap: tapCallback,
+        borderRadius: const BorderRadius.all(
+          radius,
+        ),
+        child: Container(
+          width: double.infinity,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: const BorderRadius.all(
+              radius,
+            ),
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              categoryLeaf == null ? 'All' : categoryLeaf!.name,
+            ),
+          ),
+        ),
       ),
     );
   }
