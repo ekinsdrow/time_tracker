@@ -17,19 +17,24 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$StatisticEvent {
   DateTimeRange get range => throw _privateConstructorUsedError;
+  List<CategoryLeaf> get categories => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DateTimeRange range) calculateStatistic,
+    required TResult Function(
+            DateTimeRange range, List<CategoryLeaf> categories)
+        calculateStatistic,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(DateTimeRange range)? calculateStatistic,
+    TResult Function(DateTimeRange range, List<CategoryLeaf> categories)?
+        calculateStatistic,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DateTimeRange range)? calculateStatistic,
+    TResult Function(DateTimeRange range, List<CategoryLeaf> categories)?
+        calculateStatistic,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -60,7 +65,7 @@ abstract class $StatisticEventCopyWith<$Res> {
   factory $StatisticEventCopyWith(
           StatisticEvent value, $Res Function(StatisticEvent) then) =
       _$StatisticEventCopyWithImpl<$Res>;
-  $Res call({DateTimeRange range});
+  $Res call({DateTimeRange range, List<CategoryLeaf> categories});
 }
 
 /// @nodoc
@@ -75,12 +80,17 @@ class _$StatisticEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? range = freezed,
+    Object? categories = freezed,
   }) {
     return _then(_value.copyWith(
       range: range == freezed
           ? _value.range
           : range // ignore: cast_nullable_to_non_nullable
               as DateTimeRange,
+      categories: categories == freezed
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<CategoryLeaf>,
     ));
   }
 }
@@ -92,7 +102,7 @@ abstract class _$$_CalculateCopyWith<$Res>
           _$_Calculate value, $Res Function(_$_Calculate) then) =
       __$$_CalculateCopyWithImpl<$Res>;
   @override
-  $Res call({DateTimeRange range});
+  $Res call({DateTimeRange range, List<CategoryLeaf> categories});
 }
 
 /// @nodoc
@@ -109,12 +119,17 @@ class __$$_CalculateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? range = freezed,
+    Object? categories = freezed,
   }) {
     return _then(_$_Calculate(
       range: range == freezed
           ? _value.range
           : range // ignore: cast_nullable_to_non_nullable
               as DateTimeRange,
+      categories: categories == freezed
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<CategoryLeaf>,
     ));
   }
 }
@@ -122,14 +137,22 @@ class __$$_CalculateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Calculate implements _Calculate {
-  const _$_Calculate({required this.range});
+  const _$_Calculate(
+      {required this.range, required final List<CategoryLeaf> categories})
+      : _categories = categories;
 
   @override
   final DateTimeRange range;
+  final List<CategoryLeaf> _categories;
+  @override
+  List<CategoryLeaf> get categories {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
 
   @override
   String toString() {
-    return 'StatisticEvent.calculateStatistic(range: $range)';
+    return 'StatisticEvent.calculateStatistic(range: $range, categories: $categories)';
   }
 
   @override
@@ -137,12 +160,16 @@ class _$_Calculate implements _Calculate {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Calculate &&
-            const DeepCollectionEquality().equals(other.range, range));
+            const DeepCollectionEquality().equals(other.range, range) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(range));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(range),
+      const DeepCollectionEquality().hash(_categories));
 
   @JsonKey(ignore: true)
   @override
@@ -152,27 +179,31 @@ class _$_Calculate implements _Calculate {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DateTimeRange range) calculateStatistic,
+    required TResult Function(
+            DateTimeRange range, List<CategoryLeaf> categories)
+        calculateStatistic,
   }) {
-    return calculateStatistic(range);
+    return calculateStatistic(range, categories);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(DateTimeRange range)? calculateStatistic,
+    TResult Function(DateTimeRange range, List<CategoryLeaf> categories)?
+        calculateStatistic,
   }) {
-    return calculateStatistic?.call(range);
+    return calculateStatistic?.call(range, categories);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DateTimeRange range)? calculateStatistic,
+    TResult Function(DateTimeRange range, List<CategoryLeaf> categories)?
+        calculateStatistic,
     required TResult orElse(),
   }) {
     if (calculateStatistic != null) {
-      return calculateStatistic(range);
+      return calculateStatistic(range, categories);
     }
     return orElse();
   }
@@ -207,10 +238,14 @@ class _$_Calculate implements _Calculate {
 }
 
 abstract class _Calculate implements StatisticEvent {
-  const factory _Calculate({required final DateTimeRange range}) = _$_Calculate;
+  const factory _Calculate(
+      {required final DateTimeRange range,
+      required final List<CategoryLeaf> categories}) = _$_Calculate;
 
   @override
   DateTimeRange get range => throw _privateConstructorUsedError;
+  @override
+  List<CategoryLeaf> get categories => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_CalculateCopyWith<_$_Calculate> get copyWith =>

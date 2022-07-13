@@ -53,7 +53,10 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData, child: const ImportPage());
     },
     TrackerRouter.name: (routeData) {
-      return AdaptivePage<dynamic>(routeData: routeData, child: TrackerPage());
+      final args = routeData.argsAs<TrackerRouterArgs>(
+          orElse: () => const TrackerRouterArgs());
+      return AdaptivePage<dynamic>(
+          routeData: routeData, child: TrackerPage(key: args.key));
     },
     HistoryRouter.name: (routeData) {
       return AdaptivePage<dynamic>(
@@ -175,10 +178,23 @@ class ImportRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [TrackerPage]
-class TrackerRouter extends PageRouteInfo<void> {
-  const TrackerRouter() : super(TrackerRouter.name, path: 'tracker');
+class TrackerRouter extends PageRouteInfo<TrackerRouterArgs> {
+  TrackerRouter({Key? key})
+      : super(TrackerRouter.name,
+            path: 'tracker', args: TrackerRouterArgs(key: key));
 
   static const String name = 'TrackerRouter';
+}
+
+class TrackerRouterArgs {
+  const TrackerRouterArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'TrackerRouterArgs{key: $key}';
+  }
 }
 
 /// generated route for

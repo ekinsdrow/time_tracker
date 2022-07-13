@@ -9,19 +9,18 @@ class MainPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return MainScope(
       child: AutoTabsRouter(
-        routes: const [
+        routes: [
           TrackerRouter(),
-          HistoryRouter(),
-          StatisticRouter(),
+          const HistoryRouter(),
+          const StatisticRouter(),
         ],
         builder: (context, child, _) {
           final tabsRouter = AutoTabsRouter.of(context);
-    
+
           return Scaffold(
             body: SafeArea(
               child: Padding(

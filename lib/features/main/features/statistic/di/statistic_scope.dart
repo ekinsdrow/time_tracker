@@ -18,7 +18,6 @@ class StatisticScope extends StatelessWidget {
     return BlocProvider(
       create: (context) => StatisticBloc(
         activities: context.read<List<Activity>>(),
-        categories: context.read<Categories>().categories,
       ),
       child: BlocBuilder<StatisticBloc, StatisticState>(
         builder: (context, state) => state.when(

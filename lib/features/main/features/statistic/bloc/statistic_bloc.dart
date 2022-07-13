@@ -11,12 +11,10 @@ part 'statistic_state.dart';
 part 'statistic_bloc.freezed.dart';
 
 class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
-  final List<CategoryLeaf> categories;
   final List<Activity> activities;
 
   StatisticBloc({
     required this.activities,
-    required this.categories,
   }) : super(
           const _Statistic(
             statisticCategories: [],
@@ -64,7 +62,7 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
       }
     }
 
-    for (final cat in categories) {
+    for (final cat in  event.categories) {
       if (durationMap.keys.contains(cat.id)) {
         final category = StatisticCategory(
           title: cat.name,

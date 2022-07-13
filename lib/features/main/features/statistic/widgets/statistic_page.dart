@@ -8,6 +8,7 @@ import 'package:time_tracker/common/extensions/string.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
 import 'package:time_tracker/features/app/data/models/time.dart';
 import 'package:time_tracker/features/app/router/router.dart';
+import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/categories/data/models/category_leaf.dart';
 import 'package:time_tracker/features/main/features/statistic/bloc/statistic_bloc.dart';
 import 'package:time_tracker/features/main/features/statistic/di/statistic_scope.dart';
@@ -107,7 +108,7 @@ class _StatisticPageState extends State<StatisticPage> {
     _addToBloc(context);
   }
 
-  Future<void> categoryCallback() async {
+  Future<void> categoryCallback(BuildContext context) async {
     final category = await context.router.push(
       const CategoryFilterRoute(),
     );
@@ -117,11 +118,20 @@ class _StatisticPageState extends State<StatisticPage> {
         categoryLeaf = category;
       }
     });
+
+    _addToBloc(context);
   }
 
   void _addToBloc(BuildContext context) {
     context.read<StatisticBloc>().add(
-          StatisticEvent.calculateStatistic(range: _dateTimeRange),
+          StatisticEvent.calculateStatistic(
+            range: _dateTimeRange,
+            categories: categoryLeaf != null
+                ? [
+                    categoryLeaf!,
+                  ]
+                : context.read<Categories>().categories,
+          ),
         );
   }
 
@@ -172,7 +182,9 @@ class _StatisticPageState extends State<StatisticPage> {
                     ),
                     _CategoryFilter(
                       categoryLeaf: categoryLeaf,
-                      tapCallback: categoryCallback,
+                      tapCallback: () {
+                        categoryCallback(context);
+                      },
                     ),
                     if (categories.isNotEmpty)
                       SizedBox(
