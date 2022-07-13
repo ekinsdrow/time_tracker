@@ -113,8 +113,10 @@ class _TimerView extends StatelessWidget {
     foregroundStopwatch.stop();
   }
 
-  void _play() {
-    foregroundStopwatch.play(data: 'id');
+  void _play({
+    required String id,
+  }) {
+    foregroundStopwatch.play(data: id);
   }
 
   void _pause() {
@@ -210,7 +212,9 @@ class _TimerView extends StatelessWidget {
                     callback:
                         state.stopwatchStateEnum == StopwatchStateEnum.play
                             ? _pause
-                            : _play,
+                            : () {
+                                _play(id: state.data);
+                              },
                     icon: state.stopwatchStateEnum == StopwatchStateEnum.play
                         ? Icons.pause
                         : Icons.play_arrow,

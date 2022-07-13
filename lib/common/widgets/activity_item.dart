@@ -30,6 +30,7 @@ class ActivityItem extends StatelessWidget {
       ),
       child: ListTile(
         title: Text(
+          // ignore: lines_longer_than_80_chars
           '$categoryStr - ${Time.fromDuration(duration: activity.duration).format}',
         ),
         subtitle: Text(
