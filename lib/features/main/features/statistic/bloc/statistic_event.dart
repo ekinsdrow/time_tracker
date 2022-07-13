@@ -4,5 +4,6 @@ part of 'statistic_bloc.dart';
 class StatisticEvent with _$StatisticEvent {
   const factory StatisticEvent.calculateStatistic({
     required DateTimeRange range,
+    required List<CategoryLeaf> categories,
   }) = _Calculate;
 }
