@@ -65,38 +65,61 @@ class StatisticBloc extends Bloc<StatisticEvent, StatisticState> {
     }
 
     for (final cat in categories) {
-      if (durationMap.containsKey(cat.id)) {
+      if (durationMap.keys.contains(cat.id)) {
         final category = StatisticCategory(
           title: cat.name,
           id: cat.id,
           time: Time.fromDuration(
             duration: durationMap[cat.id]!,
           ),
-          subCategories: [
-            for (final sub in cat.subCategories)
-              if (durationMap.containsKey(sub.id))
-                StatisticCategory(
-                  title: sub.name,
-                  id: sub.id,
-                  time: Time.fromDuration(
-                    duration: durationMap[sub.id]!,
-                  ),
-                  subCategories: [],
+          subCategories: [],
+        );
+
+        statisticCategories.add(category);
+      } else {
+        for (final sub in cat.subCategories) {
+          if (durationMap.keys.contains(sub.id)) {
+            final subCategory = StatisticCategory(
+              title: sub.name,
+              id: sub.id,
+              time: Time.fromDuration(
+                duration: durationMap[sub.id]!,
+              ),
+              subCategories: [],
+            );
+
+            final index = statisticCategories
+                .indexWhere((element) => element.id == cat.id);
+
+            if (index != -1) {
+              statisticCategories[index] = statisticCategories[index].copyWith(
+                time: Time.fromDuration(
+                  duration: statisticCategories[index].time.toDuration +
+                      subCategory.time.toDuration,
                 ),
-          ],
-        );
+                subCategories: [
+                  ...statisticCategories[index].subCategories,
+                  subCategory,
+                ],
+              );
+            } else {
+              final category = StatisticCategory(
+                title: cat.name,
+                id: cat.id,
+                time: Time.fromDuration(
+                  duration: durationMap[sub.id]!,
+                ),
+                subCategories: [
+                  subCategory,
+                ],
+              );
 
-        var allCatDuration = category.time.toDuration;
-
-        for (final sub in category.subCategories) {
-          allCatDuration += sub.time.toDuration;
+              statisticCategories.add(
+                category,
+              );
+            }
+          }
         }
-
-        statisticCategories.add(
-          category.copyWith(
-            time: Time.fromDuration(duration: allCatDuration),
-          ),
-        );
       }
     }
 
