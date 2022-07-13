@@ -40,7 +40,6 @@ dependencies:
     git:
       url: git@github.com:ekinsdrow/foreground_stopwatch.git
 
-
   #Firebase
   firebase_core: ^1.17.1
   firebase_auth: ^3.3.19
@@ -69,6 +68,5 @@ flutter:
         - asset: assets/fonts/Montserrat/Montserrat-Regular.ttf
         - asset: assets/fonts/Montserrat/Montserrat-Bold.ttf
           weight: 700
-
 # flutter_gen:
-  # output: lib/common/generated
+# output: lib/common/generated
