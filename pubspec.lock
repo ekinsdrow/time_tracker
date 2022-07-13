@@ -343,7 +343,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: e090aaaab2ac25c6e5b7a0f80cae32c2bcb4a0f8
+      resolved-ref: "6099b9600b98fce7040fc7a4309bcb18ee7c0e4a"
       url: "git@github.com:ekinsdrow/foreground_stopwatch.git"
     source: git
     version: "0.0.1"
