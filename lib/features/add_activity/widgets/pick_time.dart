@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:time_tracker/common/assets/constants.dart';
 import 'package:time_tracker/common/extensions/int.dart';
@@ -112,7 +114,7 @@ class _TimePickerState extends State<_TimePicker> {
   }
 }
 
-class _Pick extends StatelessWidget {
+class _Pick extends StatefulWidget {
   const _Pick({
     required this.callback,
     required this.text,
@@ -125,42 +127,78 @@ class _Pick extends StatelessWidget {
   final Function(int value) callback;
 
   @override
+  State<_Pick> createState() => _PickState();
+}
+
+class _PickState extends State<_Pick> {
+  Timer? _timer;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        IconButton(
-          onPressed: () {
-            callback(value + 1);
+        InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTapDown: (_) {
+            _timer = Timer.periodic(
+              const Duration(milliseconds: 50),
+              (timer) {
+                widget.callback(widget.value + 1);
+              },
+            );
           },
-          icon: const Icon(
-            Icons.add,
+          onTap: () {
+            widget.callback(widget.value + 1);
+          },
+          onTapUp: (_) {
+            _timer?.cancel();
+          },
+          child: const SizedBox(
+            width: 40,
+            height: 40,
+            child: Icon(
+              Icons.add,
+            ),
           ),
-          splashRadius: 20,
         ),
         const SizedBox(
           height: Constants.smallPadding,
         ),
         Text(
-          value.addZero,
+          widget.value.addZero,
           style: const TextStyle(
             fontSize: 30,
           ),
         ),
         Text(
-          text,
+          widget.text,
         ),
         const SizedBox(
           height: Constants.smallPadding,
         ),
-        IconButton(
-          onPressed: () {
-            final val = value - 1;
-            callback(val < 0 ? 0 : val);
+        InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTapDown: (_) {
+            _timer = Timer.periodic(
+              const Duration(milliseconds: 50),
+              (timer) {
+                final val = widget.value - 1;
+                widget.callback(val < 0 ? 0 : val);
+              },
+            );
           },
-          icon: const Icon(
-            Icons.remove,
+          onTap: () {
+            final val = widget.value - 1;
+            widget.callback(val < 0 ? 0 : val);
+          },
+          onTapUp: (_) {
+            _timer?.cancel();
+          },
+          child: const SizedBox(
+            width: 40,
+            height: 40,
+            child: Icon(Icons.remove),
           ),
-          splashRadius: 20,
         ),
       ],
     );
