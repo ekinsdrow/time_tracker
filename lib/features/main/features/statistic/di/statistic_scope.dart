@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/features/activity/data/models/activity.dart';
-import 'package:time_tracker/features/categories/data/models/categories.dart';
 import 'package:time_tracker/features/main/features/statistic/bloc/statistic_bloc.dart';
 
 class StatisticScope extends StatelessWidget {
