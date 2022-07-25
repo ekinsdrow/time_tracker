@@ -176,11 +176,17 @@ class _TimerView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    context.read<Categories>().categoriesName(state.data),
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).scaffoldBackgroundColor,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width -
+                        Constants.mediumPadding * 4 -
+                        80,
+                    child: Text(
+                      context.read<Categories>().categoriesName(state.data),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
                     ),
                   ),
                   Text(
